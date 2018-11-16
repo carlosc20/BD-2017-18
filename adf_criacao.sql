@@ -149,16 +149,36 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `mydb`.`Tipo_externo`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Tipo_externo` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Tipo_externo` (
+  `id` TINYINT NOT NULL,
+  `designacao` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`));
+
+
+-- -----------------------------------------------------
 -- Table `mydb`.`Servico_externo`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydb`.`Servico_externo` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Servico_externo` (
   `id` INT NOT NULL,
+  `tipo` TINYINT NOT NULL,
+  `montante_total` DECIMAL(10,2) NOT NULL,
+  `limite_clientes` TINYINT NOT NULL,
   PRIMARY KEY (`id`),
+  INDEX `tipo_servico_externo_idx` (`tipo` ASC) VISIBLE,
   CONSTRAINT `id_servico_externo`
     FOREIGN KEY (`id`)
     REFERENCES `mydb`.`Servico` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `tipo_servico_externo`
+    FOREIGN KEY (`tipo`)
+    REFERENCES `mydb`.`Tipo_externo` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -328,6 +348,17 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `mydb`.`Tipo_interno`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Tipo_interno` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Tipo_interno` (
+  `id` TINYINT NOT NULL,
+  `designacao` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`));
+
+
+-- -----------------------------------------------------
 -- Table `mydb`.`Servico_interno`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydb`.`Servico_interno` ;
@@ -335,31 +366,22 @@ DROP TABLE IF EXISTS `mydb`.`Servico_interno` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`Servico_interno` (
   `id` INT NOT NULL,
   `despesas` DECIMAL(10,2) NULL,
+  `tipo` TINYINT NOT NULL,
+  `marcas_da_aeronave` VARCHAR(20) NULL,
   PRIMARY KEY (`id`),
+  INDEX `tipo_servio_interno_idx` (`tipo` ASC) VISIBLE,
+  INDEX `marcas_da_aeronave_servico_interno_idx` (`marcas_da_aeronave` ASC) VISIBLE,
   CONSTRAINT `id_servico_interno`
     FOREIGN KEY (`id`)
     REFERENCES `mydb`.`Servico` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mydb`.`Manuntencao`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Manuntencao` ;
-
-CREATE TABLE IF NOT EXISTS `mydb`.`Manuntencao` (
-  `id_servico` INT NOT NULL,
-  `marcas_da_aeronave` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`id_servico`),
-  INDEX `marcas_da_aeronave_manutencao_idx` (`marcas_da_aeronave` ASC) VISIBLE,
-  CONSTRAINT `id_servico_manutencao`
-    FOREIGN KEY (`id_servico`)
-    REFERENCES `mydb`.`Servico_interno` (`id`)
+    ON UPDATE NO ACTION,
+  CONSTRAINT `tipo_servio_interno`
+    FOREIGN KEY (`tipo`)
+    REFERENCES `mydb`.`Tipo_interno` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `marcas_da_aeronave_manutencao`
+  CONSTRAINT `marcas_da_aeronave_servico_interno`
     FOREIGN KEY (`marcas_da_aeronave`)
     REFERENCES `mydb`.`Aviao` (`marcas_da_aeronave`)
     ON DELETE NO ACTION
