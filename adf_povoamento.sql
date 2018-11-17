@@ -61,7 +61,7 @@ INSERT INTO Servico
 
 
 --
-INSERT INTO Tipo_externo
+INSERT INTO Tipo
 	(id, designacao)
 	VALUES 
     (1, 'aula de ultra-leve');
@@ -71,13 +71,13 @@ INSERT INTO Tipo_externo
 
 
 --
-INSERT INTO Servico_externo
+INSERT INTO Servico_ao_cliente
 	(id, tipo, montante_total, limite_clientes)
 	VALUES 
     (1, 1, 50.00, 1);
 --
--- DELETE FROM Horario_funcionario;
--- SELECT * FROM Horario_funcionario;
+-- DELETE FROM Servico_externo;
+-- SELECT * FROM Servico_externo;
 
 
 
@@ -89,25 +89,26 @@ INSERT INTO Servico_cliente
 -- DELETE FROM Servico_cliente;
 -- SELECT * FROM Servico_cliente;
 
+--
+INSERT INTO Lugar_local
+	(id, designacao)
+	VALUES 
+	(1, 'Hangar A');
+--
+-- DELETE FROM Lugar_local;
+-- SELECT * FROM Lugar_local;
+
 
 --
 INSERT INTO Aviao
-	(marcas_da_aeronave, proprietario, modelo, numero_max_passageiros, classificacao, disponivel, data_proxima_revisao, icao_atual)
+	(marcas_da_aeronave, proprietario, modelo, numero_max_passageiros, classificacao, disponivel, data_proxima_revisao, icao_atual, lugar_local)
 	VALUES 
-	('CS-AVC', 'aerodromo_da_feira', 'fantasy air allegro 2000', 2, 'ultra-leve', true, '2020-10-30', 'LPVF');
+	('CS-AVC', 'aerodromo_da_feira', 'fantasy air allegro 2000', 2, 'ultra-leve', true, '2020-10-30', 'LPVF', 1);
 --
 -- DELETE FROM Aviao;
 -- SELECT * FROM Aviao;
 
 
---
-INSERT INTO Lugar_local
-	(marcas_da_aeronave, designacao)
-	VALUES 
-	('CS-AVC', 'Hangar A');
---
--- DELETE FROM Lugar_local;
--- SELECT * FROM Lugar_local;
 
 
 --
@@ -121,7 +122,7 @@ INSERT INTO Ciclo
 
 
 --
-INSERT INTO Tipo_interno
+INSERT INTO Tipo_manutencao
 	(id, designacao)
 	VALUES 
     (1, 'revisão de rotina');
@@ -131,7 +132,7 @@ INSERT INTO Tipo_interno
 
 
 --
-INSERT INTO Servico_interno
+INSERT INTO Manutencao
 	(id, tipo, despesas, marcas_da_aeronave)
 	VALUES 
     (2, 1, 300.00, 'CS-AVC');
@@ -156,9 +157,11 @@ INSERT INTO Funcao
 	VALUES 
 	(1, 'Piloto'),
     (2, 'Instrutor'),
-    (3, 'Rececionista'),
+    (3, 'Revisor'),
     (4, 'Administrador'),
-    (5, 'Revisor');
+    (5, 'Rececionista'),
+    (6, 'Controlador'),
+    (7, 'Auxiliar');
 --
 -- DELETE FROM Funcao;
 -- SELECT * FROM Funcao;
