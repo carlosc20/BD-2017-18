@@ -321,7 +321,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Quotas` (
   PRIMARY KEY (`id`, `ano`),
   CONSTRAINT `id_quotas`
     FOREIGN KEY (`id`)
-    REFERENCES `mydb`.`Cliente` (`id`)
+    REFERENCES `mydb`.`Cliente` (`numero_socio`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

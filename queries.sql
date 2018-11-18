@@ -61,6 +61,7 @@ order by lucro;
     'Controlador'
 	ver_ciclos_periodo
     ver_ciclos_a_decorrer
+    ver_ocupacao_local
 	-----------------------------------------------------
 	'Auxiliar'
     ver_servicos_periodo
