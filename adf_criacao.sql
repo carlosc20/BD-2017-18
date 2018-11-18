@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Funcionario` (
   `data_de_nascimento` DATE NOT NULL,
   `genero` CHAR(1) NOT NULL,
   `data_criacao` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `empregado` TINYINT NOT NULL,
   PRIMARY KEY (`numero`))
 ENGINE = InnoDB;
 
@@ -370,6 +371,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Manutencao` (
   `tipo` TINYINT NOT NULL,
   `despesas` DECIMAL(10,2) NULL,
   `marcas_da_aeronave` VARCHAR(20) NOT NULL,
+  `fatura` INT NULL,
   PRIMARY KEY (`id`),
   INDEX `tipo_servio_interno_idx` (`tipo` ASC) VISIBLE,
   INDEX `marcas_da_aeronave_servico_interno_idx` (`marcas_da_aeronave` ASC) VISIBLE,

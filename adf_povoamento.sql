@@ -143,9 +143,9 @@ INSERT INTO Manutencao
 
 --
 INSERT INTO Funcionario
-	(numero, nome, data_de_nascimento, genero, data_criacao)
+	(numero, nome, data_de_nascimento, genero, data_criacao, empregado)
 	VALUES 
-	(1, 'José Aerodromo', '1969-5-24', 'M', '2017-5-10 10:00:00');
+	(1, 'José Aerodromo', '1969-5-24', 'M', '2017-5-10 10:00:00', true);
 --
 -- DELETE FROM Funcionario;
 -- SELECT * FROM Funcionario;
