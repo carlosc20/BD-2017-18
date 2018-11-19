@@ -117,11 +117,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `mydb`.`Aviao` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Aviao` (
-  `marcas_da_aeronave` VARCHAR(20) NOT NULL,
+  `marcas_da_aeronave` CHAR(6) NOT NULL,
   `proprietario` VARCHAR(255) NOT NULL,
   `modelo` VARCHAR(45) NOT NULL,
   `numero_max_passageiros` INT NOT NULL,
-  `classificacao` VARCHAR(255) NOT NULL,
   `disponivel` TINYINT NOT NULL,
   `data_proxima_revisao` DATE NOT NULL,
   `icao_atual` CHAR(4) NULL,
@@ -240,6 +239,9 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
   `genero` CHAR(1) NOT NULL,
   `numero_de_telefone` VARCHAR(45) NOT NULL,
   `data_criacao` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `rua` VARCHAR(75) NOT NULL,
+  `codigo_postal` VARCHAR(45) NOT NULL,
+  `Clientecol` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `numero_socio_UNIQUE` (`numero_socio` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -371,6 +373,29 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Manutencao` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `marcas_da_aeronave_manutencao`
+    FOREIGN KEY (`marcas_da_aeronave`)
+    REFERENCES `mydb`.`Aviao` (`marcas_da_aeronave`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Aviao_tipo`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Aviao_tipo` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Aviao_tipo` (
+  `marcas_da_aeronave` CHAR(6) NOT NULL,
+  `tipo` TINYINT NOT NULL,
+  PRIMARY KEY (`marcas_da_aeronave`, `tipo`),
+  INDEX `tipo_aviao_tipo_idx` (`tipo` ASC) VISIBLE,
+  CONSTRAINT `tipo_aviao_tipo`
+    FOREIGN KEY (`tipo`)
+    REFERENCES `mydb`.`Tipo` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `marcas_da_aeronave`
     FOREIGN KEY (`marcas_da_aeronave`)
     REFERENCES `mydb`.`Aviao` (`marcas_da_aeronave`)
     ON DELETE NO ACTION
