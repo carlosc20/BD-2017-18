@@ -41,22 +41,28 @@ order by lucro;
     ver_servicos_periodo
     adicionar_observacao_servico
     
-    'Revisor'
-    ver_manutencoes_periodo
+    'Revisor' ✔
+    ver_manutencoes_atribuidas
     ver_aviao
     ver_historico_aviao
+    atualizar manutencao
+    atualizar data revisao aviao
+    
     -----------------------------------------------------
     Horário fixo:
     
-    'Rececionista'
+    'Rececionista' ✔
     inserir_cliente
     atualizar_cliente
+	ver_cliente
+    
     inserir_servico_ao_cliente
-    inserir_quotas
-    ver_cliente
+    ver_servicos_ao_cliente
+    inserir_quotas/por socio
+
     ver_disponibilidade_funcionarios
     ver_disponibilidade_avioes
-    ver_servicos_ao_cliente
+    
     -----------------------------------------------------
     'Controlador'
 	ver_ciclos_periodo
@@ -76,6 +82,11 @@ order by lucro;
     -----------------------------------------------------
     'Administrador'
     ver_tempo_servico_funcionario_periodo
+    
+    criar_funcionario
+    atualizar_funcionario
+    criar horario
+    
 	-----------------------------------------------------
 	Todos:
     

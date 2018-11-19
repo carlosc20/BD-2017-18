@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Funcionario` (
   `nome` VARCHAR(255) NOT NULL,
   `data_de_nascimento` DATE NOT NULL,
   `genero` CHAR(1) NOT NULL,
-  `data_criacao` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_criacao` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `empregado` TINYINT NOT NULL,
   `salario` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`numero`))
@@ -170,48 +170,12 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Tipo`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Tipo` ;
-
-CREATE TABLE IF NOT EXISTS `mydb`.`Tipo` (
-  `id` TINYINT NOT NULL,
-  `designacao` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`));
-
-
--- -----------------------------------------------------
--- Table `mydb`.`Servico_ao_cliente`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Servico_ao_cliente` ;
-
-CREATE TABLE IF NOT EXISTS `mydb`.`Servico_ao_cliente` (
-  `id` INT NOT NULL,
-  `tipo` TINYINT NOT NULL,
-  `montante_total` DECIMAL(10,2) NOT NULL,
-  `limite_clientes` TINYINT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `tipo_servico_externo_idx` (`tipo` ASC) VISIBLE,
-  CONSTRAINT `id_servico_externo`
-    FOREIGN KEY (`id`)
-    REFERENCES `mydb`.`Servico` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `tipo_servico_externo`
-    FOREIGN KEY (`tipo`)
-    REFERENCES `mydb`.`Tipo` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `mydb`.`Ciclo`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydb`.`Ciclo` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Ciclo` (
-  `id_servico` INT NOT NULL,
+  `id_ciclo` INT NOT NULL,
   `marcas_da_aeronave` VARCHAR(20) NOT NULL,
   `icao_origem` CHAR(4) NOT NULL,
   `icao_destino` CHAR(4) NOT NULL,
@@ -219,13 +183,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Ciclo` (
   `hora_chegada` TIME NULL,
   `hora_partida_prevista` TIME NOT NULL,
   `duracao_prevista` TIME NOT NULL,
-  PRIMARY KEY (`id_servico`),
+  PRIMARY KEY (`id_ciclo`),
   INDEX `marcas_da_aeronave_idx` (`marcas_da_aeronave` ASC) VISIBLE,
-  CONSTRAINT `id_servico_servico_aviao`
-    FOREIGN KEY (`id_servico`)
-    REFERENCES `mydb`.`Servico_ao_cliente` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `marcas_da_aeronave_servico_aviao`
     FOREIGN KEY (`marcas_da_aeronave`)
     REFERENCES `mydb`.`Aviao` (`marcas_da_aeronave`)
@@ -283,6 +242,49 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
   `data_criacao` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `numero_socio_UNIQUE` (`numero_socio` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Tipo`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Tipo` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Tipo` (
+  `id` TINYINT NOT NULL,
+  `designacao` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Servico_ao_cliente`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Servico_ao_cliente` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Servico_ao_cliente` (
+  `id` INT NOT NULL,
+  `tipo` TINYINT NOT NULL,
+  `montante_total` DECIMAL(10,2) NOT NULL,
+  `limite_clientes` TINYINT NOT NULL,
+  `ciclo` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `tipo_servico_externo_idx` (`tipo` ASC) VISIBLE,
+  INDEX `ciclo_servi_ao_cliente_idx` (`ciclo` ASC) VISIBLE,
+  CONSTRAINT `id_servico_externo`
+    FOREIGN KEY (`id`)
+    REFERENCES `mydb`.`Servico` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `tipo_servico_externo`
+    FOREIGN KEY (`tipo`)
+    REFERENCES `mydb`.`Tipo` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `ciclo_servi_ao_cliente`
+    FOREIGN KEY (`ciclo`)
+    REFERENCES `mydb`.`Ciclo` (`id_ciclo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
