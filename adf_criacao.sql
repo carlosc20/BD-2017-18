@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Funcionario` (
   `genero` CHAR(1) NOT NULL,
   `data_criacao` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `empregado` TINYINT NOT NULL,
+  `salario` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`numero`))
 ENGINE = InnoDB;
 
@@ -351,38 +352,20 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Tipo_manutencao`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Tipo_manutencao` ;
-
-CREATE TABLE IF NOT EXISTS `mydb`.`Tipo_manutencao` (
-  `id` TINYINT NOT NULL,
-  `designacao` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`));
-
-
--- -----------------------------------------------------
 -- Table `mydb`.`Manutencao`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydb`.`Manutencao` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Manutencao` (
   `id` INT NOT NULL,
-  `tipo` TINYINT NOT NULL,
   `despesas` DECIMAL(10,2) NULL,
   `marcas_da_aeronave` VARCHAR(20) NOT NULL,
   `fatura` INT NULL,
   PRIMARY KEY (`id`),
-  INDEX `tipo_servio_interno_idx` (`tipo` ASC) VISIBLE,
   INDEX `marcas_da_aeronave_servico_interno_idx` (`marcas_da_aeronave` ASC) VISIBLE,
   CONSTRAINT `id_manutencao`
     FOREIGN KEY (`id`)
     REFERENCES `mydb`.`Servico` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `tipo_manutencao`
-    FOREIGN KEY (`tipo`)
-    REFERENCES `mydb`.`Tipo_manutencao` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `marcas_da_aeronave_manutencao`

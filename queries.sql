@@ -65,7 +65,7 @@ order by lucro;
 	-----------------------------------------------------
 	'Auxiliar'
     ver_servicos_periodo
-    ver_ocupacao_local
+    ✔ ver lugares livres
     -----------------------------------------------------
     'Gestor'
     ver_transacoes_periodo
@@ -79,68 +79,73 @@ order by lucro;
 	-----------------------------------------------------
 	Todos:
     
-    ver_horario
+    ✔ proc_ver_horario
 	-----------------------------------------------------
 
 
 
 DELIMITER $$
-Create Procedure `proc_funcionario_periodo` (IN dia DATE)
+Create Procedure `proc_ver_disponibilidade_funcionarios` (IN inicio DATETIME, IN fim DATETIME, IN funcao VARCHAR(255))
 BEGIN
-	SELECT s from Cromo AS CR
-		INNER JOIN Jogador AS J ON J.Nr = CR.Jogador
-        INNER JOIN Equipa AS Eq ON J.Equipa = Eq.ID
-        where Eq.Designacao = nome
-        ORDER BY Cr.PagCaderneta, CR.Nr;
+	select * from Funcionario as Fun
+    inner join Funcao_funcionario as Ff on Ff.numero = Fun.numero
+    inner join Funcao as F on Ff.funcao = F.id
+    inner join Horario_funcionario as Hf on Hf.id_funcionario = Fun.numero
+    inner join Horario as H on H.id = Hf.id_horario
+	where designacao = funcao and Fun.empregado = true;
 END
 $$
--- drop procedure `proc_alinea_4_f10`;
--- CALL PROC_ALINEA_4_F10("Sporting Clube de Braga");
+-- drop procedure `proc_ver_disponibilidade_funcionarios`;
+-- CALL proc_ver_disponibilidade_funcionarios('2018-06-24 12:00', '2018-06-24 13:00', 'Piloto');
 
 
+-- ver ciclos a decorrer
+	select * from Servico as s
+    inner join Servico_ao_cliente as sc on sc.id = s.id
+    inner join Ciclo as C on sc.id = C.id_servico;
+	-- where
+
+-- lugares livres    
+    select designacao as 'Designação' from Lugar_local as L
+    left join Aviao as A on A.lugar_local = L.id
+    where A.lugar_local is null;
+    
 
 
--- drop procedure `proc_alinea_5`;
+drop procedure `proc_ver_horario`;
 DELIMITER $$
-Create Procedure `proc_alinea_5` ()
+Create Procedure `proc_ver_horario` (IN numero INT)
 BEGIN
-	SELECT CR.Nr, CR.tipo, J.Nome, Eq.Designacao, CR.Adquirido from Cromo AS CR
-		INNER JOIN Jogador AS J ON J.Nr = CR.Jogador
-        INNER JOIN Equipa AS Eq ON J.Equipa = Eq.ID;
+	select data_inicio as 'Data início', data_fim as 'Data fim', hora_inicio as 'Hora início', hora_fim as 'Hora fim', GROUP_CONCAT(dia_semana(D.dia) separator ', ') as 'dias da semana' from Horario as H
+    inner join Horario_funcionario as Hf on Hf.id_horario = H.id
+    inner join Funcionario as Fun on Fun.numero = Hf.id_funcionario
+    inner join Dias_da_semana as D on H.id = D.id
+	where Fun.numero = numero;
 END
 $$
--- CALL PROC_ALINEA_5();
+CALL proc_ver_horario(1);
 
 
-
--- 7 
--- drop function alinea7
+drop function dia_semana
 DELIMITER %%
-create function `alinea7` (numero INT)
-	RETURNS VARCHAR(100) deterministic
+create function `dia_semana` (n INT)
+	RETURNS VARCHAR(14) DETERMINISTIC
 BEGIN
-	DECLARE r,a,b,c VARCHAR(200);
-	select tipocromo.Descricao, Jogador.Nome, Equipa.Designacao into a,b,c from Cromo
-		inner join TipoCromo on Cromo.Tipo = TipoCromo.Id
-        inner join Jogador on Cromo.Jogador = Jogador.Nr
-        inner join Equipa on Jogador.Equipa = Equipa.Id
-        WHERE Cromo.Nr = numero;
-	set r = concat(a," ",b, " ",c); 
-	RETURN r;
+	DECLARE dia VARCHAR(14);
+	SET dia = (CASE
+		WHEN n=0 THEN 'segunda-feira'
+        WHEN n=1 THEN 'terça-feira'
+        WHEN n=2 THEN 'quarta-feira'
+        WHEN n=3 THEN 'quinta-feira'
+        WHEN n=4 THEN 'sexta-feira'
+        WHEN n=5 THEN 'sábado'
+        WHEN n=6 THEN 'domingo'
+	END);
+	RETURN dia;
 END
 %%
+select dia_semana(3);
 
-select alinea7(2);
--- 8 
--- update cromo
--- ler info nova
--- inserir na tabela 
--- NEW Nr, NEW Adquirido
-CREATE TABLE `mydb`.`audCromos`(
-	`data_registo`DATETIME NOT NULL COMMENT '',
-    `cromo` int NOT NULL COMMENT '',
-    PRIMARY KEY (`data_registo`, `cromo`) COMMENT '');
-   
    
 Implementar  um  gatilho que  registe  numa  tabela  de  auditoria  (“audCromos”), criada especificamente para o efeito, a data e a hora em que um dado cromo foi adquirido.
 Este  gatilho  deverá ser  ativado  sempre  que  o  valor  do  atributo  “Adquirido”  da  tabela “Cromo” mude de ‘N’ para ‘S’
