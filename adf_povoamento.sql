@@ -8,7 +8,6 @@
 -- Povoamento inicial da base de dados
 -- ------------------------------------------------------
 -- ------------------------------------------------------
-
 -- Esquema: "mydb"
 USE `mydb` ;
 
@@ -17,18 +16,17 @@ SET SQL_SAFE_UPDATES = 0;
 
 
 INSERT INTO Cliente
-	(id, nome, brevete, formacao_paraquedismo, email, numero_socio, data_nascimento, genero, numero_de_telefone, data_criacao)
+	(id	, nome, brevete, formacao_paraquedismo, email, numero_socio, data_nascimento, genero, numero_de_telefone, data_criacao, rua, codigo_postal)
 	VALUES 
-	(1	, 'Daniel Apelido'		, false	, true	, 'daniel.apelido@example.com'	, 1		, '1980-12-31', 'M', '+351 923 659 204', '2017-05-15 16:00:00'),
-	(2	, 'Ange Kops'			, false	, true	, 'akops1@jimdo.com'			, 2		, '1968-01-13', 'F', '+351 272 907 390', '2017-05-15 16:00:00'),
-	(3	, 'Leigha Truckell'		, false	, true	, 'ltruckell2@pen.io'			, null	, '1964-06-10', 'F', '+351 254 154 860', '2017-05-15 16:00:00'),
-	(4	, 'Jaye Inwood'			, true	, false	, 'jinwood3@parallels.com'		, null	, '1957-02-11', 'M', '+351 215 356 802', '2017-05-15 16:00:00'),
-	(5	, 'Brockie Gaynes'		, true	, true	, 'bgaynes4@liveinternet.ru'	, 3		, '1991-06-18', 'M', '+351 222 404 805', '2017-05-15 16:00:00'),
-	(6	, 'Gram Dreus'			, true	, true	, 'gdreus5@nytimes.com'			, 4		, '1952-06-11', 'M', '+351 288 203 625', '2017-05-15 16:00:00'),
-	(7	, 'Selestina Fisbburne'	, true	, false	, 'sfisbburne6@sogou.com'		, null	, '1989-08-10', 'F', '+351 215 990 674', '2017-05-15 16:00:00'),
-	(8	, 'Gilligan Jacox'		, true	, false	, 'gjacox7@vimeo.com'			, null	, '1962-03-26', 'F', '+351 209 956 073', '2017-05-15 16:00:00'),
-	(9	, 'Vanya Dew'			, false	, false	, 'vdew8@whitehouse.gov'		, null	, '1954-09-13', 'F', '+351 297 481 565', '2017-05-15 16:00:00'),
-	(10	, 'Roda Danilchenko'	, false	, false	, 'rdanilchenko9@cbc.ca'		, 5		, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00');
+	(1	, 'Daniel Apelido'		, false	, true	, 'daniel.apelido@example.com'		, 1		, '1980-12-31', 'M', '+351 213 659 204', '2017-05-15 16:00:00', 'Rua Augusta 55, Coimbra, Coimbra', 				'3045-079'),
+	(2	, 'Benedita Machado'	, false	, true	, 'benedita.machado@pen.io'			, null	, '1964-06-10', 'F', '+351 254 154 860', '2017-05-15 16:00:00', 'Avenida Marquês Tomar 63, Famões, Lisboa', 		'1685-906'),
+	(3	, 'Martim Venâncio'		, true	, false	, 'martim.venancio@parallels.com'	, null	, '1957-02-11', 'M', '+351 215 356 802', '2017-05-15 16:00:00', 'Avenida Júlio São Dias 17, Maia, Porto', 			'4475-810'),
+	(4	, 'Constança Ferreira'	, true	, true	, 'constanca91@liveinternet.ru'		, 2		, '1991-06-18', 'F', '+351 222 404 805', '2017-05-15 16:00:00', 'Rua Afonso Albuquerque 51, Conqueiros, Leiria', 	'2425-831'),
+	(5	, 'Nuno Martins'		, true	, true	, null								, 3		, '1952-06-11', 'M', '+351 288 203 625', '2017-05-15 16:00:00', 'Rua São Salvador 101, Assento, Braga', 			'4730-360'),
+	(6	, 'Carlota  Pires'		, true	, false	, 'carlota.pires@sogou.com'			, null	, '1989-08-10', 'F', '+351 215 990 674', '2017-05-15 16:00:00', 'Rua Riamar 32, Sanfins, Aveiro', 					'4520-523'),
+	(7	, 'Manuel  Neves'		, true	, false	, 'manuel.neves@vimeo.com'			, null	, '1962-03-26', 'M', '+351 209 956 073', '2017-05-15 16:00:00', 'Rua Projectada 58, Setúbal, Setúbal',				'2900-570'),
+	(8	, 'Júlia  Magalhães'	, false	, false	, null								, null	, '1954-09-13', 'F', '+351 297 481 565', '2017-05-15 16:00:00', 'Rua São Salvador 36, Igreja, Braga', 				'4730-190'),
+	(9	, 'Ivan  Vasconcelos'	, false	, false	, 'ivan1981@cbc.ca'					, 4		, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601');
 --
 -- DELETE FROM Cliente;
 -- SELECT * FROM Cliente;
@@ -46,8 +44,7 @@ INSERT INTO Quotas
     (3, 2018),
     (4, 2016),
     (4, 2017),
-    (4, 2018),
-    (5, 2018);
+    (4, 2018);
 --
 -- DELETE FROM Quotas;
 -- SELECT * FROM Quotas;
@@ -68,30 +65,32 @@ INSERT INTO Estado
 INSERT INTO Servico
 	(id, estado, data_de_inicio, duracao, observacao)
 	VALUES 
-    (1	, 1, '2018-11-14 02:20:41', '0:43', null),
-	(2	, 3, '2018-07-22 15:16:31', '2:25', null),
-	(3	, 2, '2018-09-10 18:59:29', '5:52', null),
-	(5	, 1, '2018-02-09 11:10:52', '13:25', null),
-	(6	, 2, '2017-06-23 16:50:44', '8:06', null),
-	(7	, 1, '2018-02-19 12:50:44', '4:34', null),
-	(9	, 1, '2017-07-02 17:41:54', '1:09', null),
-	(10	, 1, '2017-05-08 03:52:11', '22:54', null),
-	(11	, 2, '2017-01-08 06:13:58', '4:09', null),
-	(14	, 1, '2018-07-12 06:26:03', '8:51', null),
-	(15	, 1, '2017-04-30 04:29:28', '4:22', null),
-	(16	, 1, '2018-11-19 04:18:28', '17:24', null),
-	(17	, 1, '2018-10-24 04:24:54', '9:29', null),
-	(19	, 3, '2018-01-17 23:25:11', '10:32', null),
-	(20	, 1, '2018-08-12 03:59:45', '23:54', null),
-	(22	, 2, '2018-04-09 06:48:14', '16:27', null),
-	(23	, 3, '2017-04-22 01:56:56', '14:18', null),
-	(24	, 3, '2018-08-18 17:32:18', '3:46', null),
-	(25	, 1, '2018-04-08 22:53:38', '5:53', null),
-	(26	, 1, '2018-08-08 10:07:41', '11:48', null),
-	(27	, 1, '2018-03-16 19:26:17', '5:16', null),
-	(28	, 1, '2017-08-29 08:54:33', '8:40', null),
-	(29	, 2, '2018-12-06 13:56:25', '1:05', null),
-	(30	, 3, '2017-10-12 00:11:52', '10:42', '');
+    (1	, 1, '2018-11-14 12:20:00', '1:00',  null),
+	(2	, 3, '2018-07-22 15:15:00', '1:00',  null),
+	(3	, 2, '2018-09-10 19:00:00', '1:00',  null),
+    (4	, 2, '2018-09-10 19:00:00', '1:00',  null),
+	(5	, 1, '2018-02-09 11:10:00', '1:00',  null),
+	(6	, 2, '2017-06-23 16:50:00', '1:00',  null),
+	(7	, 1, '2018-02-19 12:50:00', '1:00',  null),
+	(8	, 1, '2018-02-19 12:50:00', '1:00',  null),
+	(9	, 1, '2017-07-02 17:45:00', '1:00',  null),
+	(10	, 1, '2017-05-08 13:50:00', '1:00',  null),
+	(11	, 2, '2017-01-08 16:15:00', '1:00',  null),
+	(14	, 1, '2018-07-12 16:30:00', '1:00',  null),
+	(15	, 1, '2017-04-30 14:30:00', '1:00',  null),
+	(16	, 1, '2018-11-19 14:20:00', '1:00',  null),
+	(17	, 1, '2018-10-24 14:30:00', '1:00',  null),
+	(19	, 3, '2018-01-17 13:25:00', '1:00',  null),
+	(20	, 1, '2018-08-12 14:00:00', '1:00',  null),
+	(22	, 2, '2018-04-09 16:45:00', '1:00',  null),
+	(23	, 3, '2017-04-22 12:00:00', '1:00',  null),
+	(24	, 3, '2018-08-18 17:30:00', '1:00',  null),
+	(25	, 1, '2018-04-08 21:53:38', '1:00',  null),
+	(26	, 1, '2018-08-08 10:00:00', '1:00',  null),
+	(27	, 1, '2018-03-16 19:30:00', '1:00',  null),
+	(28	, 1, '2017-08-29 08:55:00', '1:00',  null),
+	(29	, 2, '2018-12-06 13:55:00', '1:00',  null),
+	(30	, 3, '2017-10-12 10:10:00', '1:00', 'Os flags tiveram anomalias durante a aterragem');
 --
 -- DELETE FROM Servico;
 -- SELECT * FROM Servico;
@@ -146,15 +145,15 @@ INSERT INTO Lugar_local
 
 --
 INSERT INTO Aviao
-	(marcas_da_aeronave, proprietario, modelo, numero_max_passageiros, classificacao, disponivel, data_proxima_revisao, icao_atual, lugar_local)
+	(marcas_da_aeronave, proprietario, modelo, numero_max_passageiros, disponivel, data_proxima_revisao, icao_atual, lugar_local, tipo)
 	VALUES 
-	('CS-AVC', 'Aerodromo da feira'	, 'fantasy air allegro 2000', 2		, 'ultra-leve'			, true	, '2020-10-30', 'LPVF', 1),
-    ('CS-IPZ', 'Aerodromo da feira'	, 'aviao estragado'		 	, 14	, 'donec pharetra'		, false	, '2019-06-12', 'LPVF', 2),
-	('CS-MRQ', 'Aerodromo da feira'	, 'velit id'				, 17	, 'cursus vestibulum'	, true	, '2019-08-02', 'LPVF', 3),
-	('CS-JMQ', 'Aerodromo da feira'	, 'eu sapien cursus'		, 11	, 'pharetra magna'		, true	, '2019-02-06', 'KTOO', null),
-	('CS-SBP', 'Eire'			   	, 'orci eget'				, 4		, 'at feugiat'			, true	, '2019-01-07', 'LPVF', 4),
-	('CS-DEW', 'Ailane'			   	, 'potenti nullam'			, 15	, 'cras'				, true	, '2019-08-24', 'GLIP', null);
---	
+	('CS-AVC', 'Aerodromo da feira'	, 'Fantasy Air Allegro 2000' 		, 2	, true	, '2020-10-30', 'LPVF', 1	, 1),
+    ('CS-IPZ', 'Aerodromo da feira'	, 'Cessna Citation CJ2'		 		, 8	, false	, '2019-06-12', 'LPVF', 2	, 1),
+	('CS-MRQ', 'Aerodromo da feira'	, 'Piper PA-28-140 Cherokee 160 hp'	, 2	, true	, '2019-08-02', 'LPVF', 3	, 1),
+	('CS-JMQ', 'Aerodromo da feira'	, 'Piper PA-28R-200 Arrow II'		, 2	, true	, '2019-02-06', 'KTOO', null, 1),
+	('CS-SBP', 'Eire'			   	, 'Beechcraft Baron G58'			, 4	, true	, '2019-01-07', 'LPVF', 4	, 1),
+	('CS-DEW', 'Ailane'			   	, 'Pilatus PC-12 NG'				, 6	, true	, '2019-08-24', 'GLIP', null, 1);
+
 -- DELETE FROM Aviao;
 -- SELECT * FROM Aviao;
 
@@ -164,6 +163,7 @@ INSERT INTO Ciclo
 	(id_servico, marcas_da_aeronave, icao_origem, icao_destino, hora_partida, hora_chegada, hora_partida_prevista, duracao_prevista)
 	VALUES 
 	(1, 'CS-AVC', 'LPVF', 'LPVF', '18:12:00', '19:15:00', '18:10:00', '01:00:00');
+    -- (5, 'CS-AVC', 'LPVF', 'LPVF', '18:12:00', '19:15:00', '18:10:00', '01:00:00');
 --
 -- DELETE FROM Ciclo;
 -- SELECT * FROM Ciclo;
@@ -305,7 +305,7 @@ INSERT INTO Horario_funcionario
     (1, 3),
     (3, 1),
     (4, 1),
-    (5, 4),
+    (5, 4),	
     (6, 2),
     (7, 3),
     (8, 4),

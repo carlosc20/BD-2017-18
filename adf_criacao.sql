@@ -112,6 +112,17 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `mydb`.`Tipo`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Tipo` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Tipo` (
+  `id` TINYINT NOT NULL,
+  `designacao` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`));
+
+
+-- -----------------------------------------------------
 -- Table `mydb`.`Aviao`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydb`.`Aviao` ;
@@ -125,11 +136,18 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Aviao` (
   `data_proxima_revisao` DATE NOT NULL,
   `icao_atual` CHAR(4) NULL,
   `lugar_local` TINYINT NULL,
+  `tipo` TINYINT NOT NULL,
   PRIMARY KEY (`marcas_da_aeronave`),
   INDEX `lugar_local_aviao_idx` (`lugar_local` ASC) VISIBLE,
+  INDEX `tipo_aviao_idx` (`tipo` ASC) VISIBLE,
   CONSTRAINT `lugar_local_aviao`
     FOREIGN KEY (`lugar_local`)
     REFERENCES `mydb`.`Lugar_local` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `tipo_aviao`
+    FOREIGN KEY (`tipo`)
+    REFERENCES `mydb`.`Tipo` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -166,17 +184,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Servico` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mydb`.`Tipo`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Tipo` ;
-
-CREATE TABLE IF NOT EXISTS `mydb`.`Tipo` (
-  `id` TINYINT NOT NULL,
-  `designacao` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`));
 
 
 -- -----------------------------------------------------
@@ -282,30 +289,29 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
   `data_criacao` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `rua` VARCHAR(75) NOT NULL,
   `codigo_postal` VARCHAR(45) NOT NULL,
-  `Clientecol` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `numero_socio_UNIQUE` (`numero_socio` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Servico_cliente`
+-- Table `mydb`.`Cliente_servico`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Servico_cliente` ;
+DROP TABLE IF EXISTS `mydb`.`Cliente_servico` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`Servico_cliente` (
+CREATE TABLE IF NOT EXISTS `mydb`.`Cliente_servico` (
   `id_cliente` INT NOT NULL,
   `id_servico` INT NOT NULL,
   `pagamento` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`id_cliente`, `id_servico`),
   INDEX `id_cliente_idx` (`id_cliente` ASC) VISIBLE,
   INDEX `id_servico_servico_cliente_idx` (`id_servico` ASC) VISIBLE,
-  CONSTRAINT `id_cliente_servico_cliente`
+  CONSTRAINT `id_cliente_cliente_servico`
     FOREIGN KEY (`id_cliente`)
     REFERENCES `mydb`.`Cliente` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `id_servico_servico_cliente`
+  CONSTRAINT `id_servico_cliente_servico`
     FOREIGN KEY (`id_servico`)
     REFERENCES `mydb`.`Servico_ao_cliente` (`id`)
     ON DELETE NO ACTION
@@ -371,29 +377,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Manutencao` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `marcas_da_aeronave_manutencao`
-    FOREIGN KEY (`marcas_da_aeronave`)
-    REFERENCES `mydb`.`Aviao` (`marcas_da_aeronave`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mydb`.`Aviao_tipo`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Aviao_tipo` ;
-
-CREATE TABLE IF NOT EXISTS `mydb`.`Aviao_tipo` (
-  `marcas_da_aeronave` CHAR(6) NOT NULL,
-  `tipo` TINYINT NOT NULL,
-  PRIMARY KEY (`marcas_da_aeronave`, `tipo`),
-  INDEX `tipo_aviao_tipo_idx` (`tipo` ASC) VISIBLE,
-  CONSTRAINT `tipo_aviao_tipo`
-    FOREIGN KEY (`tipo`)
-    REFERENCES `mydb`.`Tipo` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `marcas_da_aeronave`
     FOREIGN KEY (`marcas_da_aeronave`)
     REFERENCES `mydb`.`Aviao` (`marcas_da_aeronave`)
     ON DELETE NO ACTION
