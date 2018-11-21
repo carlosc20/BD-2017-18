@@ -281,7 +281,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
   `nome` VARCHAR(255) NOT NULL,
   `brevete` TINYINT NOT NULL,
   `formacao_paraquedismo` TINYINT NOT NULL,
-  `email` VARCHAR(45) NULL,
   `numero_socio` INT NULL,
   `data_nascimento` DATE NOT NULL,
   `genero` CHAR(1) NOT NULL,
@@ -295,23 +294,23 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Servico_cliente`
+-- Table `mydb`.`Cliente_servico`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Servico_cliente` ;
+DROP TABLE IF EXISTS `mydb`.`Cliente_servico` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`Servico_cliente` (
+CREATE TABLE IF NOT EXISTS `mydb`.`Cliente_servico` (
   `id_cliente` INT NOT NULL,
   `id_servico` INT NOT NULL,
   `pagamento` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`id_cliente`, `id_servico`),
   INDEX `id_cliente_idx` (`id_cliente` ASC) VISIBLE,
   INDEX `id_servico_servico_cliente_idx` (`id_servico` ASC) VISIBLE,
-  CONSTRAINT `id_cliente_servico_cliente`
+  CONSTRAINT `id_cliente_cliente_servico`
     FOREIGN KEY (`id_cliente`)
     REFERENCES `mydb`.`Cliente` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `id_servico_servico_cliente`
+  CONSTRAINT `id_servico_cliente_servico`
     FOREIGN KEY (`id_servico`)
     REFERENCES `mydb`.`Servico_ao_cliente` (`id`)
     ON DELETE NO ACTION

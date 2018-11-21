@@ -16,17 +16,17 @@ SET SQL_SAFE_UPDATES = 0;
 
 
 INSERT INTO Cliente
-	(id	, nome, brevete, formacao_paraquedismo, email, numero_socio, data_nascimento, genero, numero_de_telefone, data_criacao, rua, codigo_postal)
+	(id	, nome, brevete, formacao_paraquedismo, numero_socio, data_nascimento, genero, numero_de_telefone, data_criacao, rua, codigo_postal)
 	VALUES 
-	(1	, 'Daniel Apelido'		, false	, true	, 'daniel.apelido@example.com'		, 1		, '1980-12-31', 'M', '+351 213 659 204', '2017-05-15 16:00:00', 'Rua Augusta 55, Coimbra, Coimbra', 				'3045-079'),
-	(2	, 'Benedita Machado'	, false	, true	, 'benedita.machado@pen.io'			, null	, '1964-06-10', 'F', '+351 254 154 860', '2017-05-15 16:00:00', 'Avenida Marquês Tomar 63, Famões, Lisboa', 		'1685-906'),
-	(3	, 'Martim Venâncio'		, true	, false	, 'martim.venancio@parallels.com'	, null	, '1957-02-11', 'M', '+351 215 356 802', '2017-05-15 16:00:00', 'Avenida Júlio São Dias 17, Maia, Porto', 			'4475-810'),
-	(4	, 'Constança Ferreira'	, true	, true	, 'constanca91@liveinternet.ru'		, 2		, '1991-06-18', 'F', '+351 222 404 805', '2017-05-15 16:00:00', 'Rua Afonso Albuquerque 51, Conqueiros, Leiria', 	'2425-831'),
-	(5	, 'Nuno Martins'		, true	, true	, null								, 3		, '1952-06-11', 'M', '+351 288 203 625', '2017-05-15 16:00:00', 'Rua São Salvador 101, Assento, Braga', 			'4730-360'),
-	(6	, 'Carlota  Pires'		, true	, false	, 'carlota.pires@sogou.com'			, null	, '1989-08-10', 'F', '+351 215 990 674', '2017-05-15 16:00:00', 'Rua Riamar 32, Sanfins, Aveiro', 					'4520-523'),
-	(7	, 'Manuel  Neves'		, true	, false	, 'manuel.neves@vimeo.com'			, null	, '1962-03-26', 'M', '+351 209 956 073', '2017-05-15 16:00:00', 'Rua Projectada 58, Setúbal, Setúbal',				'2900-570'),
-	(8	, 'Júlia  Magalhães'	, false	, false	, null								, null	, '1954-09-13', 'F', '+351 297 481 565', '2017-05-15 16:00:00', 'Rua São Salvador 36, Igreja, Braga', 				'4730-190'),
-	(9	, 'Ivan  Vasconcelos'	, false	, false	, 'ivan1981@cbc.ca'					, 4		, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601');
+	(1	, 'Daniel Apelido'		, false	, true	, 1		, '1980-12-31', 'M', '+351 213 659 204', '2017-05-15 16:00:00', 'Rua Augusta 55, Coimbra, Coimbra', 				'3045-079'),
+	(2	, 'Benedita Machado'	, false	, true	, null	, '1964-06-10', 'F', '+351 254 154 860', '2017-05-15 16:00:00', 'Avenida Marquês Tomar 63, Famões, Lisboa', 		'1685-906'),
+	(3	, 'Martim Venâncio'		, true	, false	, null	, '1957-02-11', 'M', '+351 215 356 802', '2017-05-15 16:00:00', 'Avenida Júlio São Dias 17, Maia, Porto', 			'4475-810'),
+	(4	, 'Constança Ferreira'	, true	, true	, 2		, '1991-06-18', 'F', '+351 222 404 805', '2017-05-15 16:00:00', 'Rua Afonso Albuquerque 51, Conqueiros, Leiria', 	'2425-831'),
+	(5	, 'Nuno Martins'		, true	, true	, 3		, '1952-06-11', 'M', '+351 288 203 625', '2017-05-15 16:00:00', 'Rua São Salvador 101, Assento, Braga', 			'4730-360'),
+	(6	, 'Carlota  Pires'		, true	, false	, null	, '1989-08-10', 'F', '+351 215 990 674', '2017-05-15 16:00:00', 'Rua Riamar 32, Sanfins, Aveiro', 					'4520-523'),
+	(7	, 'Manuel  Neves'		, true	, false	, null	, '1962-03-26', 'M', '+351 209 956 073', '2017-05-15 16:00:00', 'Rua Projectada 58, Setúbal, Setúbal',				'2900-570'),
+	(8	, 'Júlia  Magalhães'	, false	, false	, null	, '1954-09-13', 'F', '+351 297 481 565', '2017-05-15 16:00:00', 'Rua São Salvador 36, Igreja, Braga', 				'4730-190'),
+	(9	, 'Ivan  Vasconcelos'	, false	, false	, 4		, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601');
 --
 -- DELETE FROM Cliente;
 -- SELECT * FROM Cliente;
@@ -121,7 +121,7 @@ INSERT INTO Servico_ao_cliente
 
 
 --
-INSERT INTO Servico_cliente
+INSERT INTO Cliente_servico
 	(id_cliente, id_servico, pagamento)
 	VALUES 
 	(1, 1, 50.00);
@@ -171,16 +171,16 @@ INSERT INTO Ciclo
 
 --
 INSERT INTO Manutencao
-	(id, despesas, marcas_da_aeronave)
+	(id, despesas, marcas_da_aeronave, fatura)
 	VALUES 
-    (1, null	, 'CS-AVC'),
-    (2, 150.00	, 'CS-MRQ'),
-    (3, null	, 'CS-JMQ'),
-    (4, null	, 'CS-MRQ'),
-    (5, 300.00	, 'CS-AVC'),
-    (6, null	, 'CS-JMQ'),
-    (7, 100.00	, 'CS-AVC'),
-    (8, null	, 'CS-JMQ');
+    (1, null	, 'CS-AVC', null),
+    (2, 150.00	, 'CS-MRQ', 55555784),
+    (3, null	, 'CS-JMQ', null),
+    (4, null	, 'CS-MRQ', null),
+    (5, 300.00	, 'CS-AVC', 87418921),
+    (6, null	, 'CS-JMQ', null),
+    (7, 100.00	, 'CS-AVC', 48512417),
+    (8, null	, 'CS-JMQ', null);
 --
 -- DELETE FROM Manutencao;
 -- SELECT * FROM Manutencao;
