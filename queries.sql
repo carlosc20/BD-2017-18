@@ -42,6 +42,9 @@ order by lucro;
     adicionar_observacao_servico
     
     'Revisor' ✔
+    ve manutencoes atribuidas, fichas dos avioes e historico de manutencoes
+    pode editar ficha de servico com despesas e observaçoes e data de revisao nos avioes
+    
     ver_manutencoes_atribuidas
     ver_aviao
     ver_historico_aviao
@@ -51,7 +54,7 @@ order by lucro;
     -----------------------------------------------------
     Horário fixo:
     
-    'Rececionista' ✔
+    'Rececionista' 
     inserir_cliente
     atualizar_cliente
 	ver_cliente
@@ -64,23 +67,31 @@ order by lucro;
     ver_disponibilidade_avioes
     
     -----------------------------------------------------
-    'Controlador'
+    'Controlador' ✔
+    ver servicos com voos num periodo, preencher campos efetivos de partida e chegada e locais
+    atualizar codigo icao do aviao
+    pode adiar servicos, edita observaçoes 
+    
 	ver_ciclos_periodo
     ver_ciclos_a_decorrer
     ver_ocupacao_local
 	-----------------------------------------------------
-	'Auxiliar'
+	'Auxiliar' ✔
+    ve servicos e lugares livres para planear limpezas
+    
     ver_servicos_periodo
     ✔ ver lugares livres
     -----------------------------------------------------
-    'Gestor'
-    ver_transacoes_periodo
-    ver_lucro_cliente
-    ver_lucro_aviao
-    ver_socios_quotas
+    'Gestor' ✔
+    ve salarios, despesas de manutençoes, ganhos em quotas vs descontos e ganhos em servicos
+    
+	pode por aviao indisponivel
     
     -----------------------------------------------------
-    'Administrador'
+    'Administrador' ✔?
+    cria e atualiza funcionarios, cria e atribui horarios
+    cria manutencoes e atribui servico, ve datas proxima revisao
+    
     ver_tempo_servico_funcionario_periodo
     
     criar_funcionario
