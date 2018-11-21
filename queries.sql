@@ -286,7 +286,68 @@ BEGIN
 END
 $$
 CALL proc_historico_manutencao_aviao("CS-AVC");
-SELECT 
-    *
-FROM
-    Cliente
+-- completarManutenção(idServico, Despesas, NumFatura)
+drop procedure `completar_manutencao`;
+DELIMITER $$
+Create Procedure `completar_manutencao`(IN idManutencao INT, IN nova_despesa DECIMAL(10,2), IN nova_fatura INT)
+BEGIN
+	UPDATE Manutencao 
+	SET 
+		despesas = nova_despesa,
+		fatura = nova_fatura
+	WHERE
+		id = idManutencao;
+END
+$$
+CALL completar_manutencao(1, 100, 111111111);
+
+-- atualizar data de revisão de um avião
+drop procedure `atualizar_data_de_revisao`;
+DELIMITER $$
+Create Procedure `atualizar_data_de_revisao`(IN id CHAR(6), IN nova_data DATE)
+BEGIN
+	UPDATE Aviao 
+	SET 
+		data_proxima_revisao = nova_data
+	WHERE
+		marcas_da_aeronave = id;
+END
+$$
+CALL atualizar_data_de_revisao("CS-AVC", DATE(NOW()));
+-- adiciona quota a um cliente e se for a primeira mete numero
+drop procedure `adicionar_quota`;
+DELIMITER $$
+Create Procedure `adicionar_quota`(IN id_cliente INT, IN ano_quota YEAR)
+BEGIN
+	DECLARE socio INT;
+    DECLARE r BOOL DEFAULT 0;
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET r = 1;
+	SET socio = (SELECT numero_socio FROM Cliente WHERE id = id_cliente);
+    START TRANSACTION;
+	IF (socio IS NULL)
+		THEN
+			SET socio = ((
+				SELECT numero_socio FROM Cliente
+				ORDER BY numero_socio DESC
+				LIMIT 1
+			) + 1);
+			UPDATE Cliente 
+			SET 
+				numero_socio = socio
+			WHERE
+				id = id_cliente;
+		IF r
+			THEN ROLLBACK;
+		END IF;
+	END IF;
+		INSERT Quotas (id, ano)
+		VALUE (socio, ano_quota);
+		IF r
+			THEN ROLLBACK;
+			ELSE COMMIT;
+		END IF;
+END
+$$
+CALL adicionar_quota(6, 2023);
+select * from Quotas;
+select * from Cliente;
