@@ -2,101 +2,129 @@
 USE `mydb` ;
 
 -- quantos servicos cada cliente fez de cada tipo
-SELECT c.nome, te.designacao, count(te.designacao) as numero FROM Cliente as c
-	inner join servico_cliente as sc on sc.id_cliente = c.id
-    inner join servico_externo as se on se.id = sc.id_servico
-    inner join tipo_externo as te on te.id = se.id;
+SELECT 
+    C.Nome, T.Designacao, COUNT(*) AS Contagem
+FROM
+    Cliente AS C
+        INNER JOIN
+    Cliente_servico AS CS ON C.id = CS.id_cliente
+        INNER JOIN
+    Servico_ao_cliente AS SC ON SC.id = CS.id_servico
+        INNER JOIN
+    Tipo AS T ON SC.tipo = T.id
+GROUP BY C.id , T.id;
+    
     
     
 -- que aeronaves aterraram no aerodromo vindas de outros locais
-SELECT DISTINCT marcas_da_aeronave FROM ciclo
-	where icao_destino = 'LPVF' and icao_origem != 'LPVF';
+SELECT DISTINCT
+    Marcas_da_aeronave
+FROM
+    Ciclo
+WHERE
+    icao_destino = 'LPVF'
+        AND icao_origem != 'LPVF';
 
 
 -- quantos voos foram feitos que começaram e acabaram no aerodromo
-select count(*) from ciclo
-	where icao_origem = icao_destino;
+SELECT 
+    COUNT(*)
+FROM
+    Ciclo
+WHERE
+    icao_origem = icao_destino;
 
 
 -- 3 clientes que gastaram mais e quanto gastaram
-SELECT c.nome, SUM(sc.pagamento) as total FROM Cliente as c
-	inner join servico_cliente as sc on sc.id_cliente = c.id
-    inner join quotas as q on q.id = c.id
-order by total
-limit 3;
+SELECT 
+    C.Nome, SUM(CS.Pagamento) AS Total
+FROM
+    Cliente AS C
+        INNER JOIN
+    Cliente_servico AS CS ON CS.id_cliente = C.id
+        INNER JOIN
+    Quotas AS Q ON Q.id = C.id
+GROUP BY C.id
+ORDER BY Total
+LIMIT 3;
 
 
 -- que aeronave foi mais lucrativa
-select a.marcas_da_aeronave, SUM(montante_total) - SUM(despesas) as lucro from aviao as a
-	inner join ciclo as cic on cic.marcas_da_aeronave = a.marcas_da_aeronave
-    inner join servico_externo as se on se.id = cic.id_servico
-    inner join servico_interno as si on si.marcas_da_aeronave = a.marcas_da_aeronave
-order by lucro;
+SELECT 
+    A.Marcas_da_aeronave,
+    IFNULL(SUM(SC.montante_total), 0) - IFNULL(SUM(M.despesas), 0) AS Lucro
+FROM
+    Aviao AS A
+        LEFT JOIN
+    Ciclo AS C ON C.marcas_da_aeronave = A.marcas_da_aeronave
+        LEFT JOIN
+    Servico_ao_cliente AS SC ON SC.id = C.id_servico
+        LEFT JOIN
+    Manutencao AS M ON M.marcas_da_aeronave = A.marcas_da_aeronave
+GROUP BY A.marcas_da_aeronave
+ORDER BY lucro DESC;
+
 
 	-----------------------------------------------------
-	Horário flexível:
-    
-	'Piloto'
-    'Instrutor'
-    ver_servicos_periodo
-    adicionar_observacao_servico
-    
-    'Revisor' ✔
-    ve manutencoes atribuidas, fichas dos avioes e historico de manutencoes
-    pode editar ficha de servico com despesas e observaçoes e data de revisao nos avioes
-    
-    ver_manutencoes_atribuidas
-    ver_aviao
-    ver_historico_aviao
-    atualizar manutencao
-    atualizar data revisao aviao
-    
-    -----------------------------------------------------
-    Horário fixo:
+
+	'Piloto' 
+    'Instrutor' 
+    'Revisor' 
+	✔ ver_servicos_atribuidos(numero funcionario)
+	✔ adiciona_observacao_servico(observacao, servico)
+    Revisor só:
+    ✔ ver_avioes_nossos()
+	✔ ver_historico_manutencoes(aviao)
+    ✔ completar_manutencao(despesas, nr fatura)
+    ✔ atualizar_data_revisao_aviao(aviao)
     
     'Rececionista' 
-    inserir_cliente
-    atualizar_cliente
-	ver_cliente
+    ? criar_cliente(coisas)
+    ? atualizar_cliente()...
+    M ver_clientes() -> ordenados por numero
+    D adicionar_quota(id_cliente) -> cria socio se for primeira
+    M ver_servicos() -> ordenado por id
+    ver_servicos_com_vagas(tipo)
+    M ver_avioes() -> ordenado por id
+    ver_disponibilidade_funcionarios(funcao) ->
+    ver_disponibilidade_avioes(tipo) ->
+    cria_servico_ao_cliente(coisas)
+    cancelar_servico(id)
+    adiar_servico()??
     
-    inserir_servico_ao_cliente
-    ver_servicos_ao_cliente
-    inserir_quotas/por socio
+    'Controlador' 
+	ver_ciclos_planeados()
+    ver_ciclos_a_decorrer() (não testado)
+    atualiza_icao_aviao(icao)
+    completar_ciclo(partida, destino, inicio, fim)
 
-    ver_disponibilidade_funcionarios
-    ver_disponibilidade_avioes
+	'Auxiliar' 
+    ✔ ver_lugares_livres()
     
-    -----------------------------------------------------
-    'Controlador' ✔
-    ver servicos com voos num periodo, preencher campos efetivos de partida e chegada e locais
-    atualizar codigo icao do aviao
-    pode adiar servicos, edita observaçoes 
-    
-	ver_ciclos_periodo
-    ver_ciclos_a_decorrer
-    ver_ocupacao_local
-	-----------------------------------------------------
-	'Auxiliar' ✔
-    ve servicos e lugares livres para planear limpezas
-    
-    ver_servicos_periodo
-    ✔ ver lugares livres
-    -----------------------------------------------------
-    'Gestor' ✔
-    ve salarios, despesas de manutençoes, ganhos em quotas vs descontos e ganhos em servicos
-    
-	pode por aviao indisponivel
+    'Gestor'
+    ver_funcionarios() -> ordenados
+    ver_despesas_manutencao_por_aviao()
+    ver_avioes()
+    ver_ganhos_por_aviao()
+    ver_lucro_por_aviao()
+    ver_ganhos_quotas()
+    ver_descontos()
+    ver_ganhos_socios()
+    ver_lucro_total()
+    por_aviao_indisponivel(aviao)
     
     -----------------------------------------------------
     'Administrador' ✔?
-    cria e atualiza funcionarios, cria e atribui horarios
-    cria manutencoes e atribui servico, ve datas proxima revisao
+	criar_manutencao(cenas)
+    ver_avioes_revisoes() -> avioes ordenados por revisoes
     
-    ver_tempo_servico_funcionario_periodo
+    ver_tempo_servico_funcionario_periodo(periodo, funcionario) -> total, serviço, livres
+    ver_ex_funcionarios()
     
-    criar_funcionario
-    atualizar_funcionario
-    criar horario
+    ? criar_funcionario(coisas)
+    ? atualizar_funcionario(coisas)
+    criar_horario()
+    atribuir_horario()
     
 	-----------------------------------------------------
 	Todos:
@@ -104,8 +132,12 @@ order by lucro;
     ✔ proc_ver_horario
 	-----------------------------------------------------
 
+	outros avioes ficam no maximo 48 horas
+    verificar e multa
 
 
+-- ver disponibilidade dos funcionários
+drop procedure `proc_ver_disponibilidade_funcionarios`;
 DELIMITER $$
 Create Procedure `proc_ver_disponibilidade_funcionarios` (IN inicio DATETIME, IN fim DATETIME, IN funcao VARCHAR(255))
 BEGIN
@@ -117,22 +149,48 @@ BEGIN
 	where designacao = funcao and Fun.empregado = true;
 END
 $$
--- drop procedure `proc_ver_disponibilidade_funcionarios`;
--- CALL proc_ver_disponibilidade_funcionarios('2018-06-24 12:00', '2018-06-24 13:00', 'Piloto');
+CALL proc_ver_disponibilidade_funcionarios('2018-06-24 12:00', '2018-06-24 13:00', 'Piloto');
 
 
--- ver ciclos a decorrer
-	select * from Servico as s
-    inner join Servico_ao_cliente as sc on sc.id = s.id
-    inner join Ciclo as C on sc.id = C.id_servico;
-	-- where
+-- ver ciclos a decorrer (não testado)
+drop procedure `proc_ver_ciclos_a_decorrer`;
+DELIMITER $$
+Create Procedure proc_ver_ciclos_a_decorrer ()
+BEGIN
+	select * from Servico as S
+    inner join Servico_ao_cliente as SC on SC.id = S.id
+    inner join Ciclo as C on C.id_servico = SC.id
+    where date(S.data_de_inicio) <= date(now())
+    and C.hora_partida is not null and C.hora_partida >= time(now())
+    and C.hora_chegada is null;
+END
+$$
+CALL proc_ver_ciclos_a_decorrer();
 
--- lugares livres    
+-- lugares livres
+drop procedure `proc_ver_lugares_livres`;
+DELIMITER $$
+Create Procedure proc_ver_lugares_livres ()
+BEGIN
     select designacao as 'Designação' from Lugar_local as L
     left join Aviao as A on A.lugar_local = L.id
     where A.lugar_local is null;
-    
+END
+$$
+CALL proc_ver_lugares_livres();
 
+-- ver_socios_quotas (falta testar)
+drop procedure `proc_ver_socios_quotas`;
+DELIMITER $$
+Create Procedure proc_ver_socios_quotas ()
+BEGIN
+	select C.nome, COUNT(*) AS 'Número de Quotas' from Cliente as C
+    inner join Quotas AS Q on C.id = Q.id
+    group by C.id
+    order by 'Número de Quotas' DESC;
+END
+$$
+CALL proc_ver_socios_quotas();
 
 drop procedure `proc_ver_horario`;
 DELIMITER $$
