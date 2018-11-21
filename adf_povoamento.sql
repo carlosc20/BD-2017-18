@@ -121,7 +121,7 @@ INSERT INTO Servico_ao_cliente
 
 
 --
-INSERT INTO Cliente_servico
+INSERT INTO Servico_cliente
 	(id_cliente, id_servico, pagamento)
 	VALUES 
 	(1, 1, 50.00);
