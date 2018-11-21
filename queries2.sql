@@ -26,7 +26,7 @@ SET SQL_SAFE_UPDATES = 0;
 	✔ ver_ciclos_planeados()
     ✔ ver_ciclos_a_decorrer() (não testado)
     ✔ atualiza_icao_aviao(icao)
-    completar_ciclo(partida, destino, inicio, fim)
+	✔ completar_ciclo(partida, destino, inicio, fim)
 
     Rececionista'
     ? criar_cliente(coisas)
@@ -109,6 +109,25 @@ BEGIN
 END
 $$
 CALL atualizar_icao_aviao("CS-AVC", "LPBZ");
+
+
+-- Completa informação de um ciclo(id)
+-- Controlador
+drop procedure `completar_ciclo`;
+DELIMITER $$
+Create Procedure `completar_ciclo`(IN id INT, IN origem CHAR(4), IN destino CHAR(4), IN partida TIME, IN chegada TIME)
+BEGIN
+    UPDATE Ciclo
+    SET 
+        icao_origem = origem,
+        icao_destino = destino,
+        hora_partida = partida,
+        hora_chegada = chegada
+    WHERE
+        id_servico = id;
+END
+$$
+CALL completar_ciclo(1, "LPVF", "LPBZ", "18:25:00", "19:55:00");
 
 
 -- adiciona quota a um cliente e se for a primeira mete numero de socio
