@@ -18,7 +18,7 @@ GROUP BY C.id , T.id;
     
 -- que aeronaves aterraram no aerodromo vindas de outros locais
 SELECT DISTINCT
-    Marcas_da_aeronave
+    Marcas_da_aeronave AS 'Marcas da aeronave'
 FROM
     Ciclo
 WHERE
@@ -28,7 +28,7 @@ WHERE
 
 -- quantos voos foram feitos que começaram e acabaram no aerodromo
 SELECT 
-    COUNT(*)
+    COUNT(*) AS 'Numero'
 FROM
     Ciclo
 WHERE
@@ -51,7 +51,7 @@ LIMIT 3;
 
 -- que aeronave foi mais lucrativa
 SELECT 
-    A.Marcas_da_aeronave,
+    A.Marcas_da_aeronave AS 'Marcas da aeronave',
     IFNULL(SUM(SC.montante_total), 0) - IFNULL(SUM(M.despesas), 0) AS Lucro
 FROM
     Aviao AS A
@@ -127,70 +127,87 @@ ORDER BY lucro DESC;
 */
 
 -- ver disponibilidade dos funcionários
-drop procedure `proc_ver_disponibilidade_funcionarios`;
+drop procedure if exists `proc_ver_disponibilidade_funcionarios`;
 DELIMITER $$
 Create Procedure `proc_ver_disponibilidade_funcionarios` (IN inicio DATETIME, IN fim DATETIME, IN funcao VARCHAR(255))
 BEGIN
-	select * from Funcionario as Fun
-    inner join Funcao_funcionario as Ff on Ff.numero = Fun.numero
-    inner join Funcao as F on Ff.funcao = F.id
-    inner join Horario_funcionario as Hf on Hf.id_funcionario = Fun.numero
-    inner join Horario as H on H.id = Hf.id_horario
-	where designacao = funcao and Fun.empregado = true;
+	SELECT 
+		*
+	FROM
+		Funcionario AS Fun
+			INNER JOIN
+		Funcao_funcionario AS Ff ON Ff.numero = Fun.numero
+			INNER JOIN
+		Funcao AS F ON Ff.funcao = F.id
+			INNER JOIN
+		Horario_funcionario AS Hf ON Hf.id_funcionario = Fun.numero
+			INNER JOIN
+		Horario AS H ON H.id = Hf.id_horario
+	WHERE
+		designacao = funcao
+			AND Fun.empregado = TRUE;
 END
 $$
 CALL proc_ver_disponibilidade_funcionarios('2018-06-24 12:00', '2018-06-24 13:00', 'Piloto');
 
 
 -- ver ciclos a decorrer (não testado)
-drop procedure `proc_ver_ciclos_a_decorrer`;
-DELIMITER $$
-Create Procedure proc_ver_ciclos_a_decorrer ()
-BEGIN
-	select * from Servico as S
-    inner join Servico_ao_cliente as SC on SC.id = S.id
-    inner join Ciclo as C on C.id_servico = SC.id
-    where date(S.data_de_inicio) <= date(now())
-    and C.hora_partida is not null and C.hora_partida >= time(now())
-    and C.hora_chegada is null;
-END
-$$
-CALL proc_ver_ciclos_a_decorrer();
+SELECT 
+	*
+FROM
+	Servico AS S
+		INNER JOIN
+	Servico_ao_cliente AS SC ON SC.id = S.id
+		INNER JOIN
+	Ciclo AS C ON C.id_servico = SC.id
+WHERE
+	DATE(S.data_de_inicio) <= DATE(NOW())
+		AND C.hora_partida IS NOT NULL
+		AND C.hora_partida >= TIME(NOW())
+		AND C.hora_chegada IS NULL;
 
 -- lugares livres
-drop procedure `proc_ver_lugares_livres`;
-DELIMITER $$
-Create Procedure proc_ver_lugares_livres ()
-BEGIN
-    select designacao as 'Designação' from Lugar_local as L
-    left join Aviao as A on A.lugar_local = L.id
-    where A.lugar_local is null;
-END
-$$
-CALL proc_ver_lugares_livres();
+SELECT 
+    designacao AS 'Designação'
+FROM
+    Lugar_local AS L
+        LEFT JOIN
+    Aviao AS A ON A.lugar_local = L.id
+WHERE
+    A.lugar_local IS NULL;
 
 -- ver_socios_quotas (falta testar)
-drop procedure `proc_ver_socios_quotas`;
-DELIMITER $$
-Create Procedure proc_ver_socios_quotas ()
-BEGIN
-	select C.nome, COUNT(*) AS 'Número de Quotas' from Cliente as C
-    inner join Quotas AS Q on C.id = Q.id
-    group by C.id
-    order by 'Número de Quotas' DESC;
-END
-$$
-CALL proc_ver_socios_quotas();
+SELECT 
+    C.nome, COUNT(*) AS 'Número de Quotas'
+FROM
+    Cliente AS C
+        INNER JOIN
+    Quotas AS Q ON C.id = Q.id
+GROUP BY C.id
+ORDER BY COUNT(*) DESC;
 
 drop procedure `proc_ver_horario`;
 DELIMITER $$
 Create Procedure `proc_ver_horario` (IN numero INT)
 BEGIN
-	select data_inicio as 'Data início', data_fim as 'Data fim', hora_inicio as 'Hora início', hora_fim as 'Hora fim', GROUP_CONCAT(dia_semana(D.dia) separator ', ') as 'dias da semana' from Horario as H
-    inner join Horario_funcionario as Hf on Hf.id_horario = H.id
-    inner join Funcionario as Fun on Fun.numero = Hf.id_funcionario
-    inner join Dias_da_semana as D on H.id = D.id
-	where Fun.numero = numero;
+	SELECT 
+		data_inicio AS 'Data início',
+		data_fim AS 'Data fim',
+		hora_inicio AS 'Hora início',
+		hora_fim AS 'Hora fim',
+		GROUP_CONCAT(DIA_SEMANA(D.dia)
+			SEPARATOR ', ') AS 'dias da semana'
+	FROM
+		Horario AS H
+			INNER JOIN
+		Horario_funcionario AS Hf ON Hf.id_horario = H.id
+			INNER JOIN
+		Funcionario AS Fun ON Fun.numero = Hf.id_funcionario
+			INNER JOIN
+		Dias_da_semana AS D ON H.id = D.id
+	WHERE
+		Fun.numero = numero
+	GROUP BY H.id;
 END
 $$
 CALL proc_ver_horario(1);
@@ -214,18 +231,62 @@ BEGIN
 	RETURN dia;
 END
 %%
-select dia_semana(3);
 
-   
-Implementar  um  gatilho que  registe  numa  tabela  de  auditoria  (“audCromos”), criada especificamente para o efeito, a data e a hora em que um dado cromo foi adquirido.
-Este  gatilho  deverá ser  ativado  sempre  que  o  valor  do  atributo  “Adquirido”  da  tabela “Cromo” mude de ‘N’ para ‘S’
-drop trigger alinea_8;
-delimiter |   
-create TRIGGER alinea_8 AFTER insert on cromo
-	FOR EACH ROW -- o insert pode ser em várias linhas
-	BEGIN
-		IF NEW.Adquirido = 'S' THEN -- new. -> nova entrada...mesmo que seja um delete
-			INSERT INTO `Caderneta`.`audCromos`(`data_registo`,`cromo`) VALUES
-			(sysdate(), NEW.Nr);
-		END IF;
-END;
+-- ver_servicos_atribuidos (numFuncionario) servicos por vir
+drop procedure `proc_ver_servicos_atribuidos`;
+DELIMITER $$
+Create Procedure `proc_ver_servicos_atribuidos` (IN numero INT)
+BEGIN
+	SELECT 
+		S.id,
+		E.designacao AS 'estado',
+		S.data_de_inicio AS 'data de início',
+		S.duracao
+	FROM
+		Servico AS S
+			INNER JOIN
+		Servico_funcionario AS SF ON S.id = SF.id_servico
+			INNER JOIN
+		Estado AS E ON E.id = S.estado
+	WHERE
+		SF.id_funcionario = numero
+			AND S.data_de_inicio >= NOW();
+END
+$$
+CALL proc_ver_servicos_atribuidos(1);
+-- adicionarObservacaoAoServico (idServico, Observacao)
+drop procedure `proc_adicionar_observacao_servico`;
+DELIMITER $$
+Create Procedure `proc_adicionar_observacao_servico` (IN idServico INT, IN observacao TEXT)
+BEGIN
+	UPDATE Servico AS S 
+	SET 
+		observacao = observacao
+	WHERE
+		S.id = idServico;
+END
+$$
+CALL proc_adicionar_observacao_servico(1, "Serviço foi realizado com sucesso");
+-- verAvioes que nos pertencer e carateristicas
+select * from Aviao as A
+where A.proprietario = 'Aerodromo da feira';
+-- historio de manutençao do avião
+drop procedure `proc_historico_manutencao_aviao`;
+DELIMITER $$
+Create Procedure `proc_historico_manutencao_aviao`(IN id CHAR(6))
+BEGIN
+	SELECT 
+		*
+	FROM
+		Servico AS S
+			INNER JOIN
+		Manutencao AS M ON S.id = M.id
+	WHERE
+		marcas_da_aeronave = id;
+END
+$$
+CALL proc_historico_manutencao_aviao("CS-AVC");
+SELECT 
+    *
+FROM
+    Cliente
