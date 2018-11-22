@@ -57,3 +57,28 @@ FROM
 WHERE
     proprietario = 'Aerodromo da feira'
 ORDER BY data_proxima_revisao;
+
+
+-- criar_funcionario adiciona um funcionario á tabela com os parametros fornecidos
+drop procedure `criar_funcionario`;
+DELIMITER $$
+Create Procedure `criar_funcionario` (IN id INT, IN nome VARCHAR(255), IN data_nascimento DATE, genero CHAR(1), IN data_criação TIMESTAMP, IN empregado TINYINT, IN salario DECIMAL(10,2))
+BEGIN
+    INSERT INTO Funcionario	
+    VALUES (id,nome,data_nascimento,genero,data_criação,empregado,salario);
+	END
+$$
+-- call criar_funcionario(0,"Ruizinho",DATE("2017-06-15"),"M",TIMESTAMP("2017-07-23",  "13:10:11"),1, 1000.5);
+
+
+-- Função atualizar_funcionário atualiza um funcionario dado o numero do mesmo
+drop procedure `atualizar_funcionario`;
+DELIMITER $$
+Create Procedure `atualizar_funcionario` (IN id INT, IN nome VARCHAR(255), IN data_nascimento DATE, genero CHAR(1), IN data_criação TIMESTAMP, IN empregado TINYINT, IN salario DECIMAL(10,2))
+BEGIN
+    UPDATE Funcionario
+    SET nome = nome, data_de_nascimento = data_nascimento, genero=genero, data_criacao=data_criação, empregado=empregado, salario=salario
+    WHERE numero=id;
+    END
+$$
+-- call atualizar_funcionario(0,"Zèzinho",DATE("2017-06-15"),"M",TIMESTAMP("2017-07-23",  "13:10:11"),1, 1000.5);
