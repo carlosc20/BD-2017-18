@@ -25,7 +25,7 @@ SET SQL_SAFE_UPDATES = 0;
     M ver_servicos() -> ordenado por id
     ✔ ver_servicos_com_vagas(tipo)
     M ver_avioes() -> ordenado por id
-    ver_disponibilidade_funcionarios(funcao) ->
+    ✔ ver_disponibilidade_funcionarios(funcao) ->
     ver_disponibilidade_avioes(tipo) ->
     cria_servico_ao_cliente(coisas)
     cancelar_servico(id)
@@ -93,12 +93,13 @@ END
 $$
 CALL ver_servicos_com_vagas("Paraquedismo");
 
--- ver_disponibilidade_funcionarios(funcao)
+-- ver_disponibilidade_funcionarios(funcao) Super hard, necessita revisão de pro's
 drop procedure `ver_disponibilidade_funcionarios`;
 DELIMITER $$
 CREATE PROCEDURE `ver_disponibilidade_funcionarios`(IN funcao VARCHAR(255), IN data_inicio DATETIME, IN data_fim DATETIME)
 BEGIN
-	SELECT F.numero, F.nome FROM Funcionario AS F
+	SELECT F.numero, F.nome
+    FROM Funcionario AS F
     INNER JOIN Funcao_funcionario AS FF ON FF.numero = F.numero
     INNER JOIN Funcao AS Fun ON Fun.id = FF.funcao
     
@@ -108,27 +109,48 @@ BEGIN
     
     LEFT JOIN Servico_funcionario AS SF ON SF.id_funcionario = F.numero
     LEFT JOIN Servico AS S ON S.id = SF.id_servico
-    WHERE DAYOFWEEK(NOW()) = D.dia AND
-		  DATE(data_inicio) >= H.data_inicio AND
-          DATE(data_inicio) <= H.data_fim AND
-          TIME(data_inicio) >= H.hora_inicio AND
-          TIME(data_inicio) <= H.hora_fim AND
+    WHERE funcao = Fun.designacao AND
+    
+		  DAYOFWEEK(NOW()) = D.dia AND
+		  (DATE(data_inicio) BETWEEN H.data_inicio AND H.data_fim) AND
+          (TIME(data_inicio) BETWEEN H.hora_inicio AND H.hora_fim) AND
+          (DATE(data_fim) BETWEEN H.data_inicio AND H.data_fim) AND
+          (TIME(data_fim) BETWEEN H.hora_inicio AND H.hora_fim) AND
           
-          DATE(data_fim) >= H.data_inicio AND
-          DATE(data_fim) <= H.data_fim AND
-          TIME(data_fim) >= H.hora_inicio AND
-          TIME(data_fim) <= H.hora_fim AND
-          
-          (S.id IS NULL OR 
-          (data_inicio < S.data_de_inicio OR data_inicio > (S.data_de_inicio + duracao))) AND
-          
-          (S.id IS NULL OR 
-          (data_fim < S.data_de_inicio OR data_fim > (S.data_de_inicio + duracao))) AND
-          
-          funcao = Fun.designacao;
+          (S.id IS NULL OR
+          ((data_inicio NOT BETWEEN S.data_de_inicio AND (S.data_de_inicio + duracao)) AND
+          (data_fim NOT BETWEEN S.data_de_inicio AND (S.data_de_inicio + duracao))));
 END
 $$
-CALL ver_disponibilidade_funcionarios("Piloto", NOW(), NOW() + INTERVAL 1 MINUTE);
+
+-- Não testado
+drop procedure `ver_disponibilidade_avioes`;
+DELIMITER $$
+CREATE PROCEDURE `ver_disponibilidade_avioes`(IN tipo VARCHAR(255), IN data_inicio DATETIME, IN data_fim DATETIME)
+BEGIN
+	SELECT A.marcas_do_aviao
+    FROM Aviao AS A
+    INNER JOIN Tipo AS T ON T.id = A.tipo
+    
+    LEFT JOIN Manutencao AS M ON M.marcas_da_aeronave = A.marcas_da_aeronave
+    LEFT JOIN Servico AS MS ON S.id = M.id
+    
+    LEFT JOIN Ciclo AS C ON A.marcas_da_aeronave = C.marcas_da_aeronave
+    LEFT JOIN Servico_ao_cliente AS SC ON SC.id = C.id_servico
+    LEFT JOIN Servico AS CS ON S.id = SC.id
+    WHERE T.designasao = tipo AND
+    
+		  (MS.id IS NULL OR (
+		  (data_inicio NOT BETWEEN MS.data_inicio AND (MS.data_incio + MS.duracao)) AND
+          (data_fim NOT BETWEEN MS.data_inicio AND (MS.data_incio + MS.duracao)))) AND
+          
+          (CS.id IS NULL OR (
+		  (data_inicio NOT BETWEEN
+		  (CS.data_de_inicio + C.hora_partida_prevista) AND
+		  (CS.data_de_inicio + C.hora_chegada_prevista)) AND
+		  (C.hora_partida IS NULL OR C.hora_chegada < data_inicio)));
+END
+$$
 
 -- ver clientes() -> ordenados por número
 CREATE VIEW  list_Clientes AS
