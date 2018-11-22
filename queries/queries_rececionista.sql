@@ -38,31 +38,25 @@ SET SQL_SAFE_UPDATES = 0;
 -- Rececionista
 drop procedure `adicionar_quota`;
 DELIMITER $$
-Create Procedure `adicionar_quota`(IN id_cliente INT, IN ano_quota YEAR)
+Create Procedure `adicionar_quota`(IN id INT, IN ano_quota YEAR)
 BEGIN
-    DECLARE socio INT;
-    DECLARE r BOOL DEFAULT 0;
-    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET r = 1;
-    SET socio = (SELECT numero_socio FROM Cliente WHERE id = id_cliente);
+    DECLARE n_socio INT;
+    DECLARE r BOOL DEFAULT FALSE;
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET r = TRUE;
+    SET n_socio = (SELECT numero_socio FROM Socio WHERE id_cliente = id);
     START TRANSACTION;
-    IF (socio IS NULL)
+    IF (n_socio IS NULL)
         THEN
-            SET socio = ((
-                SELECT numero_socio FROM Cliente
-                ORDER BY numero_socio DESC
-                LIMIT 1
-            ) + 1);
-            UPDATE Cliente 
-            SET 
-                numero_socio = socio
-            WHERE
-                id = id_cliente;
+            INSERT INTO Socio
+            (id_cliente)
+            VALUE (id);
+            SET n_socio = (SELECT numero_socio FROM Socio where id_cliente = id);
         IF r
             THEN ROLLBACK;
         END IF;
     END IF;
         INSERT Quotas (id, ano)
-        VALUE (socio, ano_quota);
+        VALUE (n_socio, ano_quota);
         IF r
             THEN ROLLBACK;
             ELSE COMMIT;
@@ -70,7 +64,8 @@ BEGIN
 END
 $$
 CALL adicionar_quota(6, 2023);
-
+select * from quotas
+select * from socio
 -- ver_servicos_com_vagas(tipo)
 drop procedure `ver_servicos_com_vagas`;
 DELIMITER $$

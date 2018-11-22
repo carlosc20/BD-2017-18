@@ -281,15 +281,13 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
   `nome` VARCHAR(255) NOT NULL,
   `brevete` TINYINT NOT NULL,
   `formacao_paraquedismo` TINYINT NOT NULL,
-  `numero_socio` INT NULL,
   `data_nascimento` DATE NOT NULL,
   `genero` CHAR(1) NOT NULL,
   `numero_de_telefone` VARCHAR(45) NOT NULL,
   `data_criacao` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `rua` VARCHAR(75) NOT NULL,
   `codigo_postal` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `numero_socio_UNIQUE` (`numero_socio` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 
@@ -319,6 +317,24 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `mydb`.`Socio`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Socio` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Socio` (
+  `id_cliente` INT NOT NULL,
+  `numero_socio` INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id_cliente`),
+  UNIQUE INDEX `numero_socio_UNIQUE` (`numero_socio` ASC) VISIBLE,
+  CONSTRAINT `id_servico_socio`
+    FOREIGN KEY (`id_cliente`)
+    REFERENCES `mydb`.`Cliente` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `mydb`.`Quotas`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydb`.`Quotas` ;
@@ -329,7 +345,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Quotas` (
   PRIMARY KEY (`id`, `ano`),
   CONSTRAINT `id_quotas`
     FOREIGN KEY (`id`)
-    REFERENCES `mydb`.`Cliente` (`numero_socio`)
+    REFERENCES `mydb`.`Socio` (`numero_socio`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
