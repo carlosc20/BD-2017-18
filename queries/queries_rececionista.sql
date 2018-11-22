@@ -138,7 +138,7 @@ BEGIN
     LEFT JOIN Ciclo AS C ON A.marcas_da_aeronave = C.marcas_da_aeronave
     LEFT JOIN Servico_ao_cliente AS SC ON SC.id = C.id_servico
     LEFT JOIN Servico AS CS ON S.id = SC.id
-    WHERE T.designasao = tipo AND
+    WHERE T.designacao = tipo AND
     
 		  (MS.id IS NULL OR (
 		  (data_inicio NOT BETWEEN MS.data_inicio AND (MS.data_incio + MS.duracao)) AND
