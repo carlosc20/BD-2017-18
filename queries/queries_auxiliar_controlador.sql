@@ -5,7 +5,7 @@
 -- Unidade Curricular de Bases de Dados
 -- 
 -- Caso de Estudo: Aeródromo da Feira
--- Queries 2
+-- Queries Auxiliar e Controlador
 -- ------------------------------------------------------
 -- ------------------------------------------------------
 -- Esquema: "mydb"
@@ -17,7 +17,7 @@ SET SQL_SAFE_UPDATES = 0;
 
 	/*
     ------------------------------------------------------
-    Auxiliar, Controlador e Rececionista
+    Auxiliar e Controlador
     
     Auxiliar
     ✔ ver_lugares_livres()
@@ -27,20 +27,6 @@ SET SQL_SAFE_UPDATES = 0;
     ✔ ver_ciclos_a_decorrer() (não testado)
     ✔ atualiza_icao_aviao(icao)
 	✔ completar_ciclo(partida, destino, inicio, fim)
-
-    Rececionista'
-    ? criar_cliente(coisas)
-    ? atualizar_cliente()...
-    M ver_clientes() -> ordenados por numero
-    ✔ adicionar_quota(id_cliente)
-    M ver_servicos() -> ordenado por id
-    ver_servicos_com_vagas(tipo)
-    M ver_avioes() -> ordenado por id
-    ver_disponibilidade_funcionarios(funcao) ->
-    ver_disponibilidade_avioes(tipo) ->
-    cria_servico_ao_cliente(coisas)
-    cancelar_servico(id)
-    adiar_servico()??
     ------------------------------------------------------
     */
     
@@ -128,7 +114,6 @@ BEGIN
 END
 $$
 CALL completar_ciclo(1, "LPVF", "LPBZ", "18:25:00", "19:55:00");
-
 
 -- adiciona quota a um cliente e se for a primeira mete numero de socio
 drop procedure `adicionar_quota`;
