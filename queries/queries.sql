@@ -54,20 +54,7 @@ ORDER BY Total
 LIMIT 3;
 
 
--- que aeronave foi mais lucrativa
-SELECT 
-    A.Marcas_da_aeronave AS 'Marcas da aeronave',
-    IFNULL(SUM(SC.montante_total), 0) - IFNULL(SUM(M.despesas), 0) AS Lucro
-FROM
-    Aviao AS A
-        LEFT JOIN
-    Ciclo AS C ON C.marcas_da_aeronave = A.marcas_da_aeronave
-        LEFT JOIN
-    Servico_ao_cliente AS SC ON SC.id = C.id_servico
-        LEFT JOIN
-    Manutencao AS M ON M.marcas_da_aeronave = A.marcas_da_aeronave
-GROUP BY A.marcas_da_aeronave
-ORDER BY lucro DESC;
+
 
 
 -- ver disponibilidade dos funcionários

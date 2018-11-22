@@ -5,7 +5,7 @@
 -- Unidade Curricular de Bases de Dados
 -- 
 -- Caso de Estudo: Aeródromo da Feira
--- Queries 1
+-- Queries Piloto, Instrutor e Revisor
 -- ------------------------------------------------------
 -- ------------------------------------------------------
 -- Esquema: "mydb"
@@ -121,8 +121,12 @@ CALL proc_adicionar_observacao_servico(1, "Serviço foi realizado com sucesso");
 
 -- Vê aviões que pertencem ao Aeródromo da Feira
 -- Revisor, Gestor
-select * from Aviao as A
-where A.proprietario = 'Aerodromo da feira';
+SELECT 
+    *
+FROM
+    Aviao AS A
+WHERE
+    A.proprietario = 'Aerodromo da feira';
 
 
 -- Vê historio de manutenções de um avião

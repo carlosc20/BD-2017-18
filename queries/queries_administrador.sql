@@ -17,26 +17,12 @@ SET SQL_SAFE_UPDATES = 0;
 
 	/*
 	------------------------------------------------------
-	Gestor e Administrador
-    
-    Gestor
-    ver_funcionarios() -> ordenados
-    ver_despesas_manutencao_por_aviao()
-    ver_avioes()
-    ver_ganhos_por_aviao()
-    ver_lucro_por_aviao()
-    ver_ganhos_quotas()
-    ver_descontos()
-    ver_ganhos_socios()
-    ver_lucro_total()
-    por_aviao_indisponivel(aviao)
-    
     Administrador ?
-	criar_manutencao(cenas)
-    ver_avioes_revisoes() -> avioes ordenados por revisoes
+	criar_manutencao(cenas) -> transaction
+    ✔ ver_avioes_revisoes() -> avioes ordenados por revisoes
     
     ver_tempo_servico_funcionario_periodo(periodo, funcionario) -> total, serviço, livres
-    ver_ex_funcionarios()
+    
     
     ? criar_funcionario(coisas)
     ? atualizar_funcionario(coisas)
@@ -59,3 +45,15 @@ FROM
         INNER JOIN
     Tipo AS T ON SC.tipo = T.id
 GROUP BY C.id , T.id;
+
+
+-- Vê aviões ordenados pela data da próxima revisão
+-- Administrador
+SELECT 
+    marcas_da_aeronave AS 'Marcas da aeronave',
+    data_proxima_revisao AS 'Data da próxima revisão'
+FROM
+    Aviao
+WHERE
+    proprietario = 'Aerodromo da feira'
+ORDER BY data_proxima_revisao;
