@@ -165,3 +165,25 @@ BEGIN
 END
 $$
 CALL adicionar_quota(6, 2023);
+
+-- ver_servicos_com_vagas(tipo)
+drop procedure `ver_servicos_com_vagas`;
+DELIMITER $$
+CREATE PROCEDURE `ver_servicos_com_vagas`(IN tipoServico VARCHAR(255))
+BEGIN
+    SELECT
+		CS.id_servico AS 'id serviço', S.data_de_inicio AS 'data de incio' ,COUNT(*) AS 'número de clientes atuais', SC.limite_clientes AS 'número limite de clientes', (SC.limite_clientes - COUNT(*)) AS 'número de vagas'
+	FROM
+		Servico AS S
+	INNER JOIN
+		Servico_ao_cliente AS SC ON SC.id = S.id
+	INNER JOIN
+		Tipo AS T ON T.designacao = tipoServico
+	INNER JOIN
+		Cliente_servico AS CS ON CS.id_servico = S.id
+	WHERE S.data_de_inicio > NOW()
+	GROUP BY CS.id_servico
+    HAVING COUNT(*) < SC.limite_clientes;
+END
+$$
+CALL ver_servicos_com_vagas("Paraquedismo");
