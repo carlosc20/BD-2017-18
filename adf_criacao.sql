@@ -218,10 +218,10 @@ DROP TABLE IF EXISTS `mydb`.`Ciclo` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`Ciclo` (
   `id_servico` INT NOT NULL,
   `marcas_da_aeronave` VARCHAR(20) NOT NULL,
-  `hora_partida_prevista` TIME NOT NULL,
-  `duracao_prevista` TIME NOT NULL,
-  `hora_partida` TIME NULL,
-  `hora_chegada` TIME NULL,
+  `hora_partida_prevista` DATETIME NOT NULL,
+  `duracao_prevista` DATETIME NOT NULL,
+  `hora_partida` DATETIME NULL,
+  `hora_chegada` DATETIME NULL,
   PRIMARY KEY (`id_servico`),
   INDEX `marcas_da_aeronave_idx` (`marcas_da_aeronave` ASC) VISIBLE,
   CONSTRAINT `id_servico_servico_aviao`
@@ -381,7 +381,7 @@ DROP TABLE IF EXISTS `mydb`.`Manutencao` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Manutencao` (
   `id` INT NOT NULL,
-  `marcas_da_aeronave` VARCHAR(20) NOT NULL,
+  `marcas_da_aeronave` VARCHAR(6) NOT NULL,
   `despesas` DECIMAL(10,2) NULL,
   `fatura` INT NULL,
   PRIMARY KEY (`id`),
