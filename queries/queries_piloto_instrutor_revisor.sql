@@ -30,6 +30,25 @@ SET SQL_SAFE_UPDATES = 0;
     */
     
     
+-- converte int em varchar com dia da semana
+drop function dia_semana
+DELIMITER %%
+create function `dia_semana` (n INT)
+	RETURNS VARCHAR(14) DETERMINISTIC
+BEGIN
+	RETURN (CASE
+		WHEN n=0 THEN 'segunda-feira'
+        WHEN n=1 THEN 'terça-feira'
+        WHEN n=2 THEN 'quarta-feira'
+        WHEN n=3 THEN 'quinta-feira'
+        WHEN n=4 THEN 'sexta-feira'
+        WHEN n=5 THEN 'sábado'
+        WHEN n=6 THEN 'domingo'
+	END);
+END
+%%
+
+
 -- Vê horário de um funcionário
 -- Todos
 drop procedure `proc_ver_horario`;
@@ -58,23 +77,7 @@ END
 $$
 CALL proc_ver_horario(1);
     
--- converte int em varchar com dia da semana
-drop function dia_semana
-DELIMITER %%
-create function `dia_semana` (n INT)
-	RETURNS VARCHAR(14) DETERMINISTIC
-BEGIN
-	RETURN (CASE
-		WHEN n=0 THEN 'segunda-feira'
-        WHEN n=1 THEN 'terça-feira'
-        WHEN n=2 THEN 'quarta-feira'
-        WHEN n=3 THEN 'quinta-feira'
-        WHEN n=4 THEN 'sexta-feira'
-        WHEN n=5 THEN 'sábado'
-        WHEN n=6 THEN 'domingo'
-	END);
-END
-%%
+
 
 
 -- NAO TESTADO
