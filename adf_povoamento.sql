@@ -162,31 +162,29 @@ INSERT INTO Servico_ao_cliente
 -- SELECT * FROM Servico_externo;
 
 
---
+-- presenca default é false
 INSERT INTO Cliente_servico
 	(id_cliente, id_servico, pagamento)
 	VALUES 
-	(1, 1, 50.00),
-    (2, 1, 40.00),
-    (5, 1, 50.00),
-    (3, 3, 96.00),
-    (1, 6, 64.00),
-    (5, 6, 80.00),
-    (6, 6, 80.00),
-    (7, 6, 80.00),
-    (8, 6, 80.00),
-    (9, 6, 80.00),
-    (11, 6, 80.00),
-    (6,  7, 15.00),
-    (9,  7, 15.00),
-    (13, 8,  140.00),
-    (15, 8, 140.00),
-    (5, 8, 175.00),
-    (6, 8, 175.00),
-    (14, 8, 175.00),
-    (17, 8, 175.00);
-    
-
+	(1	, 1, 50.00),
+    (2	, 1, 40.00),
+    (5	, 1, 50.00),
+    (3	, 3, 96.00),
+    (1	, 6, 64.00),
+    (5	, 6, 80.00),
+    (6	, 6, 80.00),
+    (7	, 6, 80.00),
+    (8	, 6, 80.00),
+    (9	, 6, 80.00),
+    (11	, 6, 80.00),
+    (6	, 7, 15.00),
+    (9	, 7, 15.00),
+    (13	, 8, 140.00),
+    (15	, 8, 140.00),
+    (5	, 8, 175.00),
+    (6	, 8, 175.00),
+    (14	, 8, 175.00),
+    (17	, 8, 175.00);
 --
 -- DELETE FROM Servico_cliente;
 -- SELECT * FROM Servico_cliente;
@@ -207,16 +205,14 @@ INSERT INTO Lugar_local
 
 --
 INSERT INTO Aviao
-	(marcas_da_aeronave, proprietario, modelo, numero_max_passageiros, disponivel, data_proxima_revisao, icao_atual, lugar_local, tipo)
+	(marcas_da_aeronave, proprietario, modelo, numero_max_passageiros, disponivel, data_proxima_revisao, lugar_local, tipo)
 	VALUES 
-	('CS-AVC', 'Aerodromo da feira'	, 'Fantasy Air Allegro 2000' 		, 2	, true	, '2020-10-30', 'LPVF', 1	, 3),
-    ('CS-IPZ', 'Aerodromo da feira'	, 'Cessna Citation CJ2'		 		, 12, false	, '2019-06-12', 'LPVF', 2	, 4),
-	('CS-MRQ', 'Aerodromo da feira'	, 'Piper PA-28-140 Cherokee 160 hp'	, 9	, true	, '2019-08-02', 'LPVF', 3	, 1),
-	('CS-JMQ', 'Aerodromo da feira'	, 'Piper PA-28R-200 Arrow II'		, 7	, true	, '2019-02-06', 'KTOO', null, 2),
-    ('CS-XYW', 'Aerodromo da feira'	, 'Cessna Citation PO2'		 		, 9 , true	, '2019-06-12', 'LPVF', 2	, 4),
-	('CS-MDQ', 'Aerodromo da feira'	, 'Piper PA-28R-200 Arrow III'		, 7	, true	, '2019-02-06', 'KTOO', 4	, 2),
-	('CS-SBP', 'Eire'			   	, 'Beechcraft Baron G58'			, 4	, true	, '2019-01-07', 'LPVF', 4	, 4),
-	('CS-DEW', 'Ailane'			   	, 'Pilatus PC-12 NG'				, 6	, true	, '2019-08-24', 'GLIP', null, 4);
+	('CS-AVC', 'Aerodromo da feira'	, 'Fantasy Air Allegro 2000' 		, 2	, true	, '2020-10-30', 1	, 3),
+    ('CS-IPZ', 'Aerodromo da feira'	, 'Cessna Citation CJ2'		 		, 12, false	, '2019-06-12', 2	, 4),
+	('CS-MRQ', 'Aerodromo da feira'	, 'Piper PA-28-140 Cherokee 160 hp'	, 9	, true	, '2019-08-02', 3	, 1),
+    ('CS-XYW', 'Aerodromo da feira'	, 'Cessna Citation PO2'		 		, 9 , true	, '2019-06-12', 2	, 4),
+	('CS-MDQ', 'Aerodromo da feira'	, 'Piper PA-28R-200 Arrow III'		, 7	, true	, '2019-02-06', 4	, 2),
+	('CS-SBP', 'Eire'			   	, 'Beechcraft Baron G58'			, 4	, true	, '2019-01-07', 4	, 4);
 
 -- DELETE FROM Aviao;
 -- SELECT * FROM Aviao;
@@ -224,12 +220,12 @@ INSERT INTO Aviao
 
 --
 INSERT INTO Ciclo
-	(id_servico, marcas_da_aeronave, icao_origem, icao_destino, hora_partida, hora_chegada, hora_partida_prevista, duracao_prevista)
+	(id_servico, marcas_da_aeronave, hora_partida, hora_chegada, hora_partida_prevista, duracao_prevista)
 	VALUES 
-	(1, 'CS-MRQ', 'LPVF', 'LPVF', '15:33:00', '16:10:00', '15:30:00', '01:00:00'),
-    (3, 'CS-AVC', 'LPVF', 'LPVF', '15:20:00', '16:15:00', '15:20:00', '01:00:00'),
-    (6, 'CS-XYW', 'LPVF', 'LPLA', '16:55:00', '20:10:00', '16:45:00', '05:00:00'),
-    (8, 'CS-MDQ', 'LPVF', 'LPVF', '15:00:00', '16:22:00', '14:55:00', '01:30:00');
+	(1, 'CS-MRQ', '15:33:00', '16:10:00', '15:30:00', '01:00:00'),
+    (3, 'CS-AVC', '15:20:00', '16:15:00', '15:20:00', '01:00:00'),
+    (6, 'CS-XYW', '16:55:00', '20:10:00', '16:45:00', '05:00:00'),
+    (8, 'CS-MDQ', '15:00:00', '16:22:00', '14:55:00', '01:30:00');
 --
 -- DELETE FROM Ciclo;
 -- SELECT * FROM Ciclo;
@@ -241,10 +237,10 @@ INSERT INTO Manutencao
 	VALUES 
     (2, null	, 'CS-AVC', null),
     (4, 150.00	, 'CS-MRQ', 55555784),
-    (5, null	, 'CS-JMQ', null),
+    (5, null	, 'CS-MDQ', null),
     (10, null	, 'CS-MRQ', null),
     (12, 300.00	, 'CS-AVC', 87418921),
-    (13, null	, 'CS-JMQ', null),
+    (13, null	, 'CS-MDQ', null),
     (20, 20.00	, 'CS-AVC', 87712345);
 --
 -- DELETE FROM Manutencao;

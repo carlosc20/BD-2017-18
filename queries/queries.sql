@@ -11,6 +11,39 @@
 -- Esquema: "mydb"
 USE `mydb` ;
 
+Admin gera funcionarios
+cria manutencoes 
+
+Revisor acede a manutencoes dele, completa manutencao, por observaçao, edita data proxima revisao, acede historico manutencoes
+
+Rececionista
+Cria e atualiza clientes
+Trata de coisas de socios
+Verifica se existem serviços com vagas
+Verifica disponibilidade funcionarios e avioes em hora especifica
+Cria serviço e ciclos
+Cancela serviços
+Adia serviços
+
+Controlador
+Acede a ciclos, completa ciclos
+Adiciona observações
+
+Auxiliar
+Ve servicos e ocupaçao dos avioes
+
+Gestor
+ve salarios despesas etc
+
+Todos os funcionários têm acesso a uma cópia da  sua própria ficha e horários.
+
+
+
+
+
+
+
+
 -- Permissão para fazer operações de remoção de dados.
 SET SQL_SAFE_UPDATES = 0;
 

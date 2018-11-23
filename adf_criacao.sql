@@ -129,14 +129,13 @@ DROP TABLE IF EXISTS `mydb`.`Aviao` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Aviao` (
   `marcas_da_aeronave` CHAR(6) NOT NULL,
+  `tipo` TINYINT NOT NULL,
+  `lugar_local` TINYINT NOT NULL,
   `proprietario` VARCHAR(255) NOT NULL,
   `modelo` VARCHAR(45) NOT NULL,
   `numero_max_passageiros` INT NOT NULL,
   `disponivel` TINYINT NOT NULL,
   `data_proxima_revisao` DATE NOT NULL,
-  `icao_atual` CHAR(4) NULL,
-  `lugar_local` TINYINT NULL,
-  `tipo` TINYINT NOT NULL,
   PRIMARY KEY (`marcas_da_aeronave`),
   INDEX `lugar_local_aviao_idx` (`lugar_local` ASC) VISIBLE,
   INDEX `tipo_aviao_idx` (`tipo` ASC) VISIBLE,
@@ -160,7 +159,7 @@ DROP TABLE IF EXISTS `mydb`.`Estado` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Estado` (
   `id` TINYINT NOT NULL,
-  `designacao` VARCHAR(63) NULL,
+  `designacao` VARCHAR(63) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -219,12 +218,10 @@ DROP TABLE IF EXISTS `mydb`.`Ciclo` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`Ciclo` (
   `id_servico` INT NOT NULL,
   `marcas_da_aeronave` VARCHAR(20) NOT NULL,
-  `icao_origem` CHAR(4) NOT NULL,
-  `icao_destino` CHAR(4) NOT NULL,
-  `hora_partida` TIME NULL,
-  `hora_chegada` TIME NULL,
   `hora_partida_prevista` TIME NOT NULL,
   `duracao_prevista` TIME NOT NULL,
+  `hora_partida` TIME NULL,
+  `hora_chegada` TIME NULL,
   PRIMARY KEY (`id_servico`),
   INDEX `marcas_da_aeronave_idx` (`marcas_da_aeronave` ASC) VISIBLE,
   CONSTRAINT `id_servico_servico_aviao`
@@ -279,15 +276,17 @@ DROP TABLE IF EXISTS `mydb`.`Cliente` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
   `id` INT NOT NULL,
   `nome` VARCHAR(255) NOT NULL,
-  `brevete` TINYINT NOT NULL,
-  `formacao_paraquedismo` TINYINT NOT NULL,
   `data_nascimento` DATE NOT NULL,
   `genero` CHAR(1) NOT NULL,
-  `numero_de_telefone` VARCHAR(45) NOT NULL,
   `data_criacao` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `brevete` TINYINT NOT NULL,
+  `formacao_paraquedismo` TINYINT NOT NULL,
+  `numero_de_telefone` VARCHAR(45) NOT NULL,
   `rua` VARCHAR(75) NOT NULL,
   `codigo_postal` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
+  `numero_socio` INT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `numero_socio_UNIQUE` (`numero_socio` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
@@ -300,6 +299,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Cliente_servico` (
   `id_cliente` INT NOT NULL,
   `id_servico` INT NOT NULL,
   `pagamento` DECIMAL(10,2) NOT NULL,
+  `presenca` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_cliente`, `id_servico`),
   INDEX `id_cliente_idx` (`id_cliente` ASC) VISIBLE,
   INDEX `id_servico_servico_cliente_idx` (`id_servico` ASC) VISIBLE,
@@ -381,8 +381,8 @@ DROP TABLE IF EXISTS `mydb`.`Manutencao` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Manutencao` (
   `id` INT NOT NULL,
-  `despesas` DECIMAL(10,2) NULL,
   `marcas_da_aeronave` VARCHAR(20) NOT NULL,
+  `despesas` DECIMAL(10,2) NULL,
   `fatura` INT NULL,
   PRIMARY KEY (`id`),
   INDEX `marcas_da_aeronave_servico_interno_idx` (`marcas_da_aeronave` ASC) VISIBLE,
