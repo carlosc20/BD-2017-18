@@ -26,7 +26,21 @@ INSERT INTO Cliente
 	(6	, 'Carlota  Pires'		, true	, false	, '1989-08-10', 'F', '+351 215 990 674', '2017-05-15 16:00:00', 'Rua Riamar 32, Sanfins, Aveiro', 					'4520-523'),
 	(7	, 'Manuel  Neves'		, true	, false	, '1962-03-26', 'M', '+351 209 956 073', '2017-05-15 16:00:00', 'Rua Projectada 58, Setúbal, Setúbal',				'2900-570'),
 	(8	, 'Júlia  Magalhães'	, false	, false	, '1954-09-13', 'F', '+351 297 481 565', '2017-05-15 16:00:00', 'Rua São Salvador 36, Igreja, Braga', 				'4730-190'),
-	(9	, 'Ivan  Vasconcelos'	, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601');
+	(9	, 'Ivan  Vasconcelos'	, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+	(10	, 'João  Vasconcelos'	, true	, false	, '1983-01-13', 'M', '+351 240 522 339', '2017-05-15 16:00:00', 'Rua Caldeirão 16, Pedra da Adega, Leiria', 		'3240-601'),
+    (11	, 'Mario Gotze'			, false	, false	, '1993-01-20', 'M', '+355 570 542 200', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+    (12	, 'Joana BomBom'		, false	, false	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+    (13	, 'Mario Madeira'		, false , true	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+    (14	, 'Marco Dantas'		, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+	(15	, 'Gabriel Souto'		, true	, true	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+	(16	, 'Henrique Marques'	, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+    (17	, 'Mafalda Jornalista'	, false	, true	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+	(18	, 'Marta Soares'		, true	, true	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+	(19	, 'Pedro Bernardo'		, true	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+	(20	, 'Joana Pina'			, false	, false	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+	(21	, 'Sara Correia'		, false	, true	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+	(22	, 'Ricardo Pão'			, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
+	(23	, 'Mafalda Silva'		, true	, false	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601');
 --
 -- DELETE FROM Cliente;
 -- SELECT * FROM Cliente;
@@ -36,7 +50,13 @@ INSERT INTO Socio
     (1),
     (2),
     (3),
-    (4);
+    (4),
+    (10),
+    (12),
+    (13),
+    (15),
+    (20);
+    
 
 INSERT INTO Quotas
 	(id, ano)
@@ -50,7 +70,15 @@ INSERT INTO Quotas
     (3, 2018),
     (4, 2016),
     (4, 2017),
-    (4, 2018);
+    (4, 2018),
+    (5, 2018),
+    (6, 2017), -- não pagou uma
+    (7, 2017),
+    (7, 2018),
+    (8, 2018),
+    (9, 2016),
+    (9, 2017),
+    (9, 2018);
 --
 -- DELETE FROM Quotas;
 -- SELECT * FROM Quotas;
@@ -71,17 +99,19 @@ INSERT INTO Estado
 INSERT INTO Servico
 	(id, estado, data_de_inicio, duracao, observacao)
 	VALUES 
-    (1	, 1, '2018-11-14 12:20:00', '1:00',  null),
-	(2	, 3, '2018-07-22 15:15:00', '1:00',  null),
-	(3	, 2, '2018-09-10 19:00:00', '1:00',  null),
-    (4	, 2, '2018-09-10 19:00:00', '1:00',  null),
-	(5	, 1, '2018-02-09 11:10:00', '1:00',  null),
-	(6	, 2, '2017-06-23 16:50:00', '1:00',  null),
-	(7	, 1, '2018-02-19 12:50:00', '1:00',  null),
-	(8	, 1, '2018-02-19 12:50:00', '1:00',  null),
+    (1	, 1, '2018-11-22 15:20:00', '1:00',  null),
+	(2	, 1, '2018-11-22 9:40:00' , '1:00',  null),
+	(3	, 1, '2018-11-23 15:20:00', '1:00',  null),
+    (4	, 1, '2018-11-23 21:00:00', '1:00',  'Derrame de óleo'),
+	(5	, 1, '2018-11-23 22:10:00', '1:00',  null),
+	(6	, 1, '2017-11-23 16:30:00', '5:00',  null),
+	(7	, 1, '2018-11-24 12:50:00', '0:30',  null),
+	(8	, 1, '2018-02-24 14:50:00', '1:30',  null),
 	(9	, 1, '2017-07-02 17:45:00', '1:00',  null),
 	(10	, 1, '2017-05-08 13:50:00', '1:00',  null),
 	(11	, 2, '2017-01-08 16:15:00', '1:00',  null),
+    (12	, 2, '2017-01-08 16:15:00', '1:00',  null),
+    (13	, 2, '2017-01-08 16:15:00', '1:00',  null),
 	(14	, 1, '2018-07-12 16:30:00', '1:00',  null),
 	(15	, 1, '2017-04-30 14:30:00', '1:00',  null),
 	(16	, 1, '2018-11-19 14:20:00', '1:00',  null),
@@ -120,7 +150,13 @@ INSERT INTO Tipo
 INSERT INTO Servico_ao_cliente
 	(id, tipo, montante_total, limite_clientes)
 	VALUES 
-    (1, 1, 50.00, 1);
+    (1, 1, 140.00, 4),
+    (3, 3, 96.00 , 1),
+    (6, 4, 544.00, 8),
+    (7, 5, 30.00 , 5),
+    (8, 2, 980.00, 6);
+    
+    
 --
 -- DELETE FROM Servico_externo;
 -- SELECT * FROM Servico_externo;
@@ -130,7 +166,27 @@ INSERT INTO Servico_ao_cliente
 INSERT INTO Cliente_servico
 	(id_cliente, id_servico, pagamento)
 	VALUES 
-	(1, 1, 50.00);
+	(1, 1, 50.00),
+    (2, 1, 40.00),
+    (5, 1, 50.00),
+    (3, 3, 96.00),
+    (1, 6, 64.00),
+    (5, 6, 80.00),
+    (6, 6, 80.00),
+    (7, 6, 80.00),
+    (8, 6, 80.00),
+    (9, 6, 80.00),
+    (11, 6, 80.00),
+    (6,  7, 15.00),
+    (9,  7, 15.00),
+    (13, 8,  140.00),
+    (15, 8, 140.00),
+    (5, 8, 175.00),
+    (6, 8, 175.00),
+    (14, 8, 175.00),
+    (17, 8, 175.00);
+    
+
 --
 -- DELETE FROM Servico_cliente;
 -- SELECT * FROM Servico_cliente;
@@ -153,12 +209,14 @@ INSERT INTO Lugar_local
 INSERT INTO Aviao
 	(marcas_da_aeronave, proprietario, modelo, numero_max_passageiros, disponivel, data_proxima_revisao, icao_atual, lugar_local, tipo)
 	VALUES 
-	('CS-AVC', 'Aerodromo da feira'	, 'Fantasy Air Allegro 2000' 		, 2	, true	, '2020-10-30', 'LPVF', 1	, 1),
-    ('CS-IPZ', 'Aerodromo da feira'	, 'Cessna Citation CJ2'		 		, 8	, false	, '2019-06-12', 'LPVF', 2	, 1),
-	('CS-MRQ', 'Aerodromo da feira'	, 'Piper PA-28-140 Cherokee 160 hp'	, 2	, true	, '2019-08-02', 'LPVF', 3	, 1),
-	('CS-JMQ', 'Aerodromo da feira'	, 'Piper PA-28R-200 Arrow II'		, 2	, true	, '2019-02-06', 'KTOO', null, 1),
-	('CS-SBP', 'Eire'			   	, 'Beechcraft Baron G58'			, 4	, true	, '2019-01-07', 'LPVF', 4	, 1),
-	('CS-DEW', 'Ailane'			   	, 'Pilatus PC-12 NG'				, 6	, true	, '2019-08-24', 'GLIP', null, 1);
+	('CS-AVC', 'Aerodromo da feira'	, 'Fantasy Air Allegro 2000' 		, 2	, true	, '2020-10-30', 'LPVF', 1	, 3),
+    ('CS-IPZ', 'Aerodromo da feira'	, 'Cessna Citation CJ2'		 		, 12, false	, '2019-06-12', 'LPVF', 2	, 4),
+	('CS-MRQ', 'Aerodromo da feira'	, 'Piper PA-28-140 Cherokee 160 hp'	, 9	, true	, '2019-08-02', 'LPVF', 3	, 1),
+	('CS-JMQ', 'Aerodromo da feira'	, 'Piper PA-28R-200 Arrow II'		, 7	, true	, '2019-02-06', 'KTOO', null, 2),
+    ('CS-XYW', 'Aerodromo da feira'	, 'Cessna Citation PO2'		 		, 9 , true	, '2019-06-12', 'LPVF', 2	, 4),
+	('CS-MDQ', 'Aerodromo da feira'	, 'Piper PA-28R-200 Arrow III'		, 7	, true	, '2019-02-06', 'KTOO', 4	, 2),
+	('CS-SBP', 'Eire'			   	, 'Beechcraft Baron G58'			, 4	, true	, '2019-01-07', 'LPVF', 4	, 4),
+	('CS-DEW', 'Ailane'			   	, 'Pilatus PC-12 NG'				, 6	, true	, '2019-08-24', 'GLIP', null, 4);
 
 -- DELETE FROM Aviao;
 -- SELECT * FROM Aviao;
@@ -168,8 +226,10 @@ INSERT INTO Aviao
 INSERT INTO Ciclo
 	(id_servico, marcas_da_aeronave, icao_origem, icao_destino, hora_partida, hora_chegada, hora_partida_prevista, duracao_prevista)
 	VALUES 
-	(1, 'CS-AVC', 'LPVF', 'LPVF', '18:12:00', '19:15:00', '18:10:00', '01:00:00');
-    -- (5, 'CS-AVC', 'LPVF', 'LPVF', '18:12:00', '19:15:00', '18:10:00', '01:00:00');
+	(1, 'CS-MRQ', 'LPVF', 'LPVF', '15:33:00', '16:10:00', '15:30:00', '01:00:00'),
+    (3, 'CS-AVC', 'LPVF', 'LPVF', '15:20:00', '16:15:00', '15:20:00', '01:00:00'),
+    (6, 'CS-XYW', 'LPVF', 'LPLA', '16:55:00', '20:10:00', '16:45:00', '05:00:00'),
+    (8, 'CS-MDQ', 'LPVF', 'LPVF', '15:00:00', '16:22:00', '14:55:00', '01:30:00');
 --
 -- DELETE FROM Ciclo;
 -- SELECT * FROM Ciclo;
@@ -179,14 +239,13 @@ INSERT INTO Ciclo
 INSERT INTO Manutencao
 	(id, despesas, marcas_da_aeronave, fatura)
 	VALUES 
-    (1, null	, 'CS-AVC', null),
-    (2, 150.00	, 'CS-MRQ', 55555784),
-    (3, null	, 'CS-JMQ', null),
-    (4, null	, 'CS-MRQ', null),
-    (5, 300.00	, 'CS-AVC', 87418921),
-    (6, null	, 'CS-JMQ', null),
-    (7, 100.00	, 'CS-AVC', 48512417),
-    (8, null	, 'CS-JMQ', null);
+    (2, null	, 'CS-AVC', null),
+    (4, 150.00	, 'CS-MRQ', 55555784),
+    (5, null	, 'CS-JMQ', null),
+    (10, null	, 'CS-MRQ', null),
+    (12, 300.00	, 'CS-AVC', 87418921),
+    (13, null	, 'CS-JMQ', null),
+    (20, 20.00	, 'CS-AVC', 87712345);
 --
 -- DELETE FROM Manutencao;
 -- SELECT * FROM Manutencao;
@@ -204,7 +263,9 @@ INSERT INTO Funcionario
     (7	, 'Eduarda Revisor In'	, '1979-04-02', 'M', '2017-5-10 10:00:00', true	, 676.67),
     (8	, 'Luís Faztudo'		, '1979-10-01', 'M', '2017-5-10 10:00:00', true	, 676.67),
     (9	, 'Catarina Castro'		, '1977-03-06', 'F', '2017-5-10 10:00:00', true , 676.67),
-    (10	, 'Luís Viterbo'		, '1982-06-29', 'M', '2017-5-10 10:00:00', true , 676.67);
+    (10	, 'Luís Viterbo'		, '1982-06-29', 'M', '2017-5-10 10:00:00', true , 676.67),
+	(11	, 'Luisa Maria'			, '1992-07-22', 'F', '2017-5-10 10:00:00', true , 676.67);
+    
 --
 -- DELETE FROM Funcionario;
 -- SELECT * FROM Funcionario;
@@ -229,8 +290,15 @@ INSERT INTO Funcao
 INSERT INTO Servico_funcionario
 	(id_servico, funcao, id_funcionario)
 	VALUES 
-	(1, 2, 1),
-    (2, 5, 1);
+	(1, 5, 6),
+    (1, 6, 11),
+    (2, 7, 7),
+    (4, 7, 8),
+    (5, 7, 8),
+    (6, 5, 5),
+    (7, 6, 7),
+    (8, 5, 6);
+    
 --
 -- DELETE FROM Servico_funcionario;
 -- SELECT * FROM Servico_funcionario;
@@ -252,7 +320,8 @@ INSERT INTO Funcao_funcionario
     (8	, 6),
     (8	, 7),
     (9	, 2),
-    (10	, 3);
+    (10	, 3),
+    (11, 6);
 --
 -- DELETE FROM Numero_funcao;
 -- SELECT * FROM Numero_funcao;
@@ -309,6 +378,7 @@ INSERT INTO Horario_funcionario
 	(id_funcionario, id_horario)
 	VALUES 
     (1, 3),
+    (2, 1),
     (3, 1),
     (4, 1),
     (5, 4),	
@@ -316,7 +386,8 @@ INSERT INTO Horario_funcionario
     (7, 3),
     (8, 4),
     (9, 2),
-    (10,2);
+    (10,2),
+    (11,2);
 --
 -- DELETE FROM Horario_funcionario;
 -- SELECT * FROM Horario_funcionario;
