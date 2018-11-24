@@ -32,17 +32,13 @@ SET SQL_SAFE_UPDATES = 0;
     ------------------------------------------------------
     */
     
-    
--- Vê registos de todos os aviões já usados
-SELECT marcas_da_aeronave as 'Marcas da aeronave', proprietario as 'Proprietário', modelo as 'Modelo', numero_max_passageiros as 'Número máximo de passageiros', disponivel as 'Disponibilidade' FROM Aviao as A
-left join Lugar_local as Ll on Ll.id = A.lugar_local
-inner join Tipo as T on T.id = A.tipo;
-    
-    -- que aeronave foi mais lucrativa
-SELECT 
-    A.Marcas_da_aeronave AS 'Marcas da aeronave',
-    IFNULL(SUM(CS.pagamento), 0) - IFNULL(SUM(M.despesas), 0) AS Lucro
-FROM
+-- Vê infos de dinheiro de aviões
+drop view lucro_Avioes;
+CREATE VIEW lucro_Avioes AS
+SELECT A.marcas_da_aeronave as 'Marcas da aeronave', modelo as 'Modelo',
+   IFNULL(SUM(M.despesas), 0) AS 'Despesa em Manutenções', IFNULL(SUM(CS.pagamento), 0) AS 'Rendimento em Serviços',
+   IFNULL(SUM(CS.pagamento), 0) - IFNULL(SUM(M.despesas), 0) AS Total
+	FROM
     Aviao AS A
         LEFT JOIN
     Ciclo AS C ON C.marcas_da_aeronave = A.marcas_da_aeronave
@@ -53,4 +49,10 @@ FROM
 		LEFT JOIN
     Manutencao AS M ON M.marcas_da_aeronave = A.marcas_da_aeronave
 GROUP BY A.marcas_da_aeronave
-ORDER BY lucro DESC;
+ORDER BY Total DESC; 
+SELECT * from lucro_Avioes;
+
+CREATE VIEW lucro_Socios AS
+SELECT * FROM 
+	Clientes AS C 
+    INNER JOIN Cliente_Servico AS CS ON CS.id_cliente = C.numero 
