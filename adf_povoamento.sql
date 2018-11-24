@@ -16,7 +16,7 @@ SET SQL_SAFE_UPDATES = 0;
 
 
 INSERT INTO Cliente
-	(id	, nome, brevete, formacao_paraquedismo, data_nascimento, genero, numero_de_telefone, data_criacao, morada, codigo_postal)
+	(id	, nome, brevete, formacao_paraquedismo, data_nascimento, genero, numero_de_telefone, data_criacao, morada)
 	VALUES 
 	(1	, 'Daniel Apelido'		, false	, true	, '1980-12-31', 'M', '+351 213 659 204', '2017-05-15 16:00:00', 'Rua Augusta 55, Coimbra, Coimbra 3045-079'),
 	(2	, 'Benedita Machado'	, false	, false	, '1964-06-10', 'F', '+351 254 154 860', '2017-05-15 16:00:00', 'Avenida Marquês Tomar 63, Famões, Lisboa 1685-906'),
@@ -143,8 +143,8 @@ INSERT INTO Tipo
 INSERT INTO Servico_ao_cliente
 	(id, tipo, limite_clientes)
 	VALUES 
-    (1	, 5, 1),					
-	(3	, 5, 1), 					
+    (1	, 6, 1),					
+	(3	, 6, 1), 					
 	(6	, 2, 4),   					
 	(7	, 2, 4),					
 	(8	, 1, 4),					
@@ -167,8 +167,8 @@ INSERT INTO Servico_ao_cliente
 INSERT INTO Cliente_servico
 	(id_cliente, id_servico, pagamento)
 	VALUES 
-    (1	,1	, 37.50),					
-	(2	,3	, 37.50), 					
+    (1	,1	, 40.50),					
+	(2	,3	, 40.50), 					
 	(3	,6	, 57.00), 
     (4	,6	, 57.00), 
     (5	,6	, 60.00), 
@@ -179,11 +179,11 @@ INSERT INTO Cliente_servico
     (10	,7	, 57.00),
 	(1	,8	, 103.50),
     (13	,8	, 103.50),
-    (15	,8	, 115.00),
+    (15	,8	, 103.50),
     (17	,8	, 115.00),
-	(3	,11	, 37.50),									
+	(3	,11	, 40.50),									
 	(11	,14	, 20.00),
-    (12	,14	, 20.00),
+    (12	,14	, 18.00),
     (13	,14	, 18.00),
 	(1	,15	, 18.00),
     (2	,15	, 18.00),
@@ -204,9 +204,9 @@ INSERT INTO Cliente_servico
     (9	,19	, 10.00),
     (10	,19	, 09.50),
 	(11	,22	, 10.00),	
-    (12	,22	, 10.00),
+    (12	,22	, 9.50),
     (22	,22	, 10.00),
-    (15	,23	, 160.00);					
+    (15	,23	, 160.00);			
 --
 -- DELETE FROM Servico_cliente;
 -- SELECT * FROM Servico_cliente;

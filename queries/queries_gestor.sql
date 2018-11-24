@@ -52,7 +52,15 @@ GROUP BY A.marcas_da_aeronave
 ORDER BY Total DESC; 
 SELECT * from lucro_Avioes;
 
-CREATE VIEW lucro_Socios AS
-SELECT * FROM 
-	Clientes AS C 
-    INNER JOIN Cliente_Servico AS CS ON CS.id_cliente = C.numero 
+CREATE VIEW despesa_Socios AS
+SELECT CS.id_cliente, CS.id_servico, socios.numero_socio, socios.nome, precos.preco- CS.pagamento AS Perda FROM 
+    Cliente_Servico AS CS
+    INNER JOIN 
+    (Select C.id, SO.numero_socio, C.nome 
+	FROM Cliente AS C 
+    INNER JOIN Socio AS SO ON SO.id_cliente = C.id) AS socios ON socios.id = CS.id_cliente
+    INNER JOIN 
+    (Select SAC.id, preco, desconto
+    FROM Servico_ao_cliente AS SAC
+    INNER JOIN Tipo AS T ON T.id = SAC.tipo) AS precos ON precos.id = CS.id_servico
+	
