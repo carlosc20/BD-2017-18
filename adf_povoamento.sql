@@ -16,31 +16,31 @@ SET SQL_SAFE_UPDATES = 0;
 
 
 INSERT INTO Cliente
-	(id	, nome, brevete, formacao_paraquedismo, data_nascimento, genero, numero_de_telefone, data_criacao, rua, codigo_postal)
+	(id	, nome, brevete, formacao_paraquedismo, data_nascimento, genero, numero_de_telefone, data_criacao, morada, codigo_postal)
 	VALUES 
-	(1	, 'Daniel Apelido'		, false	, true	, '1980-12-31', 'M', '+351 213 659 204', '2017-05-15 16:00:00', 'Rua Augusta 55, Coimbra, Coimbra', 				'3045-079'),
-	(2	, 'Benedita Machado'	, false	, false	, '1964-06-10', 'F', '+351 254 154 860', '2017-05-15 16:00:00', 'Avenida Marquês Tomar 63, Famões, Lisboa', 		'1685-906'),
-	(3	, 'Martim Venâncio'		, false	, false	, '1957-02-11', 'M', '+351 215 356 802', '2017-05-15 16:00:00', 'Avenida Júlio São Dias 17, Maia, Porto', 			'4475-810'),
-	(4	, 'Constança Ferreira'	, false	, false	, '1991-06-18', 'F', '+351 222 404 805', '2017-05-15 16:00:00', 'Rua Afonso Albuquerque 51, Conqueiros, Leiria', 	'2425-831'),
-	(5	, 'Nuno Martins'		, false	, false	, '1952-06-11', 'M', '+351 288 203 625', '2017-05-15 16:00:00', 'Rua São Salvador 101, Assento, Braga', 			'4730-360'),
-	(6	, 'Carlota  Pires'		, false	, false	, '1989-08-10', 'F', '+351 215 990 674', '2017-05-15 16:00:00', 'Rua Riamar 32, Sanfins, Aveiro', 					'4520-523'),
-	(7	, 'Manuel  Neves'		, false	, false	, '1962-03-26', 'M', '+351 209 956 073', '2017-05-15 16:00:00', 'Rua Projectada 58, Setúbal, Setúbal',				'2900-570'),
-	(8	, 'Júlia  Magalhães'	, false	, false	, '1954-09-13', 'F', '+351 297 481 565', '2017-05-15 16:00:00', 'Rua São Salvador 36, Igreja, Braga', 				'4730-190'),
-	(9	, 'Ivan  Vasconcelos'	, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-	(10	, 'João  Vasconcelos'	, false	, false	, '1983-01-13', 'M', '+351 240 522 339', '2017-05-15 16:00:00', 'Rua Caldeirão 16, Pedra da Adega, Leiria', 		'3240-601'),
-    (11	, 'Mario Gotze'			, false	, false	, '1993-01-20', 'M', '+355 570 542 200', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-    (12	, 'Joana BomBom'		, false	, false	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-    (13	, 'Mario Madeira'		, false , true	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-    (14	, 'Marco Dantas'		, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-	(15	, 'Gabriel Souto'		, true	, true	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-	(16	, 'Henrique Marques'	, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-    (17	, 'Mafalda Jornalista'	, false	, true	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-	(18	, 'Marta Soares'		, true	, true	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-	(19	, 'Pedro Bernardo'		, true	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-	(20	, 'Joana Pina'			, false	, false	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-	(21	, 'Sara Correia'		, false	, true	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-	(22	, 'Ricardo Pão'			, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601'),
-	(23	, 'Mafalda Silva'		, true	, false	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria', 		'3240-601');
+	(1	, 'Daniel Apelido'		, false	, true	, '1980-12-31', 'M', '+351 213 659 204', '2017-05-15 16:00:00', 'Rua Augusta 55, Coimbra, Coimbra 3045-079'),
+	(2	, 'Benedita Machado'	, false	, false	, '1964-06-10', 'F', '+351 254 154 860', '2017-05-15 16:00:00', 'Avenida Marquês Tomar 63, Famões, Lisboa 1685-906'),
+	(3	, 'Martim Venâncio'		, false	, false	, '1957-02-11', 'M', '+351 215 356 802', '2017-05-15 16:00:00', 'Avenida Júlio São Dias 17, Maia, Porto 4475-810'),
+	(4	, 'Constança Ferreira'	, false	, false	, '1991-06-18', 'F', '+351 222 404 805', '2017-05-15 16:00:00', 'Rua Afonso Albuquerque 51, Conqueiros, Leiria 2425-831'),
+	(5	, 'Nuno Martins'		, false	, false	, '1952-06-11', 'M', '+351 288 203 625', '2017-05-15 16:00:00', 'Rua São Salvador 101, Assento, Braga 4730-360'),
+	(6	, 'Carlota  Pires'		, false	, false	, '1989-08-10', 'F', '+351 215 990 674', '2017-05-15 16:00:00', 'Rua Riamar 32, Sanfins, Aveiro 4520-523'),
+	(7	, 'Manuel  Neves'		, false	, false	, '1962-03-26', 'M', '+351 209 956 073', '2017-05-15 16:00:00', 'Rua Projectada 58, Setúbal, Setúbal 2900-570'),
+	(8	, 'Júlia  Magalhães'	, false	, false	, '1954-09-13', 'F', '+351 297 481 565', '2017-05-15 16:00:00', 'Rua São Salvador 36, Igreja, Braga 4730-190'),
+	(9	, 'Ivan  Vasconcelos'	, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria 3240-601'),
+	(10	, 'João  Vasconcelos'	, false	, false	, '1983-01-13', 'M', '+351 240 522 339', '2017-05-15 16:00:00', 'Rua Caldeirão 16, Pedra da Adega, Leiria'),
+    (11	, 'Mario Gotze'			, false	, false	, '1993-01-20', 'M', '+355 570 542 200', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
+    (12	, 'Joana BomBom'		, false	, false	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
+    (13	, 'Mario Madeira'		, false , true	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
+    (14	, 'Marco Dantas'		, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
+	(15	, 'Gabriel Souto'		, true	, true	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
+	(16	, 'Henrique Marques'	, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
+    (17	, 'Mafalda Jornalista'	, false	, true	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
+	(18	, 'Marta Soares'		, true	, true	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
+	(19	, 'Pedro Bernardo'		, true	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
+	(20	, 'Joana Pina'			, false	, false	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
+	(21	, 'Sara Correia'		, false	, true	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
+	(22	, 'Ricardo Pão'			, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
+	(23	, 'Mafalda Silva'		, true	, false	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria');
 --
 -- DELETE FROM Cliente;
 -- SELECT * FROM Cliente;

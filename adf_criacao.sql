@@ -283,8 +283,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
   `brevete` TINYINT NOT NULL,
   `formacao_paraquedismo` TINYINT NOT NULL,
   `numero_de_telefone` VARCHAR(45) NOT NULL,
-  `rua` VARCHAR(75) NOT NULL,
-  `codigo_postal` VARCHAR(45) NOT NULL,
+  `morada` VARCHAR(75) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -428,19 +427,20 @@ END$$
 
 
 USE `mydb`$$
-DROP TRIGGER IF EXISTS `mydb`.`Cliente_servico_BEFORE_INSERT` $$
+DROP TRIGGER IF EXISTS `mydb`.`Cliente_BEFORE_INSERT` $$
 USE `mydb`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `mydb`.`Cliente_servico_BEFORE_INSERT` BEFORE INSERT ON `Cliente_servico` FOR EACH ROW
+CREATE DEFINER = CURRENT_USER TRIGGER `mydb`.`Cliente_BEFORE_INSERT` BEFORE INSERT ON `Cliente` FOR EACH ROW
 BEGIN
-    DECLARE numero INT;
-    DECLARE limite INT;
-    SET numero = (SELECT COUNT(*) FROM Cliente_servico WHERE id_servico = NEW.id_servico);
-    SET limite = (SELECT limite_clientes FROM Servico_ao_cliente WHERE id = NEW.id_servico);
-    IF numero >= limite
-    THEN 
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'O serviço já está cheio';
-    END IF;
+	IF (YEAR(NOW() - NEW.data_nascimento) < 17 AND (NEW.brevete = TRUE OR NEW.formacao_paraquedismo = TRUE))
+    THEN
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'O Cliente deve ter 17 ou mais anos para ter brevete ou formação em paraquedismo';
+	END IF;
+    IF NEW.genero IN ('M','F')
+    THEN
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'O genero deve ser M ou F';
+	END IF;
 END$$
 
 
