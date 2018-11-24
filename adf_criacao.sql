@@ -220,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Ciclo` (
   `id_servico` INT NOT NULL,
   `marcas_da_aeronave` VARCHAR(20) NOT NULL,
   `hora_partida_prevista` DATETIME NOT NULL,
-  `duracao_prevista` DATETIME NOT NULL,
+  `hora_chegada_prevista` DATETIME NOT NULL,
   `hora_partida` DATETIME NULL,
   `hora_chegada` DATETIME NULL,
   PRIMARY KEY (`id_servico`),
