@@ -42,8 +42,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Dias_da_semana` (
   CONSTRAINT `id_dias_da_semana`
     FOREIGN KEY (`id`)
     REFERENCES `mydb`.`Horario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -89,13 +89,13 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Horario_funcionario` (
   CONSTRAINT `id_horario_horario_funcionario`
     FOREIGN KEY (`id_horario`)
     REFERENCES `mydb`.`Horario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `id_funcionario_horario_funcionario`
     FOREIGN KEY (`id_funcionario`)
     REFERENCES `mydb`.`Funcionario` (`numero`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -144,13 +144,13 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Aviao` (
   CONSTRAINT `lugar_local_aviao`
     FOREIGN KEY (`lugar_local`)
     REFERENCES `mydb`.`Lugar_local` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `tipo_aviao`
     FOREIGN KEY (`tipo`)
     REFERENCES `mydb`.`Tipo` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -182,8 +182,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Servico` (
   CONSTRAINT `estado_servico`
     FOREIGN KEY (`estado`)
     REFERENCES `mydb`.`Estado` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -201,13 +201,13 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Servico_ao_cliente` (
   CONSTRAINT `id_servico_ao_cliente`
     FOREIGN KEY (`id`)
     REFERENCES `mydb`.`Servico` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `tipo_servico_ao_cliente`
     FOREIGN KEY (`tipo`)
     REFERENCES `mydb`.`Tipo` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -218,7 +218,7 @@ DROP TABLE IF EXISTS `mydb`.`Ciclo` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Ciclo` (
   `id_servico` INT NOT NULL,
-  `marcas_da_aeronave` VARCHAR(20) NOT NULL,
+  `marcas_da_aeronave` VARCHAR(6) NOT NULL,
   `hora_partida_prevista` DATETIME NOT NULL,
   `hora_chegada_prevista` DATETIME NOT NULL,
   `hora_partida` DATETIME NULL,
@@ -228,13 +228,13 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Ciclo` (
   CONSTRAINT `id_servico_servico_aviao`
     FOREIGN KEY (`id_servico`)
     REFERENCES `mydb`.`Servico_ao_cliente` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `marcas_da_aeronave_servico_aviao`
     FOREIGN KEY (`marcas_da_aeronave`)
     REFERENCES `mydb`.`Aviao` (`marcas_da_aeronave`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -254,18 +254,18 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Servico_funcionario` (
   CONSTRAINT `id_servico_servico_funcionario`
     FOREIGN KEY (`id_servico`)
     REFERENCES `mydb`.`Servico` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `funcao_servico_funcionario`
     FOREIGN KEY (`funcao`)
     REFERENCES `mydb`.`Funcao` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `id_funcionario_servico_funcionario`
     FOREIGN KEY (`id_funcionario`)
     REFERENCES `mydb`.`Funcionario` (`numero`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -305,13 +305,13 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Cliente_servico` (
   CONSTRAINT `id_cliente_cliente_servico`
     FOREIGN KEY (`id_cliente`)
     REFERENCES `mydb`.`Cliente` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `id_servico_cliente_servico`
     FOREIGN KEY (`id_servico`)
     REFERENCES `mydb`.`Servico_ao_cliente` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -328,8 +328,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Socio` (
   CONSTRAINT `id_servico_socio`
     FOREIGN KEY (`id_cliente`)
     REFERENCES `mydb`.`Cliente` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -345,8 +345,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Quotas` (
   CONSTRAINT `id_quotas`
     FOREIGN KEY (`id`)
     REFERENCES `mydb`.`Socio` (`numero_socio`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -363,13 +363,13 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Funcao_funcionario` (
   CONSTRAINT `funcao_funcao_funcionario`
     FOREIGN KEY (`funcao`)
     REFERENCES `mydb`.`Funcao` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `numero_funcao_funcionario`
     FOREIGN KEY (`numero`)
     REFERENCES `mydb`.`Funcionario` (`numero`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -388,15 +388,63 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Manutencao` (
   CONSTRAINT `id_manutencao`
     FOREIGN KEY (`id`)
     REFERENCES `mydb`.`Servico` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `marcas_da_aeronave_manutencao`
     FOREIGN KEY (`marcas_da_aeronave`)
     REFERENCES `mydb`.`Aviao` (`marcas_da_aeronave`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
+USE `mydb`;
+
+DELIMITER $$
+
+USE `mydb`$$
+DROP TRIGGER IF EXISTS `mydb`.`Ciclo_BEFORE_INSERT` $$
+USE `mydb`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `mydb`.`Ciclo_BEFORE_INSERT` BEFORE INSERT ON `Ciclo` FOR EACH ROW
+BEGIN
+    IF NEW.hora_partida IS NULL AND NEW.hora_chegada IS NOT NULL
+    THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'A hora_partida não pode ser null quando hora_chegada é não null';
+    END IF;
+END$$
+
+
+USE `mydb`$$
+DROP TRIGGER IF EXISTS `mydb`.`Ciclo_BEFORE_UPDATE` $$
+USE `mydb`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `mydb`.`Ciclo_BEFORE_UPDATE` BEFORE UPDATE ON `Ciclo` FOR EACH ROW
+BEGIN
+    IF NEW.hora_partida IS NULL AND NEW.hora_chegada IS NOT NULL
+    THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'hora_partida não pode ser null quando hora_chegada é não null';
+    END IF;
+END$$
+
+
+USE `mydb`$$
+DROP TRIGGER IF EXISTS `mydb`.`Cliente_servico_BEFORE_INSERT` $$
+USE `mydb`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `mydb`.`Cliente_servico_BEFORE_INSERT` BEFORE INSERT ON `Cliente_servico` FOR EACH ROW
+BEGIN
+    DECLARE numero INT;
+    DECLARE limite INT;
+    SET numero = (SELECT COUNT(*) FROM Cliente_servico WHERE id_servico = NEW.id_servico);
+    SET limite = (SELECT limite_clientes FROM Servico_ao_cliente WHERE id = NEW.id_servico);
+    IF numero >= limite
+    THEN 
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'O serviço já está cheio';
+    END IF;
+END$$
+
+
+DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
