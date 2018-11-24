@@ -119,6 +119,8 @@ DROP TABLE IF EXISTS `mydb`.`Tipo` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`Tipo` (
   `id` TINYINT NOT NULL,
   `designacao` VARCHAR(255) NOT NULL,
+  `preco` DECIMAL(10,2) NOT NULL,
+  `desconto` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`id`));
 
 
@@ -193,16 +195,15 @@ DROP TABLE IF EXISTS `mydb`.`Servico_ao_cliente` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`Servico_ao_cliente` (
   `id` INT NOT NULL,
   `tipo` TINYINT NOT NULL,
-  `montante_total` DECIMAL(10,2) NOT NULL,
   `limite_clientes` TINYINT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `tipo_servico_externo_idx` (`tipo` ASC) VISIBLE,
-  CONSTRAINT `id_servico_externo`
+  CONSTRAINT `id_servico_ao_cliente`
     FOREIGN KEY (`id`)
     REFERENCES `mydb`.`Servico` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `tipo_servico_externo`
+  CONSTRAINT `tipo_servico_ao_cliente`
     FOREIGN KEY (`tipo`)
     REFERENCES `mydb`.`Tipo` (`id`)
     ON DELETE NO ACTION
@@ -284,9 +285,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
   `numero_de_telefone` VARCHAR(45) NOT NULL,
   `rua` VARCHAR(75) NOT NULL,
   `codigo_postal` VARCHAR(45) NOT NULL,
-  `numero_socio` INT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `numero_socio_UNIQUE` (`numero_socio` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 

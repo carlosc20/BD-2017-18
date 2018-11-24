@@ -81,7 +81,7 @@ BEGIN
 		Tipo AS T ON T.designacao = tipoServico
 	INNER JOIN
 		Cliente_servico AS CS ON CS.id_servico = S.id
-	WHERE S.data_de_inicio > NOW()
+	WHERE S.data_de_inicio > NOW() -- '2018-11-20 08:00:00' dá cenas com esta data
 	GROUP BY CS.id_servico
     HAVING COUNT(*) < SC.limite_clientes;
 END
@@ -150,7 +150,7 @@ $$
 -- ver clientes() -> ordenados por número
 CREATE VIEW  list_Clientes AS
 SELECT nome AS 'Nome', brevete AS 'Brevete', formacao_paraquedismo AS 'Formação de Paraquedismo',
-        numero_socio AS 'Número de Sócio', genero AS 'Género', numero_de_telefone AS 'Número de Telefone',
+	  genero AS 'Género', numero_de_telefone AS 'Número de Telefone',
         rua AS 'Morada', codigo_postal AS 'Código Postal'
     FROM cliente
     ORDER BY cliente.id;
@@ -159,7 +159,7 @@ Select * From list_Clientes;
 
 
 -- ver_servicos() -> ordenado por id .....faltam ciclos....faltam clientes atuais
-SELECT S.id AS 'Identificador do Serviço', T.designacao AS 'Tipo', SC.montante_total AS 'Montante Total', SC.limite_clientes AS 'Limite de Clientes',
+SELECT S.id AS 'Identificador do Serviço', T.designacao AS 'Tipo', SC.limite_clientes AS 'Limite de Clientes',
         count(*) AS 'Total de Clientes', E.designacao AS 'Estado', S.data_de_inicio AS 'Data e Hora de Início', S.duracao AS 'Duração prevista', S.observacao AS 'Observações'
     From Servico AS S
         INNER JOIN servico_ao_cliente AS SC ON SC.id = S.id

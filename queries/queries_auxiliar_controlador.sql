@@ -83,6 +83,7 @@ WHERE
 
 -- Atualiza o código ICAO de um avião
 -- Controlador
+/* DEPRECATED
 drop procedure `atualizar_icao_aviao`;
 DELIMITER $$
 CREATE PROCEDURE `atualizar_icao_aviao`(IN id CHAR(6), IN novo_icao CHAR(4))
@@ -95,25 +96,23 @@ BEGIN
 END
 $$
 CALL atualizar_icao_aviao("CS-AVC", "LPBZ");
-
+*/
 
 -- Completa informação de um ciclo(id)
 -- Controlador
 drop procedure `completar_ciclo`;
 DELIMITER $$
-Create Procedure `completar_ciclo`(IN id INT, IN origem CHAR(4), IN destino CHAR(4), IN partida TIME, IN chegada TIME)
+Create Procedure `completar_ciclo`(IN id INT, IN partida TIME, IN chegada TIME)
 BEGIN
     UPDATE Ciclo
     SET 
-        icao_origem = origem,
-        icao_destino = destino,
         hora_partida = partida,
         hora_chegada = chegada
     WHERE
         id_servico = id;
 END
 $$
-CALL completar_ciclo(1, "LPVF", "LPBZ", "18:25:00", "19:55:00");
+CALL completar_ciclo(1, "18:25:00", "19:55:00");
 
 -- adiciona quota a um cliente e se for a primeira mete numero de socio
 drop procedure `adicionar_quota`;
