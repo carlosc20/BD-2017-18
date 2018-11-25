@@ -33,7 +33,6 @@ SET SQL_SAFE_UPDATES = 0;
     */
     
 -- Vê infos de dinheiro de aviões
-drop view lucro_Avioes;
 CREATE VIEW lucro_Avioes AS
 SELECT A.marcas_da_aeronave as 'Marcas da aeronave', modelo as 'Modelo',
    IFNULL(SUM(M.despesas), 0) AS 'Despesa em Manutenções', IFNULL(SUM(CS.pagamento), 0) AS 'Rendimento em Serviços',
@@ -50,7 +49,6 @@ SELECT A.marcas_da_aeronave as 'Marcas da aeronave', modelo as 'Modelo',
     Manutencao AS M ON M.marcas_da_aeronave = A.marcas_da_aeronave
 GROUP BY A.marcas_da_aeronave
 ORDER BY Total DESC; 
-SELECT * from lucro_Avioes;
 
 CREATE VIEW despesa_Socios AS
 SELECT CS.id_cliente, CS.id_servico, socios.numero_socio, socios.nome, -1*sum(precos.preco-CS.pagamento) AS Perda FROM 
@@ -66,5 +64,18 @@ SELECT CS.id_cliente, CS.id_servico, socios.numero_socio, socios.nome, -1*sum(pr
     GROUP BY id_cliente
     ORDER BY Perda;
 
-Select sum(Total) AS 'Lucro Total da empresa' From
-((SELECT Total from lucro_Avioes) UNION (SELECT Perda from despesa_Socios)) AS T;
+SELECT SUM(Total) AS 'Lucro acumulado da empresa' From
+((SELECT Total FROM lucro_Avioes) UNION (SELECT Perda FROM despesa_Socios)) AS T;
+
+drop procedure `lucro_temporal`;
+DELIMITER $$
+CREATE PROCEDURE `lucro_temporal`(IN data_inicio DATETIME, IN data_fim DATETIME)
+BEGIN
+	SELECT  IFNULL(SUM(L.valor),0) AS 'Lucro total do intervalo' FROM
+	((SELECT id_servico AS id, pagamento AS valor FROM Cliente_servico) UNION (SELECT id, IFNULL(-1*despesas,0) AS valor FROM Manutencao)) AS L 
+    INNER JOIN 
+	(SELECT S.id FROM Servico AS S
+		WHERE S.data_de_inicio BETWEEN data_inicio AND data_fim) AS servicos ON servicos.id = L.id;
+END
+$$
+call lucro_temporal('2018-11-20 00:10:00', '2018-11-21 20:10:00'); 
