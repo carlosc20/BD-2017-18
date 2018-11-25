@@ -143,7 +143,111 @@ BEGIN
 		  (data_inicio NOT BETWEEN
 		  (CS.data_de_inicio + C.hora_partida_prevista) AND
 		  (CS.data_de_inicio + C.hora_chegada_prevista)) AND
+          
 		  (C.hora_partida IS NULL OR C.hora_chegada < data_inicio)));
+END
+$$
+
+-- Não funciona
+
+drop procedure `marcar_servico_ao_cliente_com_aviao`;
+DELIMITER $$
+CREATE PROCEDURE `marcar_servico_ao_cliente_com_aviao`(IN tipo VARCHAR(255), IN data_inicio DATETIME, IN data_fim DATETIME, IN data_partida DATETIME, IN data_chegada DATETIME)
+BEGIN
+	DECLARE funcionario INT;
+    DECLARE aviao CHAR(6);
+    DECLARE codigo_tipo INT;
+    DECLARE id_do_servico INT;
+    
+    DECLARE r BOOL DEFAULT FALSE;
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET r = TRUE;
+    
+    START TRANSACTION;
+	
+    SET funcionario =
+    (SELECT F.numero
+    FROM Funcionario AS F
+    INNER JOIN Funcao_funcionario AS FF ON FF.numero = F.numero
+    INNER JOIN Funcao AS Fun ON Fun.id = FF.funcao
+    
+    INNER JOIN Horario_funcionario AS HF ON HF.id_funcionario = F.numero
+    INNER JOIN Horario AS H ON H.id = HF.id_horario
+    INNER JOIN Dias_da_semana AS D ON D.id = H.id
+    
+    LEFT JOIN Servico_funcionario AS SF ON SF.id_funcionario = F.numero
+    LEFT JOIN Servico AS S ON S.id = SF.id_servico
+    WHERE funcao = Fun.designacao AND
+    
+		  DAYOFWEEK(NOW()) = D.dia AND
+		  (DATE(data_inicio) BETWEEN H.data_inicio AND H.data_fim) AND
+          (TIME(data_inicio) BETWEEN H.hora_inicio AND H.hora_fim) AND
+          (DATE(data_fim) BETWEEN H.data_inicio AND H.data_fim) AND
+          (TIME(data_fim) BETWEEN H.hora_inicio AND H.hora_fim) AND
+          
+          (S.id IS NULL OR
+          ((data_inicio NOT BETWEEN S.data_de_inicio AND (S.data_de_inicio + duracao)) AND
+          (data_fim NOT BETWEEN S.data_de_inicio AND (S.data_de_inicio + duracao))))
+	LIMIT 1);
+    
+    IF funcionario IS NULL
+    THEN
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Não existe funcionários disponíveis';
+		ROLLBACK;
+    END IF;
+    
+    SET aviao = 
+    (SELECT A.marcas_do_aviao
+    FROM Aviao AS A
+    INNER JOIN Tipo AS T ON T.id = A.tipo
+    
+    LEFT JOIN Manutencao AS M ON M.marcas_da_aeronave = A.marcas_da_aeronave
+    LEFT JOIN Servico AS MS ON S.id = M.id
+    
+    LEFT JOIN Ciclo AS C ON A.marcas_da_aeronave = C.marcas_da_aeronave
+    LEFT JOIN Servico_ao_cliente AS SC ON SC.id = C.id_servico
+    LEFT JOIN Servico AS CS ON S.id = SC.id
+    WHERE T.designacao = tipo AND
+    
+		  (MS.id IS NULL OR (
+		  (data_inicio NOT BETWEEN MS.data_inicio AND (MS.data_incio + MS.duracao)) AND
+          (data_fim NOT BETWEEN MS.data_inicio AND (MS.data_incio + MS.duracao)))) AND
+          
+          (CS.id IS NULL OR (
+		  (data_inicio NOT BETWEEN
+		  (CS.data_de_inicio + C.hora_partida_prevista) AND
+		  (CS.data_de_inicio + C.hora_chegada_prevista)) AND
+          
+		  (C.hora_partida IS NULL OR C.hora_chegada < data_inicio)))
+	LIMIT 1);
+    IF aviao IS NULL
+    THEN
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Não existe aviões disponíveis';
+		ROLLBACK;
+    END IF;
+    
+    SET codigo_tipo = (SELECT id FROM Tipo WHERE Tipo.designacao = tipo);
+    IF codigo_tipo IS NULL
+    THEN
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Tipo não válido';
+		ROLLBACK;
+    END IF;
+    
+	INSERT Servico (estado, data_de_incio, duracao)
+    VALUE (1, data_inicio, TIME(timestampdiff(data_fim, data_inicio)));
+    
+    SET id_do_servico = last_insert_id();
+    
+    INSERT Servico_ao_cliente (id, tipo) VALUE (id_serivico, codigo_tipo);
+    
+    INSERT Ciclo (id_servico, marcas_da_aeronave, hora_partida, hora_chegada) VALUE (id_do_servico, aviao, hora_partida, data_chegada);
+    
+    IF r
+		THEN ROLLBACK;
+        ELSE COMMIT;
+	END IF;
 END
 $$
 
