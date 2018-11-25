@@ -54,7 +54,7 @@ DROP TABLE IF EXISTS `mydb`.`Funcionario` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Funcionario` (
   `numero` INT NOT NULL,
-  `nome` VARCHAR(255) NOT NULL,
+  `nome` VARCHAR(63) NOT NULL,
   `data_de_nascimento` DATE NOT NULL,
   `genero` CHAR(1) NOT NULL,
   `data_criacao` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -71,7 +71,7 @@ DROP TABLE IF EXISTS `mydb`.`Funcao` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Funcao` (
   `id` TINYINT NOT NULL,
-  `designacao` VARCHAR(255) NOT NULL,
+  `designacao` VARCHAR(63) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -106,7 +106,7 @@ DROP TABLE IF EXISTS `mydb`.`Lugar_local` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Lugar_local` (
   `id` TINYINT NOT NULL,
-  `designacao` VARCHAR(255) NOT NULL,
+  `designacao` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -118,7 +118,7 @@ DROP TABLE IF EXISTS `mydb`.`Tipo` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Tipo` (
   `id` TINYINT NOT NULL,
-  `designacao` VARCHAR(255) NOT NULL,
+  `designacao` VARCHAR(63) NOT NULL,
   `preco` DECIMAL(10,2) NOT NULL,
   `desconto` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`id`));
@@ -276,7 +276,7 @@ DROP TABLE IF EXISTS `mydb`.`Cliente` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
   `id` INT NOT NULL,
-  `nome` VARCHAR(255) NOT NULL,
+  `nome` VARCHAR(63) NOT NULL,
   `data_nascimento` DATE NOT NULL,
   `genero` CHAR(1) NOT NULL,
   `data_criacao` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -431,12 +431,12 @@ DROP TRIGGER IF EXISTS `mydb`.`Cliente_BEFORE_INSERT` $$
 USE `mydb`$$
 CREATE DEFINER = CURRENT_USER TRIGGER `mydb`.`Cliente_BEFORE_INSERT` BEFORE INSERT ON `Cliente` FOR EACH ROW
 BEGIN
-	IF (TIMESTAMPDIFF(YEAR, "1998-11-25", NOW()) < 17 AND (NEW.brevete = TRUE OR NEW.formacao_paraquedismo = TRUE))
+	IF (YEAR(NOW() - NEW.data_nascimento) < 17 AND (NEW.brevete = TRUE OR NEW.formacao_paraquedismo = TRUE))
     THEN
 		SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'O Cliente deve ter 17 ou mais anos para ter brevete ou formação em paraquedismo';
 	END IF;
-    IF NEW.genero NOT IN ('M','F')
+    IF NEW.genero IN ('M','F')
     THEN
 		SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'O genero deve ser M ou F';
