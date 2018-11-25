@@ -431,12 +431,12 @@ DROP TRIGGER IF EXISTS `mydb`.`Cliente_BEFORE_INSERT` $$
 USE `mydb`$$
 CREATE DEFINER = CURRENT_USER TRIGGER `mydb`.`Cliente_BEFORE_INSERT` BEFORE INSERT ON `Cliente` FOR EACH ROW
 BEGIN
-	IF (YEAR(NOW() - NEW.data_nascimento) < 17 AND (NEW.brevete = TRUE OR NEW.formacao_paraquedismo = TRUE))
+	IF (TIMESTAMPDIFF(YEAR, "1998-11-25", NOW()) < 17 AND (NEW.brevete = TRUE OR NEW.formacao_paraquedismo = TRUE))
     THEN
 		SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'O Cliente deve ter 17 ou mais anos para ter brevete ou formação em paraquedismo';
 	END IF;
-    IF NEW.genero IN ('M','F')
+    IF NEW.genero NOT IN ('M','F')
     THEN
 		SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'O genero deve ser M ou F';
