@@ -53,7 +53,7 @@ ORDER BY Total DESC;
 SELECT * from lucro_Avioes;
 
 CREATE VIEW despesa_Socios AS
-SELECT CS.id_cliente, CS.id_servico, socios.numero_socio, socios.nome, precos.preco- CS.pagamento AS Perda FROM 
+SELECT CS.id_cliente, CS.id_servico, socios.numero_socio, socios.nome, -1*sum(precos.preco-CS.pagamento) AS Perda FROM 
     Cliente_Servico AS CS
     INNER JOIN 
     (Select C.id, SO.numero_socio, C.nome 
@@ -63,4 +63,8 @@ SELECT CS.id_cliente, CS.id_servico, socios.numero_socio, socios.nome, precos.pr
     (Select SAC.id, preco, desconto
     FROM Servico_ao_cliente AS SAC
     INNER JOIN Tipo AS T ON T.id = SAC.tipo) AS precos ON precos.id = CS.id_servico
-	
+    GROUP BY id_cliente
+    ORDER BY Perda;
+
+Select sum(Total) AS 'Lucro Total da empresa' From
+((SELECT Total from lucro_Avioes) UNION (SELECT Perda from despesa_Socios)) AS T;
