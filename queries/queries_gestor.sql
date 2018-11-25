@@ -31,7 +31,7 @@ SET SQL_SAFE_UPDATES = 0;
     por_aviao_indisponivel(aviao)
     ------------------------------------------------------
     */
-    
+
 -- Vê infos de dinheiro de aviões
 CREATE VIEW lucro_Avioes AS
 SELECT A.marcas_da_aeronave as 'Marcas da aeronave', modelo as 'Modelo',

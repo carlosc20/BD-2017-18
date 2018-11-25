@@ -33,6 +33,7 @@ SET SQL_SAFE_UPDATES = 0;
     
 -- Ver lugares de estacionamento livres
 -- Auxiliar
+CREATE VIEW lugares_livres AS
 SELECT 
     designacao AS 'Designação'
 FROM
@@ -45,11 +46,10 @@ WHERE
 
 -- Ver ciclos planeados
 -- Controlador
+CREATE VIEW ciclos_planeado AS
 SELECT 
     id_servico,
     marcas_da_aeronave,
-    icao_origem,
-    icao_destino,
     hora_partida_prevista,
     duracao_prevista
 FROM

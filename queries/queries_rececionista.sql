@@ -151,10 +151,9 @@ $$
 CREATE VIEW  list_Clientes AS
 SELECT nome AS 'Nome', brevete AS 'Brevete', formacao_paraquedismo AS 'Formação de Paraquedismo',
 	  genero AS 'Género', numero_de_telefone AS 'Número de Telefone',
-        rua AS 'Morada', codigo_postal AS 'Código Postal'
-    FROM cliente
+        morada AS 'Morada' 
+        FROM cliente
     ORDER BY cliente.id;
-
 Select * From list_Clientes;
 
 
