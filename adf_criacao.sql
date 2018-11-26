@@ -134,7 +134,7 @@ DROP TABLE IF EXISTS `mydb`.`Aviao` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`Aviao` (
   `marcas_da_aeronave` CHAR(6) NOT NULL,
   `tipo` TINYINT NOT NULL,
-  `lugar_local` TINYINT NOT NULL,
+  `lugar_local` TINYINT NULL,
   `proprietario` VARCHAR(255) NOT NULL,
   `modelo` VARCHAR(45) NOT NULL,
   `numero_max_passageiros` INT NOT NULL,

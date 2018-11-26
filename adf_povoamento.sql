@@ -79,9 +79,10 @@ INSERT INTO Quotas
 INSERT INTO Estado
 	(id, designacao)
 	VALUES 
-	(1, 'Normal'),
+	(1, 'Finalizado'),
     (2, 'Cancelado'),
-    (3, 'Adiado');
+    (3, 'Adiado'),
+    (4, 'Por finalizar');
 --
 -- DELETE FROM Estado;
 -- SELECT * FROM Estado;
@@ -108,6 +109,7 @@ INSERT INTO Servico
 	(15	, 1, '2018-11-20 18:00:00', '2:00',  null),					-- aula teorica 13
 	(16	, 1, '2018-11-20 20:00:00', '2:00',  null),					-- aula teorica 13
 	(17	, 1, '2018-11-20 15:00:00', '2:00',  null),					-- aula paraquedismo 8
+    (18 , 1, '2018-11-20 15:00:00', '2:00',  null),                 -- voo privado sem aluguer
 	(19	, 3, '2018-11-20 17:00:00', '2:00',  null),					-- aula paraquedismo 8
 	(20	, 1, '2018-11-20 22:00:00', '1:00',  'Coisas mecanicas'), 	-- man 8
 	(22	, 1, '2018-11-20 19:00:00', '2:00',  null),					-- aula paraquedismo 8
@@ -125,7 +127,8 @@ INSERT INTO Tipo
     (3, 'Voo privado', 200.00, 0.20),
     (4, 'Aula de paraquedismo', 10.00, 0.05), 
     (5, 'Aula de pilotagem teórica', 20.00, 0.10),
-    (6, 'Aula de pilotagem prática', 45.00, 0.10);
+    (6, 'Aula de pilotagem prática', 45.00, 0.10),
+    (7, 'Voo privado sem aluguer', 90.00, 0.05);
 --
 -- DELETE FROM Tipo;
 -- SELECT * FROM Tipo;
@@ -146,10 +149,11 @@ INSERT INTO Servico_ao_cliente
 	(14	, 5, 10),					
 	(15	, 5, 10),				
 	(16	, 5, 10),				
-	(17	, 4, 5),					
+	(17	, 4, 5),
+    (18 , 7, 1), 
 	(19	, 4, 5),					
 	(22	, 4, 5),					
-    (23	, 3, 1);	
+    (23	, 3, 1);
 --
 -- DELETE FROM Servico_externo;
 -- SELECT * FROM Servico_externo;
@@ -197,6 +201,7 @@ INSERT INTO Cliente_servico
 	(11	,22	, 10.00),	
     (12	,22	, 9.50),
     (15	,22	, 10.00),
+    (14, 18, 85,5),
     (14	,23	, 160.00);			
 --
 -- DELETE FROM Servico_cliente;
@@ -220,11 +225,11 @@ INSERT INTO Aviao
 	(marcas_da_aeronave, proprietario, modelo, numero_max_passageiros, disponivel, data_proxima_revisao, lugar_local, tipo)
 	VALUES 
 	('CS-AVC', 'Aerodromo da feira'	, 'Fantasy Air Allegro 2000' 		, 2	, true	, '2020-10-30', 1	, 3), 
-    ('CS-IPZ', 'Aerodromo da feira'	, 'Cessna Citation CJ2'		 		, 2, false	, '2019-06-12', 2	, 6), 
+    ('CS-IPZ', 'Aerodromo da feira'	, 'Cessna Citation CJ2'		 		, 2 , false	, '2019-06-12', 2	, 6), 
 	('CS-MRQ', 'Aerodromo da feira'	, 'Piper PA-28-140 Cherokee 160 hp'	, 4	, true	, '2019-08-02', 3	, 1),
     ('CS-XYW', 'Aerodromo da feira'	, 'Cessna Citation PO2'		 		, 2 , true	, '2019-06-12', 2	, 5),
 	('CS-MDQ', 'Aerodromo da feira'	, 'Piper PA-28R-200 Arrow III'		, 4	, true	, '2019-02-06', 4	, 2),
-	('CS-SBP', 'Eire'			   	, 'Beechcraft Baron G58'			, 10, true	, '2019-01-07', 4	, 1);
+	('CS-SBP', 'Gabriel Souto'		, 'Beechcraft Baron G58'			, 2 , true	, '2019-01-07', null, 7);
 -- DELETE FROM Aviao;
 -- SELECT * FROM Aviao;
 
