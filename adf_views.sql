@@ -1,3 +1,16 @@
+
+CREATE VIEW AS servicos_adiados_e_porfazer
+SELECT S.id AS 'Identificador do Serviço', T.designacao AS 'Tipo', SC.limite_clientes AS 'Limite de Clientes',
+        count(*) AS 'Total de Clientes', E.designacao AS 'Estado', S.data_de_inicio AS 'Data e Hora de Início', S.duracao AS 'Duração prevista', S.observacao AS 'Observações'
+    From Servico AS S
+        INNER JOIN servico_ao_cliente AS SC ON SC.id = S.id
+        INNER JOIN cliente_servico AS CS ON CS.id_servico = SC.id
+        Inner Join cliente AS C ON C.id = CS.id_cliente
+        INNER JOIN Tipo AS T ON T.id = SC.tipo
+        Inner Join Estado AS E ON E.id = S.estado
+			where E.id = 3 OR E.id = 4
+    GROUP BY S.id;
+    
 CREATE VIEW  list_Clientes AS
 SELECT nome AS 'Nome', brevete AS 'Brevete', formacao_paraquedismo AS 'Formação de Paraquedismo',
 	  genero AS 'Género', numero_de_telefone AS 'Número de Telefone',
@@ -41,15 +54,6 @@ SELECT F.nome AS 'Nome', F.numero AS 'Número' , -1*(1+TIMESTAMPDIFF(MONTH, F.da
 	     Funcionario AS F
          ORDER BY acumulado;
          
-CREATE VIEW lugares_livres AS
-SELECT 
-    designacao AS 'Designação'
-FROM
-    Lugar_local AS L
-        LEFT JOIN
-    Aviao AS A ON A.lugar_local = L.id
-WHERE
-    A.lugar_local IS NULL;
 
 CREATE VIEW ciclos_planeado AS
 SELECT 
