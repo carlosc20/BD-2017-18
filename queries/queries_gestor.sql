@@ -64,8 +64,15 @@ SELECT CS.id_cliente, CS.id_servico, socios.numero_socio, socios.nome, -1*sum(pr
     GROUP BY id_cliente
     ORDER BY Perda;
 
-SELECT SUM(Total) AS 'Lucro acumulado da empresa' From
-((SELECT Total FROM lucro_Avioes) UNION (SELECT Perda FROM despesa_Socios)) AS T;
+CREATE VIEW despesa_Funcionarios AS
+SELECT F.nome AS 'Nome', F.numero AS 'Número' , -1*(1+TIMESTAMPDIFF(MONTH, F.data_criacao, now()))*F.salario AS acumulado FROM 
+	     Funcionario AS F
+         ORDER BY acumulado;
+	   
+
+SELECT SUM(Total) AS 'Balanço total da empresa' From
+((SELECT Total FROM lucro_Avioes) UNION (SELECT Perda FROM despesa_Socios) 
+UNION (SELECT 1150*count(*) FROM Quotas) UNION (SELECT acumulado FROM despesa_Funcionarios)) AS T;
 
 drop procedure `lucro_temporal`;
 DELIMITER $$

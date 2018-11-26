@@ -28,19 +28,11 @@ INSERT INTO Cliente
 	(8	, 'Júlia  Magalhães'	, false	, false	, '1954-09-13', 'F', '+351 297 481 565', '2017-05-15 16:00:00', 'Rua São Salvador 36, Igreja, Braga 4730-190'),
 	(9	, 'Ivan  Vasconcelos'	, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria 3240-601'),
 	(10	, 'João  Vasconcelos'	, false	, false	, '1983-01-13', 'M', '+351 240 522 339', '2017-05-15 16:00:00', 'Rua Caldeirão 16, Pedra da Adega, Leiria'),
-    (11	, 'Mario Gotze'			, false	, false	, '1993-01-20', 'M', '+355 570 542 200', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
-    (12	, 'Joana BomBom'		, false	, false	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
-    (13	, 'Mario Madeira'		, false , true	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
-    (14	, 'Marco Dantas'		, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
-	(15	, 'Gabriel Souto'		, true	, true	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
-	(16	, 'Henrique Marques'	, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
-    (17	, 'Mafalda Jornalista'	, false	, true	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
-	(18	, 'Marta Soares'		, true	, true	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
-	(19	, 'Pedro Bernardo'		, true	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
-	(20	, 'Joana Pina'			, false	, false	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
-	(21	, 'Sara Correia'		, false	, true	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
-	(22	, 'Ricardo Pão'			, false	, false	, '1981-09-11', 'M', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria'),
-	(23	, 'Mafalda Silva'		, true	, false	, '1981-09-11', 'F', '+351 270 512 329', '2017-05-15 16:00:00', 'Rua Caldeirão 14, Pedra da Adega, Leiria');
+    (11	, 'Mario Gotze'			, false	, false	, '1993-01-20', 'M', '+355 570 542 200', '2017-05-15 16:00:00', 'Rua Azinhaga de Tempães, Lavradas, Viana do Castelo 4980-403'),
+    (12	, 'Joana Bombom'		, false	, false	, '1983-08-11', 'F', '+351 923 438 234', '2017-05-15 16:00:00', 'Rua Inverno nº5, Palmeira, Braga 4700-478'),
+    (13	, 'Mário Madeira'		, false , true	, '1995-09-11', 'M', '+351 984 235 635', '2017-05-15 16:00:00', 'Rua dos Cães 12, Cabreiros, Vila Real 4400-341'),
+	(14	, 'Gabriel Souto'		, true	, true	, '1969-09-21', 'M', '+351 250 234 223', '2017-05-15 16:00:00', 'Rua Feliz 1, Santa Maria da Feira, Porto 4480-123'),
+	(15	, 'Ricardo Pão'			, false	, false	, '1980-01-30', 'M', '+351 918 778 923', '2017-05-15 16:00:00', 'Rua Engenheiro Marco Dantas, Amadora, Lisboa 1300-456');
 --
 -- DELETE FROM Cliente;
 -- SELECT * FROM Cliente;
@@ -54,8 +46,8 @@ INSERT INTO Socio
     (10),
     (12),
     (13),
-    (15),
-    (20);
+    (14),
+    (15);
     
 
 INSERT INTO Quotas
@@ -72,7 +64,7 @@ INSERT INTO Quotas
     (4, 2017),
     (4, 2018),
     (5, 2018),
-    (6, 2017), -- não pagou uma
+    (6, 2017), 
     (7, 2017),
     (7, 2018),
     (8, 2018),
@@ -179,8 +171,7 @@ INSERT INTO Cliente_servico
     (10	,7	, 57.00),
 	(1	,8	, 103.50),
     (13	,8	, 103.50),
-    (15	,8	, 103.50),
-    (17	,8	, 115.00),
+    (14	,8	, 103.50),
 	(3	,11	, 40.50),									
 	(11	,14	, 20.00),
     (12	,14	, 18.00),
@@ -205,8 +196,8 @@ INSERT INTO Cliente_servico
     (10	,19	, 09.50),
 	(11	,22	, 10.00),	
     (12	,22	, 9.50),
-    (22	,22	, 10.00),
-    (15	,23	, 160.00);			
+    (15	,22	, 10.00),
+    (14	,23	, 160.00);			
 --
 -- DELETE FROM Servico_cliente;
 -- SELECT * FROM Servico_cliente;
@@ -273,20 +264,20 @@ INSERT INTO Manutencao
 INSERT INTO Funcionario
 	(numero, nome, data_de_nascimento, genero, data_criacao, empregado, salario)
 	VALUES 
-	(1	, 'José Aerodromo'		, '1969-05-24', 'M', '2017-5-10 10:00:00', true	, 9676.67),-- admin
-	(2	, 'Sílvia Despedida'	, '1981-01-14', 'F', '2017-5-10 10:00:00', false, 676.67), -- rece
-	(3	, 'Maria Rececionista'	, '1972-10-02', 'F', '2017-5-10 10:00:00', true	, 676.67), -- rece
-	(4	, 'Joaquim Controlador'	, '1977-05-15', 'M', '2017-5-10 10:00:00', true	, 676.67), -- contro
-	(5	, 'Matilde Auxiliar'	, '1994-03-13', 'F', '2017-5-10 10:00:00', true	, 676.67), -- aux
-	(6	, 'Selestina Piloto In'	, '1952-08-07', 'F', '2017-5-10 10:00:00', true	, 676.67), -- piloto
-    (7	, 'Eduarda Revisor In'	, '1979-04-02', 'M', '2017-5-10 10:00:00', true	, 676.67), -- inst. revisor
-    (8	, 'Luís Faztudo'		, '1979-10-01', 'M', '2017-5-10 10:00:00', true	, 676.67), -- pilot, inst, revisor
-    (9	, 'Catarina Castro'		, '1977-03-06', 'F', '2017-5-10 10:00:00', true , 676.67), -- rece
-    (10	, 'Luís Viterbo'		, '1982-06-29', 'M', '2017-5-10 10:00:00', true , 676.67), -- controlador
-	(11	, 'Luisa Maria'			, '1992-07-22', 'F', '2017-5-10 10:00:00', true , 676.67), -- inst
-    (12	, 'Luís Viterbo'		, '1982-06-29', 'M', '2017-5-10 10:00:00', true , 676.67), -- piloto, inst
-	(13	, 'Luisa Maria'			, '1992-07-22', 'F', '2017-5-10 10:00:00', true , 676.67), -- piloto, inst
-    (14	, 'Luisa Maria'			, '1992-07-22', 'F', '2017-5-10 10:00:00', false, 676.67); -- revisor
+	(1	, 'José Aerodromo'		, '1969-05-24', 'M', '2018-10-20 10:00:00', true	, 1100.87),-- admin
+	(2	, 'Sílvia Despedida'	, '1981-01-14', 'F', '2018-10-20 10:00:00', false, 676.67), -- rece
+	(3	, 'Maria Rececionista'	, '1972-10-02', 'F', '2018-10-20 10:00:00', true	, 676.67), -- rece
+	(4	, 'Joaquim Controlador'	, '1977-05-15', 'M', '2018-10-20 10:00:00', true	, 714.33), -- contro
+	(5	, 'Matilde Auxiliar'	, '1994-03-13', 'F', '2018-10-20 10:00:00', true	, 598.44), -- aux
+	(6	, 'Selestina Piloto In'	, '1952-08-07', 'F', '2018-10-20 10:00:00', true	, 850.07), -- piloto
+    (7	, 'Eduarda Revisor In'	, '1979-04-02', 'M', '2018-10-20 10:00:00', true	, 800.57), -- inst. revisor
+    (8	, 'Luís Faztudo'		, '1979-10-01', 'M', '2018-10-20 10:00:00', true	, 900.56), -- pilot, inst, revisor
+    (9	, 'Catarina Castro'		, '1977-03-06', 'F', '2018-10-20 10:00:00', true , 676.67), -- rece
+    (10	, 'Luís Viterbo'		, '1982-06-29', 'M', '2018-10-20 10:00:00', true , 713.33), -- controlador
+	(11	, 'Luisa Maria'			, '1992-07-22', 'F', '2018-10-20 10:00:00', true , 676.67), -- inst
+    (12	, 'Luís Viterbo'		, '1982-06-29', 'M', '2018-10-20 10:00:00', true , 750.70), -- piloto, inst
+	(13	, 'Luisa Maria'			, '1992-07-22', 'F', '2018-10-20 10:00:00', true , 750.70), -- piloto, inst
+    (14	, 'Luisa Maria'			, '1992-07-22', 'F', '2018-10-20 10:00:00', false, 676.67); -- revisor
     
 --
 -- DELETE FROM Funcionario;
