@@ -273,20 +273,20 @@ INSERT INTO Manutencao
 INSERT INTO Funcionario
 	(numero, nome, data_de_nascimento, genero, data_criacao, empregado, salario)
 	VALUES 
-	(1	, 'José Aerodromo'		, '1969-05-24', 'M', '2017-5-10 10:00:00', true	, 9676.67),-- admin
-	(2	, 'Sílvia Despedida'	, '1981-01-14', 'F', '2017-5-10 10:00:00', false, 676.67), -- rece
-	(3	, 'Maria Rececionista'	, '1972-10-02', 'F', '2017-5-10 10:00:00', true	, 676.67), -- rece
-	(4	, 'Joaquim Controlador'	, '1977-05-15', 'M', '2017-5-10 10:00:00', true	, 676.67), -- contro
-	(5	, 'Matilde Auxiliar'	, '1994-03-13', 'F', '2017-5-10 10:00:00', true	, 676.67), -- aux
-	(6	, 'Selestina Piloto In'	, '1952-08-07', 'F', '2017-5-10 10:00:00', true	, 676.67), -- piloto
-    (7	, 'Eduarda Revisor In'	, '1979-04-02', 'M', '2017-5-10 10:00:00', true	, 676.67), -- inst. revisor
-    (8	, 'Luís Faztudo'		, '1979-10-01', 'M', '2017-5-10 10:00:00', true	, 676.67), -- pilot, inst, revisor
-    (9	, 'Catarina Castro'		, '1977-03-06', 'F', '2017-5-10 10:00:00', true , 676.67), -- rece
-    (10	, 'Luís Viterbo'		, '1982-06-29', 'M', '2017-5-10 10:00:00', true , 676.67), -- controlador
-	(11	, 'Luisa Maria'			, '1992-07-22', 'F', '2017-5-10 10:00:00', true , 676.67), -- inst
-    (12	, 'Luís Viterbo'		, '1982-06-29', 'M', '2017-5-10 10:00:00', true , 676.67), -- piloto, inst
-	(13	, 'Luisa Maria'			, '1992-07-22', 'F', '2017-5-10 10:00:00', true , 676.67), -- piloto, inst
-    (14	, 'Luisa Maria'			, '1992-07-22', 'F', '2017-5-10 10:00:00', false, 676.67); -- revisor
+	(1	, 'José Aerodromo'		, '1969-05-24', 'M', '2018-10-20 10:00:00', true	, 1100.87),-- admin
+	(2	, 'Sílvia Despedida'	, '1981-01-14', 'F', '2018-10-20 10:00:00', false, 676.67), -- rece
+	(3	, 'Maria Rececionista'	, '1972-10-02', 'F', '2018-10-20 10:00:00', true	, 676.67), -- rece
+	(4	, 'Joaquim Controlador'	, '1977-05-15', 'M', '2018-10-20 10:00:00', true	, 714.33), -- contro
+	(5	, 'Matilde Auxiliar'	, '1994-03-13', 'F', '2018-10-20 10:00:00', true	, 598.44), -- aux
+	(6	, 'Selestina Piloto In'	, '1952-08-07', 'F', '2018-10-20 10:00:00', true	, 850.07), -- piloto
+    (7	, 'Eduarda Revisor In'	, '1979-04-02', 'M', '2018-10-20 10:00:00', true	, 800.57), -- inst. revisor
+    (8	, 'Luís Faztudo'		, '1979-10-01', 'M', '2018-10-20 10:00:00', true	, 900.56), -- pilot, inst, revisor
+    (9	, 'Catarina Castro'		, '1977-03-06', 'F', '2018-10-20 10:00:00', true , 676.67), -- rece
+    (10	, 'Luís Viterbo'		, '1982-06-29', 'M', '2018-10-20 10:00:00', true , 713.33), -- controlador
+	(11	, 'Luisa Maria'			, '1992-07-22', 'F', '2018-10-20 10:00:00', true , 676.67), -- inst
+    (12	, 'Luís Viterbo'		, '1982-06-29', 'M', '2018-10-20 10:00:00', true , 750.70), -- piloto, inst
+	(13	, 'Luisa Maria'			, '1992-07-22', 'F', '2018-10-20 10:00:00', true , 750.70), -- piloto, inst
+    (14	, 'Luisa Maria'			, '1992-07-22', 'F', '2018-10-20 10:00:00', false, 676.67); -- revisor
     
 --
 -- DELETE FROM Funcionario;
