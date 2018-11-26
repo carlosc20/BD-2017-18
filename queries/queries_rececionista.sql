@@ -26,10 +26,10 @@ SET SQL_SAFE_UPDATES = 0;
     ✔ ver_servicos_com_vagas(tipo)
     M ver_avioes() -> ordenado por id
     ✔ ver_disponibilidade_funcionarios(funcao) ->
-    ver_disponibilidade_avioes(tipo) ->
-    cria_servico_ao_cliente(coisas)
-    cancelar_servico(id)
-    adiar_servico()??
+    D ver_disponibilidade_avioes(tipo) ->
+    D cria_servico_ao_cliente(coisas)
+    ✔ cancelar_servico(id)
+    ✔ adiar_servico()
     ------------------------------------------------------
     */
     
@@ -271,3 +271,28 @@ SELECT S.id AS 'Identificador do Serviço', T.designacao AS 'Tipo', SC.limite_cl
         INNER JOIN Tipo AS T ON T.id = SC.tipo
         Inner Join Estado AS E ON E.id = S.estado
     GROUP BY S.id;
+    
+drop procedure `cancelar_servico`;
+DELIMITER $$
+CREATE PROCEDURE `cancelar_servico`(IN idServico INT)
+BEGIN
+	UPDATE Servico
+    SET estado = (SELECT Id FROM Estado WHERE designacao = "Cancelado")
+    WHERE id = idServico;
+END
+$$
+CALL cancelar_servico(1);
+
+drop procedure `adiar_servico`;
+DELIMITER $$
+CREATE PROCEDURE `adiar_servico`(IN idServico INT, IN novaData DATETIME)
+BEGIN
+	UPDATE Servico
+    SET estado = (SELECT Id FROM Estado WHERE designacao = "Adiado"),
+		data_de_inicio = novaData
+    WHERE id = idServico;
+END
+$$
+CALL adiar_servico(1, NOW());
+SELECT * FROM Servico;
+SELECT * FROM Estado;

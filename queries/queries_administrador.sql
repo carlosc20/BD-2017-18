@@ -31,7 +31,6 @@ SET SQL_SAFE_UPDATES = 0;
     ------------------------------------------------------
     */
 
-
 -- Quantos serviços cada cliente fez de cada tipo
 -- Admin?
 SELECT 
@@ -82,3 +81,33 @@ BEGIN
     END
 $$
 -- call atualizar_funcionario(0,"Zèzinho",DATE("2017-06-15"),"M",TIMESTAMP("2017-07-23",  "13:10:11"),1, 1000.5);
+
+drop procedure `criar_manutencao`;
+DELIMITER $$
+Create Procedure `criar_manutencao` (IN marcas_da_aeronave CHAR(6), IN data_de_inicio DATETIME, IN duracao TIME)
+BEGIN
+	DECLARE estadoId INT;
+    DECLARE servico_id INT;
+    DECLARE r BOOL DEFAULT FALSE;
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET r = TRUE;
+    START TRANSACTION;
+    SET estadoId = (SELECT id FROM Estado WHERE designacao = "Normal");
+
+    INSERT INTO Servico (estado, data_de_inicio, duracao)
+    VALUES (estadoId, data_de_inicio, duracao);
+    IF r
+		THEN ROLLBACK;
+	END IF;
+    SET servico_id = LAST_INSERT_ID();
+    
+    INSERT INTO Manutencao (id, marcas_da_aeronave)
+    VALUES (servico_id, marcas_da_aeronave);
+    IF r
+        THEN ROLLBACK;
+		ELSE COMMIT;
+	END IF;
+END
+$$
+CALL criar_manutencao("CS-AVC", NOW(), "1:00");
+SELECT * FROM Servico;
+SELECT * FROM Manutencao;
