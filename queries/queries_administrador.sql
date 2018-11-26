@@ -59,9 +59,11 @@ ORDER BY data_proxima_revisao;
 
 
 -- criar_funcionario adiciona um funcionario á tabela com os parametros fornecidos
-drop procedure `proc_criar_funcionario`;
+/*
+drop procedure `criar_funcionario`;
+*/
 DELIMITER $$
-Create Procedure `proc_criar_funcionario` (IN id INT, IN nome VARCHAR(255), IN data_nascimento DATE, genero CHAR(1), IN empregado TINYINT, IN salario DECIMAL(10,2))
+Create Procedure `criar_funcionario` (IN id INT, IN nome VARCHAR(255), IN data_nascimento DATE, genero CHAR(1), IN empregado TINYINT, IN salario DECIMAL(10,2))
 BEGIN
     INSERT INTO Funcionario	
     VALUES (id,nome,data_nascimento,genero,empregado,salario);
@@ -71,18 +73,24 @@ $$
 
 
 -- Função atualizar_funcionário atualiza um funcionario dado o numero do mesmo
-drop procedure `proc_atualizar_funcionario`;
+/*
+drop procedure `atualizar_salario_funcionario`;
+*/
 DELIMITER $$
-Create Procedure `proc_atualizar_funcionario` (IN id INT, IN data_criação TIMESTAMP, IN empregado TINYINT, IN salario DECIMAL(10,2))
+Create Procedure `atualizar_salario_funcionario` (IN id INT, IN salario DECIMAL(10,2))
 BEGIN
     UPDATE Funcionario
-    SET nome = nome, data_de_nascimento = data_nascimento, genero=genero, data_criacao=data_criação, empregado=empregado, salario=salario
+    SET salario=salario
     WHERE numero=id;
     END
 $$
--- call atualizar_funcionario(0,"Zèzinho",DATE("2017-06-15"),"M",TIMESTAMP("2017-07-23",  "13:10:11"),1, 1000.5);
+/*
+call atualizar_salario_funcionario(2, 1000.5);
+*/
 
+/*
 drop procedure `criar_manutencao`;
+*/
 DELIMITER $$
 Create Procedure `criar_manutencao` (IN marcas_da_aeronave CHAR(6), IN data_de_inicio DATETIME, IN duracao TIME)
 BEGIN
@@ -108,6 +116,6 @@ BEGIN
 	END IF;
 END
 $$
-CALL criar_manutencao("CS-AVC", NOW(), "1:00");
-SELECT * FROM Servico;
-SELECT * FROM Manutencao;
+/*
+CALL criar_manutencao("CS-AVC", NOW() + INTERVAL 1 DAY, "1:00");
+*/

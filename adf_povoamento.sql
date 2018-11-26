@@ -201,7 +201,7 @@ INSERT INTO Cliente_servico
 	(11	,22	, 10.00),	
     (12	,22	, 9.50),
     (15	,22	, 10.00),
-    (14, 18, 85,5),
+    (14, 18, 85.5),
     (14	,23	, 160.00);			
 --
 -- DELETE FROM Servico_cliente;

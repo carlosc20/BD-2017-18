@@ -33,48 +33,30 @@ SET SQL_SAFE_UPDATES = 0;
     */
 
 -- Vê infos de dinheiro de aviões
-CREATE VIEW lucro_Avioes AS
-SELECT A.marcas_da_aeronave as 'Marcas da aeronave', modelo as 'Modelo',
-   IFNULL(SUM(M.despesas), 0) AS 'Despesa em Manutenções', IFNULL(SUM(CS.pagamento), 0) AS 'Rendimento em Serviços',
-   IFNULL(SUM(CS.pagamento), 0) - IFNULL(SUM(M.despesas), 0) AS Total
-	FROM
-    Aviao AS A
-        LEFT JOIN
-    Ciclo AS C ON C.marcas_da_aeronave = A.marcas_da_aeronave
-        LEFT JOIN
-    Servico_ao_cliente AS SC ON SC.id = C.id_servico
-        LEFT JOIN
-	Cliente_servico AS CS ON CS.id_servico = SC.id
-		LEFT JOIN
-    Manutencao AS M ON M.marcas_da_aeronave = A.marcas_da_aeronave
-GROUP BY A.marcas_da_aeronave
-ORDER BY Total DESC; 
+SELECT * FROM lucro_Avioes;
 
-CREATE VIEW despesa_Socios AS
-SELECT CS.id_cliente, CS.id_servico, socios.numero_socio, socios.nome, -1*sum(precos.preco-CS.pagamento) AS Perda FROM 
-    Cliente_Servico AS CS
-    INNER JOIN 
-    (Select C.id, SO.numero_socio, C.nome 
-	FROM Cliente AS C 
-    INNER JOIN Socio AS SO ON SO.id_cliente = C.id) AS socios ON socios.id = CS.id_cliente
-    INNER JOIN 
-    (Select SAC.id, preco, desconto
-    FROM Servico_ao_cliente AS SAC
-    INNER JOIN Tipo AS T ON T.id = SAC.tipo) AS precos ON precos.id = CS.id_servico
-    GROUP BY id_cliente
-    ORDER BY Perda;
+SELECT * FROM despesa_Socios;
 
-CREATE VIEW despesa_Funcionarios AS
-SELECT F.nome AS 'Nome', F.numero AS 'Número' , -1*(1+TIMESTAMPDIFF(MONTH, F.data_criacao, now()))*F.salario AS acumulado FROM 
-	     Funcionario AS F
-         ORDER BY acumulado;
-	   
+SELECT * FROM despesa_Funcionarios;
 
-SELECT SUM(Total) AS 'Balanço total da empresa' From
-((SELECT Total FROM lucro_Avioes) UNION (SELECT Perda FROM despesa_Socios) 
-UNION (SELECT 1150*count(*) FROM Quotas) UNION (SELECT acumulado FROM despesa_Funcionarios)) AS T;
+/*
+drop procedure `balanco_total`;
+*/
+DELIMITER $$
+CREATE PROCEDURE `balanco_total`(IN preco_quota DECIMAL(10,2))
+BEGIN
+	SELECT SUM(Total) AS 'Balanço total da empresa' From
+	((SELECT Total FROM lucro_Avioes) UNION (SELECT Perda FROM despesa_Socios) 
+	UNION (SELECT preco_quota*count(*) FROM Quotas) UNION (SELECT acumulado FROM despesa_Funcionarios)) AS T;
+END
+$$
+/*
+call balanco_total(1000); 
+*/
 
+/*
 drop procedure `lucro_temporal`;
+*/
 DELIMITER $$
 CREATE PROCEDURE `lucro_temporal`(IN data_inicio DATETIME, IN data_fim DATETIME)
 BEGIN
@@ -85,4 +67,6 @@ BEGIN
 		WHERE S.data_de_inicio BETWEEN data_inicio AND data_fim) AS servicos ON servicos.id = L.id;
 END
 $$
+/*
 call lucro_temporal('2018-11-20 00:10:00', '2018-11-21 20:10:00'); 
+*/
