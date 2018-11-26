@@ -134,7 +134,7 @@ DROP TABLE IF EXISTS `mydb`.`Aviao` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`Aviao` (
   `marcas_da_aeronave` CHAR(6) NOT NULL,
   `tipo` TINYINT NOT NULL,
-  `lugar_local` TINYINT NOT NULL,
+  `lugar_local` TINYINT NULL,
   `proprietario` VARCHAR(255) NOT NULL,
   `modelo` VARCHAR(45) NOT NULL,
   `numero_max_passageiros` INT NOT NULL,
@@ -417,15 +417,6 @@ END$$
 
 
 USE `mydb`$$
-DROP TRIGGER IF EXISTS `mydb`.`Servico_BEFORE_UPDATE` $$
-USE `mydb`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `mydb`.`Servico_BEFORE_UPDATE` BEFORE UPDATE ON `Servico` FOR EACH ROW
-BEGIN
-	
-END$$
-
-
-USE `mydb`$$
 DROP TRIGGER IF EXISTS `mydb`.`Ciclo_BEFORE_INSERT` $$
 USE `mydb`$$
 CREATE DEFINER = CURRENT_USER TRIGGER `mydb`.`Ciclo_BEFORE_INSERT` BEFORE INSERT ON `Ciclo` FOR EACH ROW
@@ -434,11 +425,6 @@ BEGIN
     THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'A hora_partida não pode ser null quando hora_chegada é não null';
-    END IF;
-    IF NEW.hora_chegada > NEW.hora_chegada_prevista AND (SELECT observacao FROM Servico WHERE id = NEW.id_servico) IS NULL
-    THEN
-		SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'O Serviço precisa de ter uma observação';
     END IF;
     IF NEW.hora_partida IS NOT NULL AND NEW.hora_chegada IS NOT NULL AND NEW.hora_partida > NEW.hora_chegada
     THEN

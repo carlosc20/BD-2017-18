@@ -1,5 +1,5 @@
 
-CREATE VIEW AS servicos_adiados_e_porfazer
+CREATE VIEW servicos_adiados_e_porfazer AS
 SELECT S.id AS 'Identificador do Serviço', T.designacao AS 'Tipo', SC.limite_clientes AS 'Limite de Clientes',
         count(*) AS 'Total de Clientes', E.designacao AS 'Estado', S.data_de_inicio AS 'Data e Hora de Início', S.duracao AS 'Duração prevista', S.observacao AS 'Observações'
     From Servico AS S

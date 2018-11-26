@@ -32,7 +32,14 @@ SET SQL_SAFE_UPDATES = 0;
     
 -- Ver lugares de estacionamento livres
 -- Auxiliar
-SELECT * FROM lugares_livres;
+SELECT 
+    designacao AS 'Designação'
+FROM
+    Lugar_local AS L
+        LEFT JOIN
+    Aviao AS A ON A.lugar_local = L.id
+WHERE
+    A.lugar_local IS NULL;
 
 -- Ver ciclos planeados
 -- Controlador

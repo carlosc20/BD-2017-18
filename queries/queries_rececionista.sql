@@ -168,18 +168,7 @@ CALL ver_disponibilidade_avioes("Paraquedismo", "2019-01-02 12:00", "2019-01-02 
 
 -- ver clientes() -> ordenados por número
 SELECT * FROM list_Clientes;
-
-
--- ver_servicos() -> ordenado por id .....faltam ciclos....faltam clientes atuais
-SELECT S.id AS 'Identificador do Serviço', T.designacao AS 'Tipo', SC.limite_clientes AS 'Limite de Clientes',
-        count(*) AS 'Total de Clientes', E.designacao AS 'Estado', S.data_de_inicio AS 'Data e Hora de Início', S.duracao AS 'Duração prevista', S.observacao AS 'Observações'
-    From Servico AS S
-        INNER JOIN servico_ao_cliente AS SC ON SC.id = S.id
-        INNER JOIN cliente_servico AS CS ON CS.id_servico = SC.id
-        Inner Join cliente AS C ON C.id = CS.id_cliente
-        INNER JOIN Tipo AS T ON T.id = SC.tipo
-        Inner Join Estado AS E ON E.id = S.estado
-    GROUP BY S.id;
+SELECT * FROM list_Servicos_
     
 /*
 drop procedure `cancelar_servico`;

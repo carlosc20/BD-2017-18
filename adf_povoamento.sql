@@ -92,31 +92,31 @@ INSERT INTO Estado
 INSERT INTO Servico
 	(id, estado, data_de_inicio, duracao, observacao)
 	VALUES 
-    (1	, 3, '2018-11-20 08:00:00', '2:00',  null),					-- aula pratica 12
+    (1	, 3, '2018-11-20 08:00:00', '2:00',  'não foi possível'),					-- aula pratica 12
 	(2	, 1, '2018-11-20 09:30:00', '4:00',  null), 				-- man 7
-	(3	, 3, '2018-11-20 10:00:00', '2:00',  null), 				-- aula pratica 12
+	(3	, 3, '2018-11-20 10:00:00', '2:00',  'falta de clientes'), 				-- aula pratica 12
     (4	, 1, '2018-11-20 15:00:00', '4:00',  'Derrame de óleo'), 	-- man 14
 	(5	, 1, '2018-11-20 22:10:00', '1:00',  null), 				-- man 14
 	(6	, 1, '2018-11-20 14:00:00', '2:00',  null),   				-- voo panoramico 6
 	(7	, 1, '2018-11-20 16:00:00', '2:00',  null),					-- voo panoramico 6
 	(8	, 1, '2018-11-20 18:00:00', '2:00',  null),					-- paraquedismo 6
-	(9	, 2, '2018-11-20 20:00:00', '2:00',  null),					-- paraquedismo 6  cancelado
+	(9	, 2, '2018-11-20 20:00:00', '2:00',  'consulta médica'),					-- paraquedismo 6  cancelado
 	(10	, 1, '2018-11-20 14:00:00', '2:00',  null), 				-- man 7
-	(11	, 3, '2018-11-20 12:00:00', '2:00',  null),					-- aula pratica 12
-    (12	, 1, '2018-11-20 16:15:00', '1:00',  'Coisas mecanicas'), 	-- man 7
-    (13	, 2, '2018-11-20 14:00:00', '2:00',  null),					-- aula teorica 13
+	(11	, 3, '2018-11-20 12:00:00', '2:00',  'consulta médica'),					-- aula pratica 12
+    (12	, 1, '2018-11-20 16:15:00', '1:00',  'Problema numa asa'), 	-- man 7
+    (13	, 2, '2018-11-20 14:00:00', '2:00',  'alunos não compareceram'),					-- aula teorica 13
 	(14	, 1, '2018-11-20 16:00:00', '2:00',  null),					-- aula teorica 13
 	(15	, 1, '2018-11-20 18:00:00', '2:00',  null),					-- aula teorica 13
 	(16	, 1, '2018-11-20 20:00:00', '2:00',  null),					-- aula teorica 13
 	(17	, 1, '2018-11-20 15:00:00', '2:00',  null),					-- aula paraquedismo 8
     (18 , 1, '2018-11-20 15:00:00', '2:00',  null),                 -- voo privado sem aluguer
-	(19	, 3, '2018-11-20 17:00:00', '2:00',  null),					-- aula paraquedismo 8
-	(20	, 1, '2018-11-20 22:00:00', '1:00',  'Coisas mecanicas'), 	-- man 8
+	(19	, 3, '2018-11-20 17:00:00', '2:00',  ''),					-- aula paraquedismo 8
+	(20	, 1, '2018-11-20 22:00:00', '1:00',  'Hélice partida'), 	-- man 8
 	(22	, 1, '2018-11-20 19:00:00', '2:00',  null),					-- aula paraquedismo 8
     (23	, 1, '2018-11-20 20:00:00', '2:00',  null);					-- voo privado 6
 --
 -- DELETE FROM Servico;
--- SELECT * FROM Servico;
+-- SELECT * FROM Servico WHERE estado IN (2,3) AND observacao IS NULL;
 
 
 INSERT INTO Tipo
