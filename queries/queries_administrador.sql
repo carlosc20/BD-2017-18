@@ -92,10 +92,9 @@ call atualizar_salario_funcionario(2, 1000.5);
 drop procedure `criar_manutencao`;
 */
 DELIMITER $$
-Create Procedure `criar_manutencao` (IN marcas_da_aeronave CHAR(6), IN data_de_inicio DATETIME, IN duracao TIME)
+Create Procedure `criar_manutencao` (IN marcas_da_aeronave CHAR(6), IN data_de_inicio DATETIME, IN duracao TIME, OUT idServico INT)
 BEGIN
 	DECLARE estadoId INT;
-    DECLARE servico_id INT;
     DECLARE r BOOL DEFAULT FALSE;
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET r = TRUE;
     START TRANSACTION;
@@ -106,7 +105,7 @@ BEGIN
     IF r
 		THEN ROLLBACK;
 	END IF;
-    SET servico_id = LAST_INSERT_ID();
+    SET idServico = LAST_INSERT_ID();
     
     INSERT INTO Manutencao (id, marcas_da_aeronave)
     VALUES (servico_id, marcas_da_aeronave);
@@ -119,3 +118,8 @@ $$
 /*
 CALL criar_manutencao("CS-AVC", NOW() + INTERVAL 1 DAY, "1:00");
 */
+
+SELECT Servico.id, Estado.designacao, Servico.observacao
+FROM Servico
+INNER JOIN Estado ON Estado.id = Servico.estado
+WHERE estado IN (2, 3)
