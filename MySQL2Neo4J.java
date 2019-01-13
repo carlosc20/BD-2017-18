@@ -228,6 +228,61 @@ public class MySQL2Neo4J {
                 dic.put("id_servico", "id");
                 db.table2relationship("Cliente_servico", fromCol, toCol, relCol, dic, "PARTICIPA_EM", "Cliente", "Servico");
             }
+            /* Aviao */
+            {
+                HashMap<String, String> col = new HashMap<>();
+                col.put("marcas_da_aeronave", "STRING");
+                col.put("Lugar_local.designacao", "STRING");
+                col.put("proprietario", "STRING");
+                col.put("modelo", "STRING");
+                col.put("numero_max_passageiros", "INTEGER");
+                col.put("disponivel", "BOOLEAN");
+                col.put("data_proxima_revisao", "DATE");
+                HashMap<String, String> dic = new HashMap<>();
+                dic.put("Lugar_local.designacao", "lugar_local");
+                LinkedHashMap<String, String> join = new LinkedHashMap<>();
+                join.put("Lugar_local", "Aviao.lugar_local = Lugar_local.id");
+                db.tableToNode("Aviao", col, "Aviao", dic, join);
+            }
+            /* Tipo -> Aviao */
+            {
+                ResultSet res = db.mysqlQuery("SELECT marcas_da_aeronave, tipo FROM Aviao");
+                while (res.next()){
+                    HashMap<String, String> prop = new HashMap<>();
+                    HashMap<String, String> from = new HashMap<>();
+                    from.put("marcas_da_aeronave", "'" + res.getString("marcas_da_aeronave") + "'");
+                    HashMap<String, String> to = new HashMap<>();
+                    to.put("id", Integer.toString(res.getInt("tipo")));
+                    db.createRelationshipNeo4J("USADO_PARA", prop, "Aviao", from, "Tipo", to);
+                }
+            }
+            /* Manutencao -> Aviao */
+            {
+                ResultSet res = db.mysqlQuery("SELECT id, marcas_da_aeronave FROM Manutencao");
+                while (res.next()){
+                    HashMap<String, String> prop = new HashMap<>();
+                    HashMap<String, String> from = new HashMap<>();
+                    from.put("id", Integer.toString(res.getInt("id")));
+                    HashMap<String, String> to = new HashMap<>();
+                    to.put("marcas_da_aeronave", res.getString("marcas_da_aeronave"));
+                    db.createRelationshipNeo4J("MANTEM", prop, "Manutencao", from, "Aviao", to);
+                }
+            }
+            /* Ciclo */
+            {
+                HashMap<String, String> fromCol = new HashMap<>();
+                fromCol.put("id_servico", "INTEGER");
+                HashMap<String, String> toCol = new HashMap<>();
+                toCol.put("marcas_da_aeronave", "STRING");
+                HashMap<String, String> relCol = new HashMap<>();
+                relCol.put("hora_partida_prevista", "DATETIME");
+                relCol.put("hora_chegada_prevista", "DATETIME");
+                relCol.put("hora_partida", "DATETIME");
+                relCol.put("hora_chegada", "DATETIME");
+                HashMap<String, String> dic = new HashMap<>();
+                dic.put("id_servico", "id");
+                db.table2relationship("Ciclo", fromCol, toCol, relCol, dic, "USA", "Servico_ao_cliente", "Aviao");
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
