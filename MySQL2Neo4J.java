@@ -132,7 +132,6 @@ public class MySQL2Neo4J {
                 col.put("data_de_inicio", "DATETIME");
                 col.put("duracao", "TIME");
                 col.put("observacao", "STRING");
-                col.put("marcas_da_aeronave", "STRING");
                 col.put("despesas", "FLOAT");
                 col.put("fatura", "INTEGER");
                 LinkedHashMap<String, String> joins = new LinkedHashMap<>();
@@ -192,12 +191,16 @@ public class MySQL2Neo4J {
                 col.put("formacao_paraquedismo", "BOOLEAN");
                 col.put("numero_de_telefone", "STRING");
                 col.put("morada", "STRING");
-                col.put("Socio.numero_socio", "INTEGER");
-                HashMap<String, String> dic = new HashMap<>();
-                dic.put("Socio.numero_socio","numero_socio");
-                LinkedHashMap<String, String> join = new LinkedHashMap<>();
-                join.put("<Socio", "Cliente.id = Socio.id_cliente");
-                db.tableToNode("Cliente", col, "Cliente", dic, join);
+                db.tableToNode("Cliente", col);
+            }
+            /* Socio */
+            {
+                ResultSet res = db.mysqlQuery("SELECT id_cliente, numero_socio FROM Socio");
+                while (res.next()){
+                    int id = res.getInt("id_cliente");
+                    int numSocio = res.getInt("numero_socio");
+                    db.neo4jQuery("MATCH (a:Cliente {id: " + id + "}) SET a:Socio, a.numero_socio = " + numSocio);
+                }
             }
             /* Quotas */
             {
@@ -211,7 +214,7 @@ public class MySQL2Neo4J {
                 for (Map.Entry<Integer, List<Integer>> entry : quotas.entrySet()) {
                     int id = entry.getKey();
                     List<Integer> anos = entry.getValue();
-                    db.neo4jQuery("MATCH (a:Cliente {numero_socio: " + id + "}) SET a.quotas = " + Arrays.toString(anos.toArray()));
+                    db.neo4jQuery("MATCH (a:Socio {numero_socio: " + id + "}) SET a.quotas = " + Arrays.toString(anos.toArray()));
                 }
             }
             /* Cliente_servico */
@@ -255,6 +258,10 @@ public class MySQL2Neo4J {
                     to.put("id", Integer.toString(res.getInt("tipo")));
                     db.createRelationshipNeo4J("USADO_PARA", prop, "Aviao", from, "Tipo", to);
                 }
+            }
+            /* Remover id do tipo */
+            {
+                db.neo4jQuery("MATCH (a:Tipo) REMOVE a.id");
             }
             /* Manutencao -> Aviao */
             {
