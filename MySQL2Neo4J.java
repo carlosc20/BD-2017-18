@@ -158,6 +158,28 @@ public class MySQL2Neo4J {
                 colDic.put("Funcao.designacao", "funcao");
                 db.table2relationship("Servico_funcionario", fromCol, toCol, relCol, colDic, "PARTICIPA_EM", "Funcionario", "Servico", join);
             }
+            /* Tipo */
+            {
+                HashMap<String, String> col = new HashMap<>();
+                col.put("id", "INTEGER");
+                col.put("designacao", "STRING");
+                col.put("preco", "FLOAT");
+                col.put("desconto", "FLOAT");
+                db.tableToNode("Tipo", col);
+            }
+            /* Servico_ao_cliente -> Tipo */
+            {
+                ResultSet res = db.mysqlQuery("SELECT id, tipo FROM Servico_ao_cliente");
+                while (res.next()) {
+                    HashMap<String, String> prop = new HashMap<>();
+                    HashMap<String, String> from = new HashMap<>();
+                    from.put("id", Integer.toString(res.getInt("id")));
+                    HashMap<String, String> to = new HashMap<>();
+                    to.put("id", Integer.toString(res.getInt("tipo")));
+                    String query = db.createRelationshipNeo4J("DO", prop, "Servico", from, "Tipo", to);
+                    db.neo4jQuery(query);
+                }
+            }
             /* Cliente */
             {
                 HashMap<String, String> col = new HashMap<>();
