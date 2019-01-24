@@ -14,153 +14,154 @@ public class MySQL2Neo4J {
             MySQL2Neo4J db = new MySQL2Neo4J()
                     .mysqlConnect("jdbc:mysql://127.0.0.1:3306/mydb?useSSL=false", "root", password)
                     .neo4jConnect("jdbc:neo4j:bolt://localhost:7687", "neo4j", password);
-            db.neo4jQuery("MATCH (n) DETACH DELETE n"); //Apaga a base de dados neo4j
-            /* Funcionario */
-            {
-                // Nome das colunas em MySQL do funcionário e o seu tipo em Neo4J
-                HashMap<String, String> col = new HashMap<>();
-                col.put("numero", "INTEGER");
-                col.put("nome", "STRING");
-                // col.put("data_de_nascimento", "DATE");
-                // col.put("genero", "STRING");
-                // col.put("data_criacao", "DATETIME");
-                col.put("empregado", "BOOLEAN");
-                // col.put("salario", "FLOAT");
-                // Transforma a tabela num Nodo em Neo4J, recebe o nome da tabela e o map com o nome das colunas
-                db.tableToNode("Funcionario", col);
-            }
-            /* Funcao_funcionario */
-            {
-                // Vai buscar a Funcao de cada funcionario
-                ResultSet res = db.mysqlQuery("SELECT * FROM Funcao_funcionario INNER JOIN Funcao ON Funcao_funcionario.funcao = Funcao.id");
-                HashMap<Integer, List<String>> funcoes = new HashMap<>();
-                // Adiciona a cada funcionario a lista das suas funções
-                while (res.next()) {
-                    List<String> list = funcoes.getOrDefault(res.getInt("Funcao_funcionario.numero"), new ArrayList<>());
-                    list.add("'"+res.getString("Funcao.designacao")+"'");
-                    funcoes.putIfAbsent(res.getInt("Funcao_funcionario.numero"), list);
+            if(false) {
+                db.neo4jQuery("MATCH (n) DETACH DELETE n"); //Apaga a base de dados neo4j
+                /* Funcionario */
+                {
+                    // Nome das colunas em MySQL do funcionário e o seu tipo em Neo4J
+                    HashMap<String, String> col = new HashMap<>();
+                    col.put("numero", "INTEGER");
+                    col.put("nome", "STRING");
+                    // col.put("data_de_nascimento", "DATE");
+                    // col.put("genero", "STRING");
+                    // col.put("data_criacao", "DATETIME");
+                    col.put("empregado", "BOOLEAN");
+                    // col.put("salario", "FLOAT");
+                    // Transforma a tabela num Nodo em Neo4J, recebe o nome da tabela e o map com o nome das colunas
+                    db.tableToNode("Funcionario", col);
                 }
-                // Atualiza a cada funcionário a propriedade funcao com o array da designação da funçao que realiza
-                for (Map.Entry<Integer, List<String>> entry : funcoes.entrySet()) {
-                    int id = entry.getKey();
-                    List<String> f = entry.getValue();
-                    db.neo4jQuery("MATCH (a:Funcionario {numero: " + id + "}) SET a.funcao = " + Arrays.toString(f.toArray()));
+                /* Funcao_funcionario */
+                {
+                    // Vai buscar a Funcao de cada funcionario
+                    ResultSet res = db.mysqlQuery("SELECT * FROM Funcao_funcionario INNER JOIN Funcao ON Funcao_funcionario.funcao = Funcao.id");
+                    HashMap<Integer, List<String>> funcoes = new HashMap<>();
+                    // Adiciona a cada funcionario a lista das suas funções
+                    while (res.next()) {
+                        List<String> list = funcoes.getOrDefault(res.getInt("Funcao_funcionario.numero"), new ArrayList<>());
+                        list.add("'" + res.getString("Funcao.designacao") + "'");
+                        funcoes.putIfAbsent(res.getInt("Funcao_funcionario.numero"), list);
+                    }
+                    // Atualiza a cada funcionário a propriedade funcao com o array da designação da funçao que realiza
+                    for (Map.Entry<Integer, List<String>> entry : funcoes.entrySet()) {
+                        int id = entry.getKey();
+                        List<String> f = entry.getValue();
+                        db.neo4jQuery("MATCH (a:Funcionario {numero: " + id + "}) SET a.funcao = " + Arrays.toString(f.toArray()));
+                    }
                 }
-            }
-            /* Horario */
-            {
-                // Colunas das tabelas
-                HashMap<String, String> col = new HashMap<>();
-                col.put("id", "INTEGER");
-                col.put("data_inicio", "DATE");
-                col.put("data_fim", "DATE");
-                col.put("hora_inicio", "TIME");
-                col.put("hora_fim", "TIME");
-                // Cria os nodos a partir da tabela horario
-                db.tableToNode("Horario", col);
-            }
-            /* Horario_funcionario */
-            {
-                // A relação não tem propriedades
-                HashMap<String, String> horario_funcionario = new HashMap<>();
-                // identifica o nodo de origem
-                HashMap<String, String> horario_funcionarioFrom = new HashMap<>();
-                horario_funcionarioFrom.put("id_funcionario", "INTEGER");
-                // identifica o nodo de destino
-                HashMap<String, String> horario_funcionarioTo = new HashMap<>();
-                horario_funcionarioTo.put("id_horario", "INTEGER");
-                // Converte as colunas id_funcionario em numero e id_horario em id
-                HashMap<String, String> horario_funcionarioDic = new HashMap<>();
-                horario_funcionarioDic.put("id_funcionario", "numero");
-                horario_funcionarioDic.put("id_horario", "id");
-                // Cria a relação com base na tabela Horario_funcionario
-                db.table2relationship("Horario_funcionario",
-                        horario_funcionarioFrom,
-                        horario_funcionarioTo,
-                        horario_funcionario,
-                        horario_funcionarioDic,
-                        "TEM",
-                        "Funcionario",
-                        "Horario");
-            }
-            /* Dias_da_semana */
-            {
-                // Retorna todos os valores de Dias_da_semana
-                ResultSet res = db.mysqlQuery("SELECT * FROM Dias_da_semana");
-                HashMap<Integer, List<Integer>> dias_da_semana = new HashMap<>();
-                // Adiciona a cada horario os seus dias da semana
-                while (res.next()) {
-                    List<Integer> list = dias_da_semana.getOrDefault(res.getInt("id"), new ArrayList<>(7));
-                    list.add(res.getInt("dia"));
-                    dias_da_semana.putIfAbsent(res.getInt("id"), list);
+                /* Horario */
+                {
+                    // Colunas das tabelas
+                    HashMap<String, String> col = new HashMap<>();
+                    col.put("id", "INTEGER");
+                    col.put("data_inicio", "DATE");
+                    col.put("data_fim", "DATE");
+                    col.put("hora_inicio", "TIME");
+                    col.put("hora_fim", "TIME");
+                    // Cria os nodos a partir da tabela horario
+                    db.tableToNode("Horario", col);
                 }
-                // Atualiza cada horario com os seus dias_da_semana
-                for (Map.Entry<Integer, List<Integer>> entry : dias_da_semana.entrySet()) {
-                    int id = entry.getKey();
-                    List<Integer> dias = entry.getValue();
-                    db.neo4jQuery("MATCH (a:Horario {id: " + id + "}) SET a.dias_da_semana = " + Arrays.toString(dias.toArray()));
+                /* Horario_funcionario */
+                {
+                    // A relação não tem propriedades
+                    HashMap<String, String> horario_funcionario = new HashMap<>();
+                    // identifica o nodo de origem
+                    HashMap<String, String> horario_funcionarioFrom = new HashMap<>();
+                    horario_funcionarioFrom.put("id_funcionario", "INTEGER");
+                    // identifica o nodo de destino
+                    HashMap<String, String> horario_funcionarioTo = new HashMap<>();
+                    horario_funcionarioTo.put("id_horario", "INTEGER");
+                    // Converte as colunas id_funcionario em numero e id_horario em id
+                    HashMap<String, String> horario_funcionarioDic = new HashMap<>();
+                    horario_funcionarioDic.put("id_funcionario", "numero");
+                    horario_funcionarioDic.put("id_horario", "id");
+                    // Cria a relação com base na tabela Horario_funcionario
+                    db.table2relationship("Horario_funcionario",
+                            horario_funcionarioFrom,
+                            horario_funcionarioTo,
+                            horario_funcionario,
+                            horario_funcionarioDic,
+                            "TEM",
+                            "Funcionario",
+                            "Horario");
                 }
-            }
-            /* Servico_ao_cliente */
-            {
-                // Colunas da tabela Servico
-                HashMap<String, String> col = new HashMap<>();
-                col.put("id", "INTEGER");
-                col.put("Estado.designacao", "STRING");
-                col.put("data_de_inicio", "DATETIME");
-                col.put("data_de_fim", "DATETIME");
-                col.put("Tipo.designacao", "STRING"); // tipo
-                // col.put("observacao", "STRING");
-                col.put("limite_clientes", "INTEGER");
-                // Junta o servico ao servico ao cliente para obter todas as informações sobre o servico_ao_cliente
-                // Junta também o estado
-                LinkedHashMap<String, String> joins = new LinkedHashMap<>();
-                joins.put("Servico_ao_cliente", "Servico.id = Servico_ao_cliente.id");
-                joins.put("Estado", "Servico.estado = Estado.id");
-                joins.put("Tipo","Servico_ao_cliente.tipo = Tipo.id"); // tipo
-                // Converte a cluna Estado.designacao em propriedade estado
-                HashMap<String, String> dic = new HashMap<>();
-                dic.put("Estado.designacao", "estado");
-                dic.put("Tipo.designacao", "tipo"); // tipo
-                // Cria uma tabela com base nas tabelas Servico, Servico_ao_cliente e Estado em nodos cujas labels são
-                // Servico e Servico_ao_cliente
-                db.tableToNode("Servico", col, "Servico:Servico_ao_cliente", dic, joins, "Servico.id, Estado.designacao, data_de_inicio, ADDTIME(data_de_inicio, duracao) AS data_de_fim, Tipo.designacao, limite_clientes");
-            }
-            /* Manutencao */
-            {
-                // o mesmo que o Servico_ao_Cliente mas com a tabela da Manutencao
-                HashMap<String, String> col = new HashMap<>();
-                col.put("id", "INTEGER");
-                col.put("Estado.designacao", "STRING");
-                col.put("data_de_inicio", "DATETIME");
-                col.put("data_de_fim", "DATETIME");
-                // col.put("observacao", "STRING");
-                // col.put("despesas", "FLOAT");
-                // col.put("fatura", "INTEGER");
-                LinkedHashMap<String, String> joins = new LinkedHashMap<>();
-                joins.put("Manutencao", "Servico.id = Manutencao.id");
-                joins.put("Estado", "Servico.estado = Estado.id");
-                HashMap<String, String> dic = new HashMap<>();
-                dic.put("Estado.designacao", "estado");
-                db.tableToNode("Servico", col, "Servico:Manutencao", dic, joins, "Servico.id, Estado.designacao, data_de_inicio, ADDTIME(data_de_inicio, duracao) AS data_de_fim");
-            }
-            /* Servico_funcionario */
-            {
-                HashMap<String, String> fromCol = new HashMap<>();
-                fromCol.put("id_funcionario", "INTEGER");
-                HashMap<String, String> toCol = new HashMap<>();
-                toCol.put("id_servico", "INTEGER");
-                HashMap<String, String> relCol = new HashMap<>();
-                // relCol.put("Funcao.designacao", "designacao");
-                LinkedHashMap<String, String> join = new LinkedHashMap<>();
-                // join.put("Funcao", "Servico_funcionario.funcao = Funcao.id");
-                HashMap<String, String> colDic = new HashMap<>();
-                colDic.put("id_servico", "id");
-                colDic.put("id_funcionario", "numero");
-                // colDic.put("Funcao.designacao", "funcao");
-                db.table2relationship("Servico_funcionario", fromCol, toCol, relCol, colDic, "PARTICIPA_EM", "Funcionario", "Servico", join);
-            }
-            /* Tipo */
+                /* Dias_da_semana */
+                {
+                    // Retorna todos os valores de Dias_da_semana
+                    ResultSet res = db.mysqlQuery("SELECT * FROM Dias_da_semana");
+                    HashMap<Integer, List<Integer>> dias_da_semana = new HashMap<>();
+                    // Adiciona a cada horario os seus dias da semana
+                    while (res.next()) {
+                        List<Integer> list = dias_da_semana.getOrDefault(res.getInt("id"), new ArrayList<>(7));
+                        list.add(res.getInt("dia"));
+                        dias_da_semana.putIfAbsent(res.getInt("id"), list);
+                    }
+                    // Atualiza cada horario com os seus dias_da_semana
+                    for (Map.Entry<Integer, List<Integer>> entry : dias_da_semana.entrySet()) {
+                        int id = entry.getKey();
+                        List<Integer> dias = entry.getValue();
+                        db.neo4jQuery("MATCH (a:Horario {id: " + id + "}) SET a.dias_da_semana = " + Arrays.toString(dias.toArray()));
+                    }
+                }
+                /* Servico_ao_cliente */
+                {
+                    // Colunas da tabela Servico
+                    HashMap<String, String> col = new HashMap<>();
+                    col.put("id", "INTEGER");
+                    col.put("Estado.designacao", "STRING");
+                    col.put("data_de_inicio", "DATETIME");
+                    col.put("data_de_fim", "DATETIME");
+                    col.put("Tipo.designacao", "STRING"); // tipo
+                    // col.put("observacao", "STRING");
+                    col.put("limite_clientes", "INTEGER");
+                    // Junta o servico ao servico ao cliente para obter todas as informações sobre o servico_ao_cliente
+                    // Junta também o estado
+                    LinkedHashMap<String, String> joins = new LinkedHashMap<>();
+                    joins.put("Servico_ao_cliente", "Servico.id = Servico_ao_cliente.id");
+                    joins.put("Estado", "Servico.estado = Estado.id");
+                    joins.put("Tipo", "Servico_ao_cliente.tipo = Tipo.id"); // tipo
+                    // Converte a cluna Estado.designacao em propriedade estado
+                    HashMap<String, String> dic = new HashMap<>();
+                    dic.put("Estado.designacao", "estado");
+                    dic.put("Tipo.designacao", "tipo"); // tipo
+                    // Cria uma tabela com base nas tabelas Servico, Servico_ao_cliente e Estado em nodos cujas labels são
+                    // Servico e Servico_ao_cliente
+                    db.tableToNode("Servico", col, "Servico:Servico_ao_cliente", dic, joins, "Servico.id, Estado.designacao, data_de_inicio, ADDTIME(data_de_inicio, duracao) AS data_de_fim, Tipo.designacao, limite_clientes");
+                }
+                /* Manutencao */
+                {
+                    // o mesmo que o Servico_ao_Cliente mas com a tabela da Manutencao
+                    HashMap<String, String> col = new HashMap<>();
+                    col.put("id", "INTEGER");
+                    col.put("Estado.designacao", "STRING");
+                    col.put("data_de_inicio", "DATETIME");
+                    col.put("data_de_fim", "DATETIME");
+                    // col.put("observacao", "STRING");
+                    // col.put("despesas", "FLOAT");
+                    // col.put("fatura", "INTEGER");
+                    LinkedHashMap<String, String> joins = new LinkedHashMap<>();
+                    joins.put("Manutencao", "Servico.id = Manutencao.id");
+                    joins.put("Estado", "Servico.estado = Estado.id");
+                    HashMap<String, String> dic = new HashMap<>();
+                    dic.put("Estado.designacao", "estado");
+                    db.tableToNode("Servico", col, "Servico:Manutencao", dic, joins, "Servico.id, Estado.designacao, data_de_inicio, ADDTIME(data_de_inicio, duracao) AS data_de_fim");
+                }
+                /* Servico_funcionario */
+                {
+                    HashMap<String, String> fromCol = new HashMap<>();
+                    fromCol.put("id_funcionario", "INTEGER");
+                    HashMap<String, String> toCol = new HashMap<>();
+                    toCol.put("id_servico", "INTEGER");
+                    HashMap<String, String> relCol = new HashMap<>();
+                    // relCol.put("Funcao.designacao", "designacao");
+                    LinkedHashMap<String, String> join = new LinkedHashMap<>();
+                    // join.put("Funcao", "Servico_funcionario.funcao = Funcao.id");
+                    HashMap<String, String> colDic = new HashMap<>();
+                    colDic.put("id_servico", "id");
+                    colDic.put("id_funcionario", "numero");
+                    // colDic.put("Funcao.designacao", "funcao");
+                    db.table2relationship("Servico_funcionario", fromCol, toCol, relCol, colDic, "PARTICIPA_EM", "Funcionario", "Servico", join);
+                }
+                /* Tipo */
             /*
             {
                 HashMap<String, String> col = new HashMap<>();
@@ -171,7 +172,7 @@ public class MySQL2Neo4J {
                 db.tableToNode("Tipo", col);
             }
             */
-            /* Servico_ao_cliente -> Tipo */
+                /* Servico_ao_cliente -> Tipo */
             /*
             {
                 ResultSet res = db.mysqlQuery("SELECT id, tipo FROM Servico_ao_cliente");
@@ -186,78 +187,78 @@ public class MySQL2Neo4J {
                 }
             }
             */
-            /* Cliente */
-            {
-                HashMap<String, String> col = new HashMap<>();
-                col.put("id", "INTEGER");
-                col.put("nome", "STRING");
-                col.put("data_nascimento", "DATE");
-                // col.put("genero", "STRING");
-                // col.put("data_criacao", "DATETIME");
-                col.put("brevete", "BOOLEAN");
-                col.put("formacao_paraquedismo", "BOOLEAN");
-                col.put("numero_de_telefone", "STRING");
-                col.put("morada", "STRING");
-                db.tableToNode("Cliente", col);
-            }
-            /* Socio */
-            {
-                ResultSet res = db.mysqlQuery("SELECT id_cliente, numero_socio FROM Socio");
-                while (res.next()){
-                    int id = res.getInt("id_cliente");
-                    int numSocio = res.getInt("numero_socio");
-                    db.neo4jQuery("MATCH (a:Cliente {id: " + id + "}) SET a:Socio, a.numero_socio = " + numSocio);
+                /* Cliente */
+                {
+                    HashMap<String, String> col = new HashMap<>();
+                    col.put("id", "INTEGER");
+                    col.put("nome", "STRING");
+                    col.put("data_nascimento", "DATE");
+                    // col.put("genero", "STRING");
+                    // col.put("data_criacao", "DATETIME");
+                    col.put("brevete", "BOOLEAN");
+                    col.put("formacao_paraquedismo", "BOOLEAN");
+                    col.put("numero_de_telefone", "STRING");
+                    col.put("morada", "STRING");
+                    db.tableToNode("Cliente", col);
                 }
-            }
-            /* Quotas */
-            {
-                ResultSet res = db.mysqlQuery("SELECT * FROM Quotas");
-                HashMap<Integer, List<Integer>> quotas = new HashMap<>();
-                while (res.next()) {
-                    List<Integer> list = quotas.getOrDefault(res.getInt("id"), new ArrayList<>());
-                    list.add(res.getInt("ano"));
-                    quotas.putIfAbsent(res.getInt("id"), list);
+                /* Socio */
+                {
+                    ResultSet res = db.mysqlQuery("SELECT id_cliente, numero_socio FROM Socio");
+                    while (res.next()) {
+                        int id = res.getInt("id_cliente");
+                        int numSocio = res.getInt("numero_socio");
+                        db.neo4jQuery("MATCH (a:Cliente {id: " + id + "}) SET a:Socio, a.numero_socio = " + numSocio);
+                    }
                 }
-                for (Map.Entry<Integer, List<Integer>> entry : quotas.entrySet()) {
-                    int id = entry.getKey();
-                    List<Integer> anos = entry.getValue();
-                    db.neo4jQuery("MATCH (a:Socio {numero_socio: " + id + "}) SET a.quotas = " + Arrays.toString(anos.toArray()));
+                /* Quotas */
+                {
+                    ResultSet res = db.mysqlQuery("SELECT * FROM Quotas");
+                    HashMap<Integer, List<Integer>> quotas = new HashMap<>();
+                    while (res.next()) {
+                        List<Integer> list = quotas.getOrDefault(res.getInt("id"), new ArrayList<>());
+                        list.add(res.getInt("ano"));
+                        quotas.putIfAbsent(res.getInt("id"), list);
+                    }
+                    for (Map.Entry<Integer, List<Integer>> entry : quotas.entrySet()) {
+                        int id = entry.getKey();
+                        List<Integer> anos = entry.getValue();
+                        db.neo4jQuery("MATCH (a:Socio {numero_socio: " + id + "}) SET a.quotas = " + Arrays.toString(anos.toArray()));
+                    }
                 }
-            }
-            /* Cliente_servico */
-            {
-                HashMap<String, String> fromCol = new HashMap<>();
-                fromCol.put("id_cliente", "INTEGER");
-                HashMap<String, String> toCol = new HashMap<>();
-                toCol.put("id_servico", "INTEGER");
-                HashMap<String, String> relCol = new HashMap<>();
-                // relCol.put("pagamento", "FLOAT");
-                // relCol.put("presenca", "BOOLEAN");
-                HashMap<String, String> dic = new HashMap<>();
-                dic.put("id_cliente", "id");
-                dic.put("id_servico", "id");
-                db.table2relationship("Cliente_servico", fromCol, toCol, relCol, dic, "PARTICIPA_EM", "Cliente", "Servico");
-            }
-            /* Aviao */
-            {
-                HashMap<String, String> col = new HashMap<>();
-                col.put("marcas_da_aeronave", "STRING");
-                col.put("Lugar_local.designacao", "STRING");
-                col.put("proprietario", "STRING");
-                // col.put("modelo", "STRING");
-                col.put("numero_max_passageiros", "INTEGER");
-                col.put("disponivel", "BOOLEAN");
-                col.put("data_proxima_revisao", "DATE");
-                col.put("Tipo.designacao", "STRING"); // tipo
-                HashMap<String, String> dic = new HashMap<>();
-                dic.put("Lugar_local.designacao", "lugar_local");
-                dic.put("Tipo.designacao", "tipo"); // tipo
-                LinkedHashMap<String, String> join = new LinkedHashMap<>();
-                join.put("Lugar_local", "Aviao.lugar_local = Lugar_local.id");
-                join.put("Tipo", "Aviao.tipo = Tipo.id"); // tipo
-                db.tableToNode("Aviao", col, "Aviao", dic, join);
-            }
-            /* Tipo -> Aviao */
+                /* Cliente_servico */
+                {
+                    HashMap<String, String> fromCol = new HashMap<>();
+                    fromCol.put("id_cliente", "INTEGER");
+                    HashMap<String, String> toCol = new HashMap<>();
+                    toCol.put("id_servico", "INTEGER");
+                    HashMap<String, String> relCol = new HashMap<>();
+                    // relCol.put("pagamento", "FLOAT");
+                    // relCol.put("presenca", "BOOLEAN");
+                    HashMap<String, String> dic = new HashMap<>();
+                    dic.put("id_cliente", "id");
+                    dic.put("id_servico", "id");
+                    db.table2relationship("Cliente_servico", fromCol, toCol, relCol, dic, "PARTICIPA_EM", "Cliente", "Servico");
+                }
+                /* Aviao */
+                {
+                    HashMap<String, String> col = new HashMap<>();
+                    col.put("marcas_da_aeronave", "STRING");
+                    col.put("Lugar_local.designacao", "STRING");
+                    col.put("proprietario", "STRING");
+                    // col.put("modelo", "STRING");
+                    col.put("numero_max_passageiros", "INTEGER");
+                    col.put("disponivel", "BOOLEAN");
+                    col.put("data_proxima_revisao", "DATE");
+                    col.put("Tipo.designacao", "STRING"); // tipo
+                    HashMap<String, String> dic = new HashMap<>();
+                    dic.put("Lugar_local.designacao", "lugar_local");
+                    dic.put("Tipo.designacao", "tipo"); // tipo
+                    LinkedHashMap<String, String> join = new LinkedHashMap<>();
+                    join.put("Lugar_local", "Aviao.lugar_local = Lugar_local.id");
+                    join.put("Tipo", "Aviao.tipo = Tipo.id"); // tipo
+                    db.tableToNode("Aviao", col, "Aviao", dic, join);
+                }
+                /* Tipo -> Aviao */
             /*
             {
                 ResultSet res = db.mysqlQuery("SELECT marcas_da_aeronave, tipo FROM Aviao");
@@ -271,48 +272,152 @@ public class MySQL2Neo4J {
                 }
             }
             */
-            /* Remover id do tipo */
+                /* Remover id do tipo */
             /*
             {
                 db.neo4jQuery("MATCH (a:Tipo) REMOVE a.id");
             }
             */
-            /* Manutencao -> Aviao */
+                /* Manutencao -> Aviao */
+                {
+                    ResultSet res = db.mysqlQuery("SELECT id, marcas_da_aeronave FROM Manutencao");
+                    while (res.next()) {
+                        HashMap<String, String> prop = new HashMap<>();
+                        HashMap<String, String> from = new HashMap<>();
+                        from.put("id", Integer.toString(res.getInt("id")));
+                        HashMap<String, String> to = new HashMap<>();
+                        to.put("marcas_da_aeronave", "'" + res.getString("marcas_da_aeronave") + "'");
+                        String query = db.createRelationshipNeo4J("MANTEM", prop, "Manutencao", from, "Aviao", to);
+                        db.neo4jQuery(query);
+                    }
+                }
+                /* Ciclo */
+                {
+                    HashMap<String, String> fromCol = new HashMap<>();
+                    fromCol.put("id_servico", "INTEGER");
+                    HashMap<String, String> toCol = new HashMap<>();
+                    toCol.put("marcas_da_aeronave", "STRING");
+                    HashMap<String, String> relCol = new HashMap<>();
+                    relCol.put("hora_partida_prevista", "DATETIME");
+                    relCol.put("hora_chegada_prevista", "DATETIME");
+                    //relCol.put("hora_chegada", "DATETIME");
+                    HashMap<String, String> dic = new HashMap<>();
+                    dic.put("id_servico", "id");
+                    db.table2relationship("Ciclo", fromCol, toCol, relCol, dic, "Ciclo", "Servico_ao_cliente", "Aviao");
+                }
+                /* Index */
+                db.neo4jQuery("CREATE INDEX ON :Servico(tipo)");
+                db.neo4jQuery("CREATE INDEX ON :Aviao(tipo)");
+                db.neo4jQuery("CREATE INDEX ON :Funcionario(funcao)");
+                db.neo4jQuery("CREATE INDEX ON :Aviao(disponibilidade)");
+                db.neo4jQuery("CREATE INDEX ON :Funcionario(empregado)");
+            }
+            /* servicoPorFinalizar */
             {
-                ResultSet res = db.mysqlQuery("SELECT id, marcas_da_aeronave FROM Manutencao");
+                System.out.println(">>Serviços por finalizar (tipo = Voo panorâmico)");
+                ResultSet res = db.servicoPorFinalizar("Voo paronâmico");
                 while (res.next()){
-                    HashMap<String, String> prop = new HashMap<>();
-                    HashMap<String, String> from = new HashMap<>();
-                    from.put("id", Integer.toString(res.getInt("id")));
-                    HashMap<String, String> to = new HashMap<>();
-                    to.put("marcas_da_aeronave", "'" + res.getString("marcas_da_aeronave") + "'");
-                    String query = db.createRelationshipNeo4J("MANTEM", prop, "Manutencao", from, "Aviao", to);
-                    db.neo4jQuery(query);
+                    System.out.println(res.getInt("id") + " ");
                 }
             }
-            /* Ciclo */
+            /* sociosQuePartilhamServico */
             {
-                HashMap<String, String> fromCol = new HashMap<>();
-                fromCol.put("id_servico", "INTEGER");
-                HashMap<String, String> toCol = new HashMap<>();
-                toCol.put("marcas_da_aeronave", "STRING");
-                HashMap<String, String> relCol = new HashMap<>();
-                relCol.put("hora_partida_prevista", "DATETIME");
-                relCol.put("hora_chegada_prevista", "DATETIME");
-                //relCol.put("hora_chegada", "DATETIME");
-                HashMap<String, String> dic = new HashMap<>();
-                dic.put("id_servico", "id");
-                db.table2relationship("Ciclo", fromCol, toCol, relCol, dic, "Ciclo", "Servico_ao_cliente", "Aviao");
+                System.out.println(">>Sócios que partilharam o mesmo serviço (clienteId = 1, tipo = Voo panorâmico)");
+                ResultSet res = db.sociosQuePartilhamServico(1, "Paraquedismo");
+                while (res.next()) {
+                    System.out.println(res.getInt("c.id") + " " + res.getInt("COUNT(s.tipo)"));
+                }
             }
-            /* Index */
-            db.neo4jQuery("CREATE INDEX ON :Servico(tipo)");
-            db.neo4jQuery("CREATE INDEX ON :Aviao(tipo)");
-            db.neo4jQuery("CREATE INDEX ON :Funcionario(funcao)");
-            db.neo4jQuery("CREATE INDEX ON :Aviao(disponibilidade)");
-            db.neo4jQuery("CREATE INDEX ON :Funcionario(empregado)");
+            /* clientePartilhaServicoCliente */
+            {
+                System.out.println(">>Clientes que partilharam os mesmo serviço com o cliente (clienteId = 1)");
+                ResultSet res = db.clientePartilhaServicoCliente(1);
+                while (res.next()) {
+                    System.out.println(res.getInt("o.id") + " " + res.getInt("COUNT(o)"));
+                }
+            }
+            /* horarioFuncionarios */
+            {
+                System.out.println(">>Horário do funcionário (funcionarioId = 1)");
+                ResultSet res = db.horarioFuncionarios(1);
+                while (res.next()) {
+                    System.out.println(res.getInt("h.id"));
+                }
+            }
+            /* servicoPorRealizar */
+            {
+                System.out.println(">>Serviços por realizar (funcionarioId = 1)");
+                ResultSet res = db.servicoPorRealizar(1);
+                while (res.next()) {
+                    System.out.println(res.getInt("s.id"));
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public ResultSet servicoPorFinalizar(String tipo) throws SQLException {
+        return neo4jQuery("MATCH (c:Cliente)-[:PARTICIPA_EM]->(s:Servico_ao_cliente {estado: \"Por finalizar\", tipo: '" + tipo + "'})\n" +
+                "WITH s, COUNT(s.id) AS numero, s.limite_clientes AS limite\n" +
+                "WHERE limite > numero\n" +
+                "RETURN s.id");
+    }
+
+    public ResultSet sociosQuePartilhamServico(int clienteId, String tipo) throws SQLException {
+        return neo4jQuery("MATCH (c:Socio)-[:PARTICIPA_EM]->(s:Servico_ao_cliente {tipo:'" + tipo + "'})\n" +
+                "WHERE c.id <> " + clienteId + "\n" +
+                "RETURN c.id, COUNT(s.tipo)\n" +
+                "ORDER BY COUNT(s.tipo)");
+    }
+
+    public ResultSet clientePartilhaServicoCliente(int clienteId) throws SQLException {
+        return neo4jQuery("MATCH (c:Cliente {id:" + clienteId + "})-[:PARTICIPA_EM]->(s:Servico_ao_cliente)<-[:PARTICIPA_EM]-(o:Cliente)\n" +
+                "RETURN o.id, COUNT(o)\n" +
+                "ORDER BY COUNT(o)");
+    }
+
+    public ResultSet horarioFuncionarios(int funcionarioId) throws SQLException {
+        return neo4jQuery("MATCH (f:Funcionario{id : " + funcionarioId + "})-[:TEM]->(h:Horario)\n" +
+                "RETURN h.id");
+    }
+
+    public ResultSet servicoPorRealizar(int funcionarioId) throws SQLException {
+        return neo4jQuery("MATCH (f:Funcionario {id: " + funcionarioId + "})-[:PARTICIPA_EM]->(s:Servico)\n" +
+                "WHERE s.tipo IN [\"Por finalizar\", \"Adiado\"]\n" +
+                "RETURN s.id");
+    }
+
+    public ResultSet encontarPilotoLivre(String dataInicio, String dataFim, String tempoInicio, String tempoFim) throws SQLException {
+        return neo4jQuery("MATCH (f:Funcionario {empregado: true})-[:TEM]->(h:Horario)\n" +
+                "OPTIONAL MATCH (f)-[:PARTICIPA_EM]->(s:Servico)\n" +
+                "WITH f, h\n" +
+                "WHERE\n" +
+                "\"Piloto\" IN f.funcao\n" +
+                "    AND\n" +
+                "  (\n" +
+                "    s is NULL\n" +
+                "      OR\n" +
+                "    (\n" +
+                "      s.estado IN [\"Cancelado\", \"Finalizado\"]\n" +
+                "      OR\n" +
+                "      ((s.data_de_inicio < datetime('" + dataInicio + "') AND\n" +
+                "        s.data_de_inicio < datetime('" + dataFim + "')) OR\n" +
+                "        (s.data_de_fim > datetime('" + dataInicio + "') AND\n" +
+                "        s.data_de_fim > datetime('" + dataFim + "'))\n" +
+                "      )\n" +
+                "    )\n" +
+                "  ) AND\n" +
+                "  (date('" + dataInicio + "').dayOfWeek-1) IN h.dias_da_semana AND\n" +
+                "  ((h.data_inicio <= date('" + dataInicio + "') AND\n" +
+                "  h.data_inicio <= date('" + dataFim + "')) OR\n" +
+                "  (h.data_fim >= date('" + dataInicio + "') AND\n" +
+                "  h.data_fim >= date('" + dataFim + "'))) AND\n" +
+                "  ((h.hora_inicio <= time('" + tempoInicio + "') OR\n" +
+                "  h.hora_inicio <= time('" + tempoFim + "')) AND\n" +
+                "  (h.hora_fim >= time('" + tempoInicio + "') OR\n" +
+                "  h.hora_fim >= time('" + tempoFim + "')))\n" +
+                "RETURN DISTINCT f");
     }
 
     public MySQL2Neo4J() {
